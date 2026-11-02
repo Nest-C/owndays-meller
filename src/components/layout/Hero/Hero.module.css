@@ -15,6 +15,14 @@
   object-fit: cover;
 }
 
+.grain {
+  position: absolute;
+  inset: 0;
+  background: url('/images/filter-image.webp') 0 0 / 179.84px 179.84px repeat;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 .title {
   position: relative;
   font-size: 64px;

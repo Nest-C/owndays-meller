@@ -2,7 +2,9 @@ import type { ReactNode } from 'react';
 import type { Metadata, Viewport } from 'next';
 import { Noto_Sans_JP } from 'next/font/google';
 import { preload } from 'react-dom';
-import { BRAND_COLOR, OG_IMAGE, SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/constants/site';
+import { BRAND_COLOR, OG_IMAGE, SITE_DESCRIPTION, SITE_KEYWORDS, SITE_TITLE, SITE_URL } from '@/constants/site';
+import { Footer } from '@/components/layout/Footer/Footer';
+import { Navbar } from '@/components/layout/Navbar/Navbar';
 import './globals.css';
 
 const notoSansJp = Noto_Sans_JP({
@@ -16,7 +18,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: SITE_TITLE,
   description: SITE_DESCRIPTION,
-  keywords: ['OWNDAYS', 'MELLER', 'サングラス', 'オンデーズ', 'メラー', 'コラボ'],
+  keywords: SITE_KEYWORDS,
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
@@ -46,7 +48,11 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
 
   return (
     <html lang="ja" className={notoSansJp.variable}>
-      <body>{children}</body>
+      <body>
+        <Navbar />
+        <main id="top">{children}</main>
+        <Footer />
+      </body>
     </html>
   );
 }

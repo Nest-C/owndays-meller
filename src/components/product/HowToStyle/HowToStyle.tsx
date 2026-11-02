@@ -10,7 +10,7 @@ import styles from './HowToStyle.module.css';
 
 interface HowToStyleProps {
   products: ProductItem[];
-  onOpen: (item: ProductItem) => void;
+  onOpen: (item: ProductItem, skuIndex?: number) => void;
 }
 
 export function HowToStyle({ products, onOpen }: HowToStyleProps) {
@@ -22,12 +22,14 @@ export function HowToStyle({ products, onOpen }: HowToStyleProps) {
     return STYLE_ITEMS.flatMap((entry, i) => {
       const item = byCode.get(entry.productCode);
       if (!item) return [];
-      const sku = item.skus.find((s) => s.code === entry.skuCode) ?? item.skus[0];
+      const found = item.skus.findIndex((s) => s.code === entry.skuCode);
+      const skuIndex = found >= 0 ? found : 0;
+      const sku = item.skus[skuIndex];
       const images = sortedImages(sku);
       const productPhoto = images.length ? imageUrl(images[images.length - 1].path) : null;
       const src = entry.image ?? productPhoto;
       if (!src) return [];
-      return [{ key: `${entry.productCode}-${i}`, item, src, isProductPhoto: !entry.image }];
+      return [{ key: `${entry.productCode}-${i}`, item, skuIndex, src, isProductPhoto: !entry.image }];
     });
   }, [products]);
 
@@ -53,7 +55,7 @@ export function HowToStyle({ products, onOpen }: HowToStyleProps) {
               type="button"
               className={styles.plus}
               aria-label={`${slide.item.product.model_name} の詳細を見る`}
-              onClick={() => onOpen(slide.item)}
+              onClick={() => onOpen(slide.item, slide.skuIndex)}
             >
               <PlusIcon />
             </button>

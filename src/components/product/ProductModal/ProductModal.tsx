@@ -22,12 +22,13 @@ const EXIT_MS = 300;
 
 interface ProductModalProps {
   item: ProductItem;
+  skuIndex: number;
+  onSelectSku: (index: number) => void;
   onClose: () => void;
 }
 
 /** Mounted only while a product is selected; plays its own exit animation. */
-export function ProductModal({ item, onClose }: ProductModalProps) {
-  const [skuIndex, setSkuIndex] = useState(0);
+export function ProductModal({ item, skuIndex, onSelectSku, onClose }: ProductModalProps) {
   const [closing, setClosing] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -95,7 +96,7 @@ export function ProductModal({ item, onClose }: ProductModalProps) {
                 role="radio"
                 aria-checked={i === skuIndex}
                 className={styles.chip}
-                onClick={() => setSkuIndex(i)}
+                onClick={() => onSelectSku(i)}
               >
                 {skuColorLabel(s)}
               </button>

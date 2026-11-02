@@ -24,7 +24,7 @@
 
 | State | Kind | Owner today | Who reads it |
 |---|---|---|---|
-| Product list | Server data, read-only | `app/page.tsx` (Server Component) → props | Grid, cards, HowToStyle, modal, JSON-LD |
+| Product list | Server data, read-only | `app/(landing)/page.tsx` (Server Component) → props | Grid, cards, HowToStyle, modal, JSON-LD |
 | Selected product (modal open) | UI, shared by 2 siblings | `ProductCatalog` `useState` | Grid + HowToStyle (write), Modal (read) |
 | Card SKU index | UI, local | each `ProductCard` | that card only |
 | Modal SKU index, closing flag | UI, local | `ProductModal` | modal only |

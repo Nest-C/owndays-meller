@@ -28,7 +28,7 @@ The page is mostly static content with a few interactive parts, which is what Ne
 |---|---|
 | SEO / meta tags | `metadata` in `app/layout.tsx` → title, description, canonical, Open Graph, Twitter card |
 | OGP image 1200×630 | `public/images/og-image.jpg` (Figma frame `ogp_1200x630`, compressed to ~170 KB), set as `openGraph.images` / `twitter.images` via `OG_IMAGE` in `constants/site.ts` |
-| Products visible to crawlers | `page.tsx` fetches on the server, so all 8 products are in the initial HTML |
+| Products visible to crawlers | `app/(landing)/page.tsx` fetches on the server, so all 8 products are in the initial HTML |
 | Rich results | `schema.org` `ItemList` / `Product` JSON-LD with price and stock |
 | Performance | Static page regenerated hourly (ISR), `next/image` (resized WebP/AVIF, lazy loading; hero uses art-directed desktop/mobile crops via `getImageProps`), self-hosted Noto Sans JP via `next/font`, preloaded brand fonts |
 | Fresh data | `fetch(..., { next: { revalidate: 3600 } })` — if the API fails during revalidation, the last good page keeps being served |
@@ -40,20 +40,25 @@ Only components that need state or events are Client Components (`'use client'`)
 ```
 public/
 ├── fonts/                      # brand fonts (Favorit, GT America Trial), self-hosted
-├── images/og-image.jpg         # Open Graph / Twitter share image
+├── images/
+│   ├── hero-desktop.jpg        # hero crops (art direction: desktop strip / mobile portrait)
+│   ├── hero-mobile.jpg
+│   ├── filter-image.webp       # grain texture tiled over the hero
+│   └── og-image.jpg            # Open Graph / Twitter share image
 └── logo.svg                    # navbar logo
 
 src/
 ├── app/
-│   ├── layout.tsx              # <html lang="ja">, metadata, fonts
-│   ├── page.tsx                # server: fetch products, render page, JSON-LD
+│   ├── layout.tsx              # <html lang="ja">, metadata, fonts; Navbar + <main> + Footer around every page
+│   ├── (landing)/              # route group: the parentheses keep it out of the URL, so this is still "/"
+│   │   └── page.tsx            # the landing page — server: fetch products, render page, JSON-LD
+│   ├── favicon.ico, icon.png, apple-icon.png  # from Figma frame `favion` (16/32/48, 512, 180) — Next adds the <link> tags
 │   └── globals.css             # @font-face, design tokens (CSS variables), reset
 ├── lib/
 │   ├── types.ts                # API types (from PRODUCTS_README.md)
 │   ├── products.ts             # getProducts() with hourly revalidation
 │   ├── format.ts               # prices, image URLs, swatches, store URL
 │   └── seo.ts                  # JSON-LD builder
-├── assets/images/              # hero-desktop.jpg / hero-mobile.jpg (Figma crops, grain overlay baked in)
 ├── constants/site.ts           # site text, nav links, external URLs
 ├── hooks/                      # useScrolled, useScrollLock, useEscape, useDragScroll
 └── components/                 # grouped by role; one folder per component (Component.tsx + Component.module.css)
@@ -88,9 +93,8 @@ Styling conventions: design tokens live in `globals.css` as CSS variables; compo
 
 ## Assets still to export from Figma
 
-Hero, OGP and logo are done. Still missing (the page falls back to product photos / no favicon until then):
+Hero, OGP, logo and favicon are done. Still missing (the page falls back to product photos until then):
 
 | Asset | Where it goes |
 |---|---|
 | "How to style them" photos | `public/images/style/…`, then add `image:` to each entry in `src/components/product/HowToStyle/styleItems.ts` (each entry also says which product its "+" opens) |
-| Favicon (frame `favion`) | `src/app/icon.svg` |

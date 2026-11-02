@@ -17,6 +17,10 @@ export const productNumber = (item: ProductItem, sku: Sku): string =>
 export const frameTypeLabel = (item: ProductItem): string =>
   (item.frame_types[0]?.code ?? '').toUpperCase();
 
+/** Index of the default color: the SKU with the lowest `order` (spec §4.6). */
+export const defaultSkuIndex = (item: ProductItem): number =>
+  item.skus.reduce((best, sku, i, skus) => (sku.order < skus[best].order ? i : best), 0);
+
 export const sortedImages = (sku: Sku) => [...sku.images].sort((a, b) => a.order - b.order);
 
 export const skuThumbnail = (sku: Sku): string | null => {

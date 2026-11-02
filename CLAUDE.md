@@ -22,18 +22,18 @@ npx tsc --noEmit
 ## Stack and decisions
 - Next.js 16 App Router, React 19, TypeScript, **CSS Modules only** (no Tailwind, no styled-components, no clsx).
 - `cacheComponents` is deliberately **off**; data uses `fetch(..., { next: { revalidate: 3600 } })` in `src/lib/products.ts` (ISR, page is static). `getProducts()` throws on failure on purpose so a failed revalidation keeps the last good page.
-- Products are fetched in the Server Component `src/app/page.tsx` so all cards are in the initial HTML (SEO). JSON-LD `ItemList`/`Product` from `src/lib/seo.ts`.
-- Metadata (title, description, canonical, OG, Twitter) in `src/app/layout.tsx`; OGP is `public/images/og-image.jpg` (compressed Figma export), wired via `OG_IMAGE` in `src/constants/site.ts`.
-- `next/image` with `remotePatterns` for storage.owndays.com. Next 16: use `preload`, not the deprecated `priority`. Hero uses art direction (`getImageProps` + `<picture>`, two crops in `src/assets/images/`, matching crop preloaded per media query; Figma's grain overlay is baked into the JPGs).
+- Products are fetched in the Server Component `src/app/(landing)/page.tsx` (route group — URL is still `/`; don't also add `src/app/page.tsx`, both would resolve to `/`) so all cards are in the initial HTML (SEO). JSON-LD `ItemList`/`Product` from `src/lib/seo.ts`.
+- `src/app/layout.tsx` renders Navbar, `<main id="top">{children}</main>`, Footer — pages render only their own sections. Metadata (title, description, canonical, OG, Twitter) is there too; OGP is `public/images/og-image.jpg` (compressed Figma export), wired via `OG_IMAGE` in `src/constants/site.ts`.
+- `next/image` with `remotePatterns` for storage.owndays.com. Next 16: use `preload`, not the deprecated `priority`. Hero uses art direction (`getImageProps` + `<picture>`, two crops `public/images/hero-desktop.jpg` 2560×1125 / `hero-mobile.jpg` 1170×2031 — width/height are hard-coded in `Hero.tsx`, update them if the files change; matching crop preloaded per media query; grain overlay = `public/images/filter-image.webp` tiled in `Hero.module.css`).
 - Noto Sans JP via `next/font/google` (`preload: false`). Brand fonts preloaded with `react-dom` `preload()`.
 - Only interactive components are Client Components: Navbar, MobileMenu, ProductCatalog and its children.
 
 ## Structure
 ```
-src/app/                 layout, page, globals.css (tokens + @font-face + reset)
+src/app/                 layout, (landing)/page.tsx, globals.css (tokens + @font-face + reset), favicon.ico, icon.png, apple-icon.png
 src/lib/                 types.ts, products.ts, format.ts (prices, image URLs, swatches, store URL), seo.ts
 src/constants/site.ts    SITE_URL, OG_IMAGE, nav links, external URLs
-src/assets/images/       hero-desktop.jpg, hero-mobile.jpg
+public/images/           hero-desktop.jpg, hero-mobile.jpg, filter-image.webp (hero grain), og-image.jpg
 src/hooks/               useScrolled, useScrollLock, useEscape, useDragScroll (mouse drag for the HowToStyle strip)
 src/components/
   ui/                    shared, product-agnostic: Logo, Highlight, icons.tsx
@@ -66,7 +66,7 @@ src/components/
 
 ## Still to do
 - [ ] Run against the real API and compare desktop + mobile with Figma (spacing and sizes were measured from screenshots, not dev-mode values).
-- [ ] Export from Figma: lifestyle photos → `public/images/style/` + `image:` in `styleItems.ts`; favicon (frame `favion`) → `src/app/icon.svg`. Hero and OGP are done. Logo is done (`public/logo.svg`, white, 351×52). Height 16px mobile / 52px desktop matches the brief's padding math (23+16+23 = 62, 25+52+25 = 102); the brief's "240×16" mobile size can't keep the SVG's ratio (16px tall = ~108px wide) — check in Figma.
+- [ ] Export from Figma: lifestyle photos → `public/images/style/` + `image:` in `styleItems.ts`. Hero, OGP and favicon are done (favicon: `src/app/favicon.ico` 16/32/48 + `icon.png` 512 + `apple-icon.png` 180, from frame `favion` 627:4906). Logo is done (`public/logo.svg`, white, 351×52). Height 16px mobile / 52px desktop matches the brief's padding math (23+16+23 = 62, 25+52+25 = 102); the brief's "240×16" mobile size can't keep the SVG's ratio (16px tall = ~108px wide) — check in Figma.
 - [ ] Deploy to Vercel (bonus) — no env var needed unless a custom domain is used.
 
 ## Related

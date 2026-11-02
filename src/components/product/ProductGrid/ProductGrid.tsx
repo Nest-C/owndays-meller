@@ -5,7 +5,7 @@ import styles from './ProductGrid.module.css';
 
 interface ProductGridProps {
   products: ProductItem[];
-  onOpen: (item: ProductItem) => void;
+  onOpen: (item: ProductItem, skuIndex: number) => void;
 }
 
 export function ProductGrid({ products, onOpen }: ProductGridProps) {
@@ -16,10 +16,6 @@ export function ProductGrid({ products, onOpen }: ProductGridProps) {
           <ProductCard key={item.product.id} item={item} onOpen={onOpen} />
         ))}
       </div>
-
-      <a href={ALL_ITEMS_URL} className={styles.allItems} target="_blank" rel="noopener noreferrer">
-        ALL ITEMS
-      </a>
     </section>
   );
 }

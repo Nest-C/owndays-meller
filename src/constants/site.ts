@@ -17,9 +17,14 @@ export const OG_IMAGE = {
 /** Same as `--color-brand` in globals.css — for places CSS can't reach (theme-color) */
 export const BRAND_COLOR = '#ff6a1f';
 
-export const SITE_TITLE = 'OWNDAYS × MELLER | PRODUCTS';
+/** Title, description and keywords are copied verbatim from the Figma "Meta data" frame (assignment §5) */
+export const SITE_TITLE = '商品一覧 | OWNDAYS × MELLER（メラー） 公式オンラインストア｜サングラス';
 export const SITE_DESCRIPTION =
-  'バルセロナ発のアイウェアブランド「MELLER」とOWNDAYSのコラボレーションサングラス。全8型のラインナップと着こなしをご紹介します。';
+  'OWNDAYS × MELLER 商品一覧。デザイン性・機能性に優れたサステナブルな素材のサングラス（全てUV99%以上カット・偏光レンズ・傷防止コート・撥水コート）を展開中。';
+export const SITE_KEYWORDS = [
+  '商品一覧', 'サングラス', '偏光レンズ', 'Meller', 'メラー', 'アイウェア', 'フレーム', 'サステイナブ',
+  'トレンド', 'バルセロナ', 'スペイン', 'OWNDAYS', 'オンデーズ', 'オンデイズ',
+];
 
 export const NAV_LINKS = [
   { label: 'ABOUT', href: '#about' },
