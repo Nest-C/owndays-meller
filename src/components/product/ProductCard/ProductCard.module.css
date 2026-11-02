@@ -12,18 +12,17 @@
   outline-color: var(--color-black);
 }
 
+/* The box sets the size; the `fill` image is stretched over it, so it always matches exactly */
 .imageBox {
+  position: relative;
   aspect-ratio: 388 / 298;
   overflow: hidden;
   background: var(--color-surface);
 }
 
 .image {
-  width: 100%;
-  height: 100%;
   object-fit: cover;
   transition: transform 0.4s ease;
-  opacity: 1
 }
 
 .card:hover .image {

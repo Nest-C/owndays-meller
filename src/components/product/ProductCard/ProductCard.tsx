@@ -11,7 +11,6 @@ const MAX_SWATCHES = 4;
 
 interface ProductCardProps {
   item: ProductItem;
-  /** Opens the detail panel with the card's currently selected color */
   onOpen: (item: ProductItem, skuIndex: number) => void;
 }
 
@@ -29,8 +28,7 @@ export const ProductCard = memo(function ProductCard({ item, onOpen }: ProductCa
           <Image
             src={thumbnail}
             alt={`${item.product.model_name} ${sku.code}`}
-            width={385}
-            height={293}
+            fill
             sizes="(min-width: 1024px) 385px, calc(100vw - 68px)"
             className={styles.image}
           />
