@@ -1,0 +1,25 @@
+.swatch {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 1px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.swatch:hover {
+  border-color: var(--color-swatch-border);
+}
+
+.swatch[aria-pressed='true'] {
+  border-color: var(--color-brand);
+}
+
+.dot {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  /* keeps near-white colors (Clear Gray, Light Blue) visible on white */
+  box-shadow: inset 0 0 0 1px var(--color-swatch-border);
+}

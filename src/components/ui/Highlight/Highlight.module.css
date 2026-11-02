@@ -1,0 +1,16 @@
+.highlight {
+  display: inline;
+  background: var(--color-black);
+  color: var(--color-brand);
+  font-family: var(--font-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 1;
+  padding: 0 0.06em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.highlight[data-color='white'] {
+  color: var(--color-white);
+}

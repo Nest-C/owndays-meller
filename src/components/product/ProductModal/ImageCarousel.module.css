@@ -1,0 +1,39 @@
+.track {
+  --slide: 74vw;
+  display: flex;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  padding-inline: calc((100% - var(--slide)) / 2);
+  scrollbar-width: none;
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+.track:focus-visible {
+  outline-offset: -2px;
+}
+
+.slide {
+  flex: 0 0 var(--slide);
+  aspect-ratio: 420 / 298;
+  scroll-snap-align: center;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* drops the white photo background onto the gray panel */
+  mix-blend-mode: multiply;
+}
+
+@media (min-width: 1024px) {
+  .track {
+    --slide: 420px;
+  }
+}

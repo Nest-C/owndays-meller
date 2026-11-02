@@ -1,0 +1,16 @@
+/*
+ * The SVG artwork is 351×52 and includes empty space above and below the lettering.
+ * Size it by WIDTH so the lettering matches Figma; height follows the 351:52 ratio.
+ * Figma: mobile artwork 240 × 35.56 (visible lettering ≈ 240 × 16), desktop 351 × 52.
+ */
+.logo {
+  display: block;
+  width: 240px;
+  height: auto;
+}
+
+@media (min-width: 1024px) {
+  .logo {
+    width: 351px;
+  }
+}

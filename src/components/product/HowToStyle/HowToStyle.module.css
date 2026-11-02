@@ -1,0 +1,107 @@
+/* Orange above, black below — the photo strip straddles both */
+.section {
+  background: linear-gradient(var(--color-brand) 50%, var(--color-black) 50%);
+}
+
+.heading {
+  position: relative;
+  z-index: 1;
+  padding: 0 var(--gutter);
+  margin-bottom: -0.42em; /* title overlaps the top of the photos */
+  background: var(--color-brand);
+  font-size: 72px;
+  line-height: 0.9;
+}
+
+.track {
+  display: flex;
+  gap: 1px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  background: var(--color-black);
+}
+
+/* Mouse users drag the strip (useDragScroll) */
+@media (hover: hover) and (pointer: fine) {
+  .track {
+    cursor: grab;
+  }
+}
+
+.track[data-dragging='true'] {
+  cursor: grabbing;
+  scroll-behavior: auto; /* follow the mouse 1:1 */
+  scroll-snap-type: none; /* snap back in when the drag ends */
+  user-select: none;
+}
+
+.track[data-dragging='true'] .plus {
+  pointer-events: none;
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+.item {
+  position: relative;
+  flex: 0 0 326px;
+  height: 492px;
+  overflow: hidden;
+  scroll-snap-align: start;
+  background: var(--color-surface);
+}
+
+.image {
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+/* Fallback product photos are wide — show them whole */
+.item[data-product-photo='true'] .image {
+  object-fit: contain;
+}
+
+.item:hover .image {
+  transform: scale(1.03);
+}
+
+.plus {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  font-size: 26px;
+  background: var(--color-brand);
+  color: var(--color-black);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.plus:hover {
+  background: var(--color-black);
+  color: var(--color-brand);
+}
+
+@media (min-width: 1024px) {
+  .heading {
+    font-size: 130px;
+  }
+
+  .item {
+    flex-basis: 405px;
+    height: 611px;
+  }
+
+  .plus {
+    width: 70px;
+    height: 70px;
+    font-size: 32px;
+  }
+}

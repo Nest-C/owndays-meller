@@ -1,0 +1,54 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px var(--gutter) 80px;
+  background: var(--color-brand);
+}
+
+.grid {
+  width: 100%;
+  max-width: 1300px;
+  display: grid;
+  /* minmax(0, …): a plain 1fr can't shrink below the card's content (the 388px image) */
+  grid-template-columns: minmax(0, 1fr);
+  gap: 17px;
+}
+
+.allItems {
+  width: 100%;
+  max-width: 428px;
+  height: 70px;
+  margin-top: 60px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--color-black);
+  border-radius: 999px;
+  background: var(--color-black);
+  color: var(--color-white);
+  font-family: var(--font-favorit);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.1em;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.allItems:hover {
+  background: var(--color-white);
+  color: var(--color-black);
+}
+
+@media (min-width: 1024px) {
+  .section {
+    padding-top: 130px;
+    padding-bottom: 120px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .allItems {
+    margin-top: 80px;
+  }
+}

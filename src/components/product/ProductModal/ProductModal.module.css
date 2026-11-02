@@ -1,0 +1,234 @@
+/* ---------- layout ---------- */
+
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+}
+
+.root[data-state='closing'] {
+  pointer-events: none;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--color-backdrop);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  animation: fadeIn 300ms ease forwards;
+}
+
+/* Mobile: full screen */
+.panel {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--color-black);
+  animation: riseIn 300ms ease forwards;
+}
+
+.root[data-state='closing'] .backdrop {
+  animation-name: fadeOut;
+}
+
+.root[data-state='closing'] .panel {
+  animation-name: dropOut;
+}
+
+/* ---------- top (gray) ---------- */
+
+.top {
+  padding-bottom: 28px;
+  background: var(--color-surface);
+}
+
+.topBar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 20px 16px 8px 20px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 34px;
+  line-height: 1;
+  color: var(--color-brand);
+}
+
+.close {
+  width: 42px;
+  height: 42px;
+  margin: -6px -6px 0 0;
+  display: grid;
+  place-items: center;
+  font-size: 42px;
+  color: var(--color-brand);
+  transition: transform 0.2s;
+}
+
+.close:hover {
+  transform: rotate(90deg);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  padding: 18px 16px 0;
+}
+
+.chip {
+  height: 30px;
+  padding: 0 14px;
+  border: 1px solid var(--color-black);
+  border-radius: 999px;
+  background: var(--color-white);
+  font-family: var(--font-favorit);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.chip:hover {
+  background: var(--color-surface);
+}
+
+.chip[aria-checked='true'] {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+/* ---------- bottom (black) ---------- */
+
+.bottom {
+  padding: 40px 24px 60px;
+  color: var(--color-white);
+}
+
+.specs {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  row-gap: 14px;
+  font-family: var(--font-favorit);
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+}
+
+.specs small {
+  margin-left: 4px;
+  font-family: var(--font-jp);
+  font-size: 10px;
+}
+
+.description {
+  margin-top: 32px;
+  font-size: 14px;
+  line-height: 2.1;
+  letter-spacing: 0.04em;
+}
+
+.cta {
+  width: 100%;
+  max-width: 372px;
+  height: 54px;
+  margin: 40px auto 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--color-brand);
+  border-radius: 999px;
+  background: var(--color-brand);
+  color: var(--color-white);
+  font-family: var(--font-favorit);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.cta:hover {
+  background: var(--color-white);
+  border-color: var(--color-black);
+  color: var(--color-black);
+}
+
+.cta:disabled,
+.cta:disabled:hover {
+  background: var(--color-disabled);
+  border-color: var(--color-disabled);
+  color: rgba(255, 255, 255, 0.6);
+  cursor: not-allowed;
+}
+
+.ctaNote {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+
+/* ---------- desktop: right-side panel ---------- */
+
+@media (min-width: 1024px) {
+  .panel {
+    inset: 0 0 0 auto;
+    width: var(--modal-w);
+    border-bottom-left-radius: 25px;
+    animation: slideIn 300ms cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  }
+
+  .root[data-state='closing'] .panel {
+    animation-name: slideOut;
+  }
+
+  .topBar {
+    padding: 24px 22px 12px 26px;
+  }
+
+  .title {
+    font-size: 40px;
+  }
+
+  .bottom {
+    padding: 60px 62px 80px;
+  }
+}
+
+/* ---------- animation ---------- */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes riseIn {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+
+@keyframes dropOut {
+  from { transform: none; opacity: 1; }
+  to { transform: translateY(40px); opacity: 0; }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes slideOut {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
