@@ -7,10 +7,19 @@
   position: relative;
   z-index: 1;
   padding: 0 var(--gutter);
-  margin-bottom: -0.42em; /* title overlaps the top of the photos */
   background: var(--color-brand);
   font-size: 72px;
-  line-height: 0.9;
+}
+
+/* Stacked bars touch (each has a 1px overhang, so no seam shows between them) */
+.heading > * + * {
+  margin-top: -1px;
+}
+
+/* Heading ends exactly at the photo strip; shifting the last line down by half its own
+   height centres it on that edge, whatever the font size */
+.heading > :last-child {
+  transform: translateY(50%);
 }
 
 .track {

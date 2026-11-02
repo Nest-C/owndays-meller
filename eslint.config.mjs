@@ -5,10 +5,10 @@ import nextTs from "eslint-config-next/typescript";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
-  // Dependencies flow one way: ui → layout / product → app.
-  // Shared ui components must not depend on page-specific ones.
+  // Dependencies flow one way: shared → layout / product → app.
+  // Shared components must not depend on page-specific ones.
   {
-    files: ["src/components/ui/**"],
+    files: ["src/components/shared/**"],
     rules: {
       "no-restricted-imports": [
         "error",
@@ -16,7 +16,7 @@ const eslintConfig = defineConfig([
           patterns: [
             {
               group: ["@/components/layout/*", "@/components/product/*"],
-              message: "ui/ is shared: it must not import from layout/ or product/.",
+              message: "shared/ must not import from layout/ or product/.",
             },
           ],
         },

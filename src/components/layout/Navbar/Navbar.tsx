@@ -3,8 +3,8 @@
 import { useCallback, useState } from 'react';
 import { NAV_LINKS } from '@/constants/site';
 import { useScrolled } from '@/hooks/useScrolled';
-import { HamburgerIcon } from '@/components/ui/icons';
-import { Logo } from '@/components/ui/Logo/Logo';
+import { HamburgerIcon } from '@/components/shared/icons';
+import { Logo } from '@/components/shared/Logo/Logo';
 import { MobileMenu } from './MobileMenu';
 import styles from './Navbar.module.css';
 

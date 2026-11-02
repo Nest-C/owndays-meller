@@ -3,8 +3,9 @@ import Image from 'next/image';
 import type { ProductItem } from '@/lib/types';
 import { imageUrl, sortedImages } from '@/lib/format';
 import { useDragScroll } from '@/hooks/useDragScroll';
-import { Highlight } from '@/components/ui/Highlight/Highlight';
-import { PlusIcon } from '@/components/ui/icons';
+import { useInView } from '@/hooks/useInView';
+import { Highlight } from '@/components/shared/Highlight/Highlight';
+import { PlusIcon } from '@/components/shared/icons';
 import { STYLE_ITEMS } from './styleItems';
 import styles from './HowToStyle.module.css';
 
@@ -16,6 +17,8 @@ interface HowToStyleProps {
 export function HowToStyle({ products, onOpen }: HowToStyleProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   useDragScroll(trackRef);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const headingInView = useInView(headingRef);
 
   const slides = useMemo(() => {
     const byCode = new Map(products.map((p) => [p.product.code, p]));
@@ -35,10 +38,13 @@ export function HowToStyle({ products, onOpen }: HowToStyleProps) {
 
   return (
     <section className={styles.section} aria-labelledby="how-to-style-title">
-      <h2 id="how-to-style-title" className={styles.heading}>
-        <Highlight color="white">HOW TO</Highlight>
-        <br />
-        <Highlight color="white">STYLE THEM</Highlight>
+      <h2 ref={headingRef} id="how-to-style-title" className={styles.heading}>
+        <Highlight play={headingInView}>
+          HOW TO
+        </Highlight>
+        <Highlight delay={0.3} play={headingInView}>
+          STYLE THEM
+        </Highlight>
       </h2>
 
       <div ref={trackRef} className={styles.track}>

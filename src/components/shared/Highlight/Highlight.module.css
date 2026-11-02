@@ -1,0 +1,90 @@
+.highlight {
+  --wipe-ease: cubic-bezier(0.65, 0, 0.35, 1);
+  position: relative;
+  isolation: isolate; /* keeps the z-index: -1 bar above whatever is behind */
+  display: block;
+  width: fit-content;
+  color: var(--color-brand);
+  font-family: var(--font-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 0.8; /* fallback: roughly the cap height, so the bar hugs the letters */
+}
+
+.highlight[data-color='white'] {
+  color: var(--color-white);
+}
+
+.text {
+  display: block;
+}
+
+/* Trim the line box to exactly cap height → baseline, so there's no space above/below the letters */
+@supports (text-box: trim-both cap alphabetic) {
+  .highlight {
+    line-height: 1;
+  }
+
+  .text {
+    text-box: trim-both cap alphabetic;
+  }
+}
+
+/* Bar and cover share the same box; 1px extra so round letters (O, C, S) don't peek out */
+.bg,
+.cover {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  background: var(--color-black);
+}
+
+/* Base styles are the end state, so with animation: none everything just shows */
+.bg {
+  left: 0;
+  width: 100%;
+  z-index: -1;
+  animation: wipeIn 0.6s var(--wipe-ease) var(--wipe-delay) both;
+}
+
+/* Hidden until the bar is full (fill-mode none → visible afterwards) */
+.text {
+  animation: hide calc(var(--wipe-delay) + 0.6s);
+}
+
+.cover {
+  right: 0;
+  width: 0;
+  animation:
+    hide calc(var(--wipe-delay) + 0.6s),
+    slideRight 0.8s var(--wipe-ease) calc(var(--wipe-delay) + 0.6s) both;
+}
+
+.highlight[data-play='false'] > * {
+  animation-play-state: paused;
+}
+
+@keyframes wipeIn {
+  from {
+    width: 0;
+  }
+}
+
+@keyframes hide {
+  from,
+  to {
+    visibility: hidden;
+  }
+}
+
+@keyframes slideRight {
+  from {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .highlight > * {
+    animation: none;
+  }
+}

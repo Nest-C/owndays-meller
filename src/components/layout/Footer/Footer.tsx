@@ -1,5 +1,5 @@
 import { ALL_ITEMS_URL, INSTAGRAM_URL, NAV_LINKS, OWNDAYS_URL, SUB_LINKS } from '@/constants/site';
-import { CartIcon, ExternalIcon, InstagramIcon } from '@/components/ui/icons';
+import { CartIcon, ExternalIcon, InstagramIcon } from '@/components/shared/icons';
 import styles from './Footer.module.css';
 
 export function Footer() {

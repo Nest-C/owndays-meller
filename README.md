@@ -66,7 +66,7 @@ src/
 ├── constants/site.ts           # site text, nav links, external URLs
 ├── hooks/                      # useScrolled, useScrollLock, useEscape, useDragScroll
 └── components/                 # grouped by role; one folder per component (Component.tsx + Component.module.css)
-    ├── ui/                     # shared, product-agnostic
+    ├── shared/                 # product-agnostic
     │   ├── Logo/
     │   ├── Highlight/          # black-block display heading ("PRODUCTS", "HOW TO STYLE THEM")
     │   └── icons.tsx
@@ -83,7 +83,7 @@ src/
         └── Swatch/             # color swatch for a SKU (solid, pattern or two-color)
 ```
 
-Folder rule: dependencies flow one way, `ui/` → `layout/` / `product/` → `app/`. `ui/` never imports from the other groups; ESLint enforces this (`no-restricted-imports` in `eslint.config.mjs`). Structure follows the Next.js "store project files outside of `app`" strategy and the shared-vs-feature split from [Bulletproof React](https://github.com/alan2207/bulletproof-react/blob/master/docs/project-structure.md), kept to three levels as the [React docs](https://legacy.reactjs.org/docs/faq-structure.html) suggest.
+Folder rule: dependencies flow one way, `shared/` → `layout/` / `product/` → `app/`. `shared/` never imports from the other groups; ESLint enforces this (`no-restricted-imports` in `eslint.config.mjs`). Structure follows the Next.js "store project files outside of `app`" strategy and the shared-vs-feature split from [Bulletproof React](https://github.com/alan2207/bulletproof-react/blob/master/docs/project-structure.md), kept to three levels as the [React docs](https://legacy.reactjs.org/docs/faq-structure.html) suggest.
 
 Styling conventions: design tokens live in `globals.css` as CSS variables; component states use `data-*` / ARIA attributes (`[aria-pressed='true']`, `[data-state='closing']`) instead of conditional class names, so no `clsx` is needed.
 

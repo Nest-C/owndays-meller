@@ -1,6 +1,6 @@
 import { getImageProps } from 'next/image';
 import { preload } from 'react-dom';
-import { Highlight } from '@/components/ui/Highlight/Highlight';
+import { Highlight } from '@/components/shared/Highlight/Highlight';
 import styles from './Hero.module.css';
 
 const DESKTOP = '(min-width: 1024px)';
@@ -23,11 +23,11 @@ export function Hero() {
     <section id="about" className={styles.hero}>
       <picture>
         <source media={DESKTOP} srcSet={desktopSrcSet} sizes="100vw" />
-        <img {...img} alt="" srcSet={mobileSrcSet} className={styles.photo} />
+        <img {...img} alt="" srcSet={mobileSrcSet} className={styles.heroImage} />
       </picture>
       <div className={styles.grain} aria-hidden="true" />
       <h1 className={styles.title}>
-        <Highlight>PRODUCTS</Highlight>
+        <Highlight delay={0.6}>PRODUCTS</Highlight>
       </h1>
     </section>
   );

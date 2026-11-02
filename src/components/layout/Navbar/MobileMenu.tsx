@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import { NAV_LINKS, SUB_LINKS } from '@/constants/site';
 import { useEscape } from '@/hooks/useEscape';
 import { useScrollLock } from '@/hooks/useScrollLock';
-import { CrossIcon } from '@/components/ui/icons';
+import { CrossIcon } from '@/components/shared/icons';
 import styles from './MobileMenu.module.css';
 
 interface MobileMenuProps {

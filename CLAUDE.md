@@ -35,15 +35,15 @@ src/api/                 client.ts (apiGet), endpoints.ts, products.ts (getProdu
 src/lib/                 types.ts, format.ts (prices, image URLs, swatches, store URL), seo.ts
 src/constants/site.ts    SITE_URL, OG_IMAGE, nav links, external URLs
 public/images/           hero-desktop.jpg, hero-mobile.jpg, filter-image.webp (hero grain), og-image.jpg
-src/hooks/               useScrolled, useScrollLock, useEscape, useDragScroll (mouse drag for the HowToStyle strip)
+src/hooks/               useScrolled, useScrollLock, useEscape, useDragScroll (mouse drag for the HowToStyle strip), useInView (starts the HowToStyle title wipe)
 src/components/
-  ui/                    shared, product-agnostic: Logo, Highlight, icons.tsx
+  shared/                product-agnostic: Logo, Highlight, icons.tsx
   layout/                Navbar (+MobileMenu), Hero, Footer
   product/               ProductCatalog (client boundary, owns selected product), ProductGrid, ProductCard,
                          ProductModal (+ImageCarousel), HowToStyle (+styleItems.ts), Swatch
 ```
 - One folder per component: `Component.tsx` + `Component.module.css`.
-- Dependencies flow one way: `ui/` → `layout/` / `product/` → `app/`. ESLint `no-restricted-imports` blocks `ui/` importing from the other groups.
+- Dependencies flow one way: `shared/` → `layout/` / `product/` → `app/`. ESLint `no-restricted-imports` blocks `shared/` importing from the other groups.
 - Imports use the `@/` alias.
 
 ## Styling conventions

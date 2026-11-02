@@ -13,7 +13,7 @@ import {
 } from '@/lib/format';
 import { useEscape } from '@/hooks/useEscape';
 import { useScrollLock } from '@/hooks/useScrollLock';
-import { CrossIcon } from '@/components/ui/icons';
+import { CrossIcon } from '@/components/shared/icons';
 import { ImageCarousel } from './ImageCarousel';
 import styles from './ProductModal.module.css';
 
