@@ -29,9 +29,9 @@ export const ProductCard = memo(function ProductCard({ item, onOpen }: ProductCa
           <Image
             src={thumbnail}
             alt={`${item.product.model_name} ${sku.code}`}
-            width={388}
-            height={298}
-            sizes="(min-width: 1024px) 386px, calc(100vw - 68px)"
+            width={385}
+            height={293}
+            sizes="(min-width: 1024px) 385px, calc(100vw - 68px)"
             className={styles.image}
           />
         )}

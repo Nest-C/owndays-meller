@@ -8,17 +8,18 @@ Responsive product listing page for the OWNDAYS × MELLER sunglasses collection,
 
 ```bash
 npm install
+cp .env.example .env.local   # sets API_BASE_URL (required)
 npm run dev      # http://localhost:3000
 npm run build    # production build (fetches the products API)
 npm run start    # serve the production build
 npm run lint
 ```
 
-Requires Node 20+. Canonical and Open Graph URLs must be absolute: on Vercel they use the production domain automatically (`VERCEL_PROJECT_PRODUCTION_URL`). Set `NEXT_PUBLIC_SITE_URL` (see `.env.example`) only to override it, e.g. for a custom domain.
+Requires Node 20+. `API_BASE_URL` (the products API, server-only) is required — the build stops with a clear error if it is missing. Canonical and Open Graph URLs must be absolute: on Vercel they use the production domain automatically (`VERCEL_PROJECT_PRODUCTION_URL`). Set `NEXT_PUBLIC_SITE_URL` (see `.env.example`) only to override it, e.g. for a custom domain.
 
 ### Deploy (Vercel)
 
-Import the repo on Vercel and deploy. No configuration needed; set `NEXT_PUBLIC_SITE_URL` only if you use a custom domain.
+Import the repo on Vercel, add `API_BASE_URL=https://api-one-alpha-60.vercel.app` under Project Settings → Environment Variables, and deploy. Set `NEXT_PUBLIC_SITE_URL` only if you use a custom domain.
 
 ## Why Next.js
 
@@ -54,9 +55,12 @@ src/
 │   │   └── page.tsx            # the landing page — server: fetch products, render page, JSON-LD
 │   ├── favicon.ico, icon.png, apple-icon.png  # from Figma frame `favion` (16/32/48, 512, 180) — Next adds the <link> tags
 │   └── globals.css             # @font-face, design tokens (CSS variables), reset
+├── api/                        # server-side data fetching
+│   ├── client.ts               # apiGet(): API_BASE_URL + path, hourly revalidation, throws on failure
+│   ├── endpoints.ts            # API paths (products: /meller/products.json)
+│   └── products.ts             # getProducts()
 ├── lib/
 │   ├── types.ts                # API types (from PRODUCTS_README.md)
-│   ├── products.ts             # getProducts() with hourly revalidation
 │   ├── format.ts               # prices, image URLs, swatches, store URL
 │   └── seo.ts                  # JSON-LD builder
 ├── constants/site.ts           # site text, nav links, external URLs
