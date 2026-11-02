@@ -1,4 +1,3 @@
-/* Orange above, black below — the photo strip straddles both */
 .section {
   background: linear-gradient(var(--color-brand) 50%, var(--color-black) 50%);
 }
@@ -11,13 +10,10 @@
   font-size: 72px;
 }
 
-/* Stacked bars touch (each has a 1px overhang, so no seam shows between them) */
 .heading > * + * {
   margin-top: -1px;
 }
 
-/* Heading ends exactly at the photo strip; shifting the last line down by half its own
-   height centres it on that edge, whatever the font size */
 .heading > :last-child {
   transform: translateY(50%);
 }
@@ -34,7 +30,6 @@
   background: var(--color-black);
 }
 
-/* Mouse users drag the strip (useDragScroll) */
 @media (hover: hover) and (pointer: fine) {
   .track {
     cursor: grab;
@@ -68,11 +63,6 @@
 .image {
   object-fit: cover;
   transition: transform 0.5s ease;
-}
-
-/* Fallback product photos are wide — show them whole */
-.item[data-product-photo='true'] .image {
-  object-fit: contain;
 }
 
 .item:hover .image {

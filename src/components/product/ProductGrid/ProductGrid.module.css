@@ -10,7 +10,6 @@
   width: 100%;
   max-width: 1300px;
   display: grid;
-  /* minmax(0, …): a plain 1fr can't shrink below the card's content (the 388px image) */
   grid-template-columns: minmax(0, 1fr);
   gap: 17px;
 }

@@ -16,7 +16,9 @@ interface HowToStyleProps {
 
 export function HowToStyle({ products, onOpen }: HowToStyleProps) {
   const trackRef = useRef<HTMLDivElement>(null);
+  
   useDragScroll(trackRef);
+
   const headingRef = useRef<HTMLHeadingElement>(null);
   const headingInView = useInView(headingRef);
 
@@ -25,14 +27,17 @@ export function HowToStyle({ products, onOpen }: HowToStyleProps) {
     return STYLE_ITEMS.flatMap((entry, i) => {
       const item = byCode.get(entry.productCode);
       if (!item) return [];
-      const found = item.skus.findIndex((s) => s.code === entry.skuCode);
+
+      const found = item.skus.findIndex((skus) => skus.code === entry.skuCode);
       const skuIndex = found >= 0 ? found : 0;
       const sku = item.skus[skuIndex];
       const images = sortedImages(sku);
       const productPhoto = images.length ? imageUrl(images[images.length - 1].path) : null;
+
       const src = entry.image ?? productPhoto;
       if (!src) return [];
-      return [{ key: `${entry.productCode}-${i}`, item, skuIndex, src, isProductPhoto: !entry.image }];
+
+      return [{ key: `${entry.productCode}-${i}`, item, skuIndex, src }];
     });
   }, [products]);
 
@@ -49,7 +54,7 @@ export function HowToStyle({ products, onOpen }: HowToStyleProps) {
 
       <div ref={trackRef} className={styles.track}>
         {slides.map((slide) => (
-          <div key={slide.key} className={styles.item} data-product-photo={slide.isProductPhoto}>
+          <div key={slide.key} className={styles.item}>
             <Image
               src={slide.src}
               alt={`${slide.item.product.model_name} の着用イメージ`}
@@ -61,7 +66,10 @@ export function HowToStyle({ products, onOpen }: HowToStyleProps) {
               type="button"
               className={styles.plus}
               aria-label={`${slide.item.product.model_name} の詳細を見る`}
-              onClick={() => onOpen(slide.item, slide.skuIndex)}
+              onClick={() => {
+                console.log('item', slide.item, 'skuIndex', slide.skuIndex);
+                onOpen(slide.item, slide.skuIndex);
+              }}
             >
               <PlusIcon />
             </button>
