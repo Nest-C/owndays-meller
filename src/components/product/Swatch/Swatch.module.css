@@ -20,4 +20,5 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
+  background: var(--swatch-bg); /* set per SKU in Swatch.tsx: hex, pattern image or two-color split */
 }
