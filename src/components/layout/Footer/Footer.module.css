@@ -1,4 +1,8 @@
+/* Mobile: wrappers are flattened (display: contents) so `order` can stack the items as in Figma */
 .footer {
+  --pad: calc(var(--gutter) + 8px);
+  display: flex;
+  flex-direction: column;
   border-top: 1px solid var(--color-brand);
   background: var(--color-black);
   color: var(--color-brand);
@@ -15,87 +19,159 @@
   opacity: 0.7;
 }
 
-.main {
-  display: grid;
-}
-
-.left {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  padding: 48px calc(var(--gutter) + 8px) 40px;
+.main,
+.left,
+.bottom {
+  display: contents;
 }
 
 .nav {
+  order: 1;
   display: grid;
-  gap: 18px;
   font-weight: 700;
-  font-size: 15px;
+  font-size: 13px;
 }
 
-.social {
-  width: fit-content;
+.nav a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px var(--pad);
+  border-bottom: 1px solid var(--color-brand);
+}
+
+/* Chevron */
+.nav a::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border: solid currentColor;
+  border-width: 1.5px 1.5px 0 0;
+  transform: rotate(45deg);
 }
 
 .right {
+  order: 2;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 18px;
-  padding: 40px 16px;
-  border-top: 1px solid var(--color-brand);
+  justify-content: space-between;
+  padding: 28px var(--pad);
+  border-bottom: 1px solid var(--color-brand);
 }
 
-.store {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 700;
-  font-size: 18px;
-}
-
+.store,
 .site {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 12px;
 }
 
-.bottom {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 24px calc(var(--gutter) + 8px);
-  border-top: 1px solid var(--color-brand);
+.store {
+  gap: 10px;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.site {
+  gap: 6px;
   font-size: 10px;
 }
 
 .subNav {
+  order: 3;
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px 36px;
+  flex-direction: column;
+  gap: 10px;
+  padding: 28px var(--pad) 0;
+  font-size: 10px;
+}
+
+.social {
+  order: 4;
+  width: fit-content;
+  margin: 28px var(--pad) 32px;
+}
+
+.copyright {
+  order: 5;
+  padding: 20px var(--pad);
+  border-top: 1px solid var(--color-brand);
+  text-align: center;
+  font-size: 10px;
 }
 
 @media (min-width: 1024px) {
+  .footer {
+    display: block;
+  }
+
   .main {
+    display: grid;
     grid-template-columns: 65fr 35fr;
     min-height: 320px;
   }
 
   .left {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
     padding: 72px var(--gutter);
   }
 
+  .nav {
+    gap: 18px;
+    font-size: 15px;
+  }
+
+  .nav a {
+    display: block;
+    padding: 0;
+    border: 0;
+  }
+
+  .nav a::after {
+    content: none;
+  }
+
   .right {
-    border-top: 0;
+    flex-direction: column;
+    justify-content: center;
+    gap: 18px;
+    padding: 40px 16px;
+    border-bottom: 0;
     border-left: 1px solid var(--color-brand);
   }
 
+  .store {
+    font-size: 18px;
+  }
+
+  .site {
+    font-size: 12px;
+  }
+
+  .social {
+    margin: 0;
+  }
+
   .bottom {
-    flex-direction: row;
+    display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 20px;
     padding: 28px var(--gutter);
+    border-top: 1px solid var(--color-brand);
+  }
+
+  .subNav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px 36px;
+    padding: 0;
+  }
+
+  .copyright {
+    padding: 0;
+    border: 0;
+    text-align: left;
   }
 }

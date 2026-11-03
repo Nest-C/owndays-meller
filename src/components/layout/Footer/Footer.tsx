@@ -37,7 +37,7 @@ export function Footer() {
             </a>
           ))}
         </nav>
-        <small>COPYRIGHT (C) OWNDAYS CO., LTD. ALL RIGHTS RESERVED.</small>
+        <small className={styles.copyright}>COPYRIGHT (C) OWNDAYS CO., LTD. ALL RIGHTS RESERVED.</small>
       </div>
     </footer>
   );
