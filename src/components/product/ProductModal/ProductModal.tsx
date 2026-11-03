@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState, type AnimationEvent } from 'react';
 import {
   formatYen,
   frameTypeLabel,
@@ -18,27 +18,23 @@ import { CrossIcon } from '@/assets/icons';
 import { ImageCarousel } from './ImageCarousel';
 import styles from './ProductModal.module.css';
 import type { ProductModalProps } from './ProductModal.types';
-import { EXIT_MS } from './ProductModal.constants';
 
 /** Mounted only while a product is selected; plays its own exit animation */
 export function ProductModal({ item, skuIndex, onSelectSku, onClose }: ProductModalProps) {
   const [closing, setClosing] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
-  const exitTimer = useRef<number>(undefined);
 
   const sku = item.skus[skuIndex] ?? item.skus[0];
   const name = item.product.model_name;
   const outOfStock = isOutOfStock(item);
   const titleId = `product-modal-title-${item.product.id}`;
 
-  const requestClose = useCallback(() => {
-    if (closing) return;
-    setClosing(true);
-    exitTimer.current = window.setTimeout(onClose, EXIT_MS);
-  }, [closing, onClose]);
+  const requestClose = useCallback(() => setClosing(true), []);
 
-  // Unmounted mid-exit (e.g. browser Back): don't call onClose afterwards
-  useEffect(() => () => window.clearTimeout(exitTimer.current), []);
+  // Unmount once the panel's slide-out ends, so the timing lives only in the CSS
+  const onPanelAnimationEnd = (e: AnimationEvent) => {
+    if (closing && e.target === e.currentTarget) onClose();
+  };
 
   useScrollLock(true);
   useEscape(true, requestClose);
@@ -48,7 +44,15 @@ export function ProductModal({ item, skuIndex, onSelectSku, onClose }: ProductMo
     <div className={styles.root} data-state={closing ? 'closing' : 'open'} onKeyDown={trapFocus}>
       <div className={styles.backdrop} onClick={requestClose} aria-hidden="true" />
 
-      <div ref={panelRef} className={styles.panel} tabIndex={-1} role="dialog" aria-modal="true" aria-labelledby={titleId}>
+      <div
+        ref={panelRef}
+        className={styles.panel}
+        tabIndex={-1}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        onAnimationEnd={onPanelAnimationEnd}
+      >
         <div className={styles.top}>
           <div className={styles.topBar}>
             <h2 id={titleId} className={styles.title}>
