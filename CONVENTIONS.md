@@ -65,6 +65,7 @@ Follow these in every change. Rules marked **(lint)** are enforced by `npm run l
 - Class names are camelCase (`.imageBox`) and used as `styles.imageBox`.
 - Write mobile styles first; desktop overrides go in one `@media (min-width: 1024px)` block at the end of the file. Media queries can't use variables, so write the literal.
 - Use the tokens from `globals.css` (`var(--color-brand)`, `var(--gutter)`, …) rather than raw values.
+- Focus rings come from the global `:focus-visible` rule and are hidden while `<html data-input="mouse">` (set by `InputModality`). Don't add `outline: none` to fix a ring seen after a click. A custom focus style must be wrapped as `:root:not([data-input='mouse']) .x:focus-visible`.
 - Style states with attributes, not extra classes: `[aria-pressed='true']`, `[data-open='true']`, `[data-state='closing']`.
 - Keyframes describe only the hidden end (`from { opacity: 0; }`). The visible end is the element's normal style, so `prefers-reduced-motion` and `animation: none` still show the content.
 

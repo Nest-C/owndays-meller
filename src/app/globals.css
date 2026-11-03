@@ -127,6 +127,11 @@ ul {
   outline-offset: 2px;
 }
 
+/* Set by <InputModality />: no focus rings while the visitor uses a mouse */
+[data-input='mouse'] :focus-visible {
+  outline: none;
+}
+
 [id] {
   scroll-margin-top: var(--header-h);
 }

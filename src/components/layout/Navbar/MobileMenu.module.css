@@ -26,6 +26,10 @@
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+.panel:focus {
+  outline: none;
+}
+
 .overlay[data-open='true'] .panel {
   transform: none;
 }

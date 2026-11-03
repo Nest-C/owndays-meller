@@ -8,7 +8,7 @@
 }
 
 .card:hover,
-.card:has(.open:focus-visible) {
+:root:not([data-input='mouse']) .card:has(.open:focus-visible) {
   outline-color: var(--color-black);
 }
 

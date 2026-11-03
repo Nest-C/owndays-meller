@@ -23,7 +23,6 @@ import { EXIT_MS } from './ProductModal.constants';
 export function ProductModal({ item, skuIndex, onSelectSku, onClose }: ProductModalProps) {
   const [closing, setClosing] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
-  const closeRef = useRef<HTMLButtonElement>(null);
 
   const sku = item.skus[skuIndex] ?? item.skus[0];
   const name = item.product.model_name;
@@ -39,11 +38,11 @@ export function ProductModal({ item, skuIndex, onSelectSku, onClose }: ProductMo
   useScrollLock(true);
   useEscape(true, requestClose);
 
-  // Focus the dialog on open, restore focus to the trigger on close
+  // Focus the dialog on open, return focus to the trigger on close
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
-    closeRef.current?.focus({ preventScroll: true });
-    return () => previous?.focus?.({ preventScroll: true });
+    panelRef.current?.focus({ preventScroll: true });
+    return () => previous?.focus({ preventScroll: true });
   }, []);
 
   // Keep Tab inside the dialog
@@ -54,10 +53,11 @@ export function ProductModal({ item, skuIndex, onSelectSku, onClose }: ProductMo
     );
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
-    if (e.shiftKey && document.activeElement === first) {
+    const active = document.activeElement;
+    if (e.shiftKey && (active === first || active === panelRef.current)) {
       e.preventDefault();
       last?.focus();
-    } else if (!e.shiftKey && document.activeElement === last) {
+    } else if (!e.shiftKey && active === last) {
       e.preventDefault();
       first?.focus();
     }
@@ -67,13 +67,13 @@ export function ProductModal({ item, skuIndex, onSelectSku, onClose }: ProductMo
     <div className={styles.root} data-state={closing ? 'closing' : 'open'} onKeyDown={trapFocus}>
       <div className={styles.backdrop} onClick={requestClose} aria-hidden="true" />
 
-      <div ref={panelRef} className={styles.panel} role="dialog" aria-modal="true" aria-labelledby={titleId}>
+      <div ref={panelRef} className={styles.panel} tabIndex={-1} role="dialog" aria-modal="true" aria-labelledby={titleId}>
         <div className={styles.top}>
           <div className={styles.topBar}>
             <h2 id={titleId} className={styles.title}>
               {name}
             </h2>
-            <button ref={closeRef} type="button" className={styles.close} aria-label="閉じる" onClick={requestClose}>
+            <button type="button" className={styles.close} aria-label="閉じる" onClick={requestClose}>
               <CrossIcon width={42} height={42} />
             </button>
           </div>

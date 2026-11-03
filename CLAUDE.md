@@ -39,7 +39,7 @@ src/assets/icons/        icon SVGs + index.ts; SVGR (`@svgr/webpack`, turbopack 
 public/images/           hero-desktop.jpg, hero-mobile.jpg, filter-image.webp (hero grain), og-image.jpg
 src/hooks/               useScrolled, useScrollLock, useEscape, useDragScroll (mouse drag for the HowToStyle strip), useInView (starts the HowToStyle title wipe)
 src/components/
-  shared/                product-agnostic: Highlight
+  shared/                product-agnostic: Highlight, InputModality (sets <html data-input="mouse|keyboard"> → focus rings only for keyboard users)
   layout/                Navbar (+MobileMenu, Logo), Hero, Footer
   product/               ProductCatalog (client boundary, owns selected product), ProductGrid, ProductCard,
                          ProductModal (+ImageCarousel), HowToStyle (STYLE_ITEMS in HowToStyle.constants.ts), Swatch

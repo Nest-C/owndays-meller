@@ -5,6 +5,7 @@ import { preload } from 'react-dom';
 import { BRAND_COLOR, OG_IMAGE, SITE_DESCRIPTION, SITE_KEYWORDS, SITE_TITLE, SITE_URL } from '@/constants/site';
 import { Footer } from '@/components/layout/Footer/Footer';
 import { Navbar } from '@/components/layout/Navbar/Navbar';
+import { InputModality } from '@/components/shared/InputModality/InputModality';
 import './globals.css';
 
 const notoSansJp = Noto_Sans_JP({
@@ -42,6 +43,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
         <Navbar />
         <main id="top">{children}</main>
         <Footer />
+        <InputModality />
       </body>
     </html>
   );

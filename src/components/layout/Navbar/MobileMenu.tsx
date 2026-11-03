@@ -9,26 +9,28 @@ import styles from './MobileMenu.module.css';
 import type { MobileMenuProps } from './MobileMenu.types';
 
 export function MobileMenu({ open, onClose }: MobileMenuProps) {
-  const closeRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   useScrollLock(open);
   useEscape(open, onClose);
 
   useEffect(() => {
-    if (open) closeRef.current?.focus();
+    if (open) panelRef.current?.focus();
   }, [open]);
 
   return (
     // inert: the closed menu is out of the tab order and the accessibility tree
     <div className={styles.overlay} data-open={open} inert={!open} onClick={onClose}>
       <div
+        ref={panelRef}
         id="mobile-menu"
+        tabIndex={-1}
         className={styles.panel}
         role="dialog"
         aria-modal="true"
         aria-label="メニュー"
         onClick={(e) => e.stopPropagation()}
       >
-        <button ref={closeRef} type="button" className={styles.close} aria-label="メニューを閉じる" onClick={onClose}>
+        <button type="button" className={styles.close} aria-label="メニューを閉じる" onClick={onClose}>
           <CrossIcon width={30} height={30} />
         </button>
 
