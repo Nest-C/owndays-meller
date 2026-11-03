@@ -1,6 +1,6 @@
 .card {
   position: relative;
-  padding: 18px 18px 30px;
+  padding: 14.75px 17.54px 0; /* Figma: photo inset */
   background: var(--color-white);
   outline: 1px solid transparent;
   outline-offset: -1px;
@@ -14,13 +14,14 @@
 
 .imageBox {
   position: relative;
-  aspect-ratio: 388 / 298;
+  aspect-ratio: 385.81 / 293.45;
   overflow: hidden;
-  background: var(--color-surface);
+  background: var(--color-photo-bg);
 }
 
 .image {
   object-fit: cover;
+  mix-blend-mode: multiply; /* white photo background → grey box */
   transition: transform 0.4s ease;
 }
 
@@ -34,7 +35,7 @@
   align-items: flex-end;
   flex-wrap: wrap; /* narrow phones: swatches + price drop below the name */
   gap: 8px;
-  margin-top: 14px;
+  padding: 14px 0 30px;
 }
 
 .name {
@@ -108,7 +109,7 @@
 }
 
 @media (min-width: 1024px) {
-  .card {
+  .info {
     padding-bottom: 38px;
   }
 

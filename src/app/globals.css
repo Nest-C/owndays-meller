@@ -43,6 +43,7 @@
   --color-black: #000;
   --color-white: #fff;
   --color-surface: #f2f2f2;
+  --color-photo-bg: #f7f7f7; /* product card photo box */
   --color-swatch-border: #e2e2e2;
   --color-disabled: #5c5c5c;
   --color-disabled-text: rgba(255, 255, 255, 0.6);
