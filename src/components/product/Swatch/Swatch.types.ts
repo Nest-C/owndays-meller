@@ -1,4 +1,4 @@
-import type { Sku } from '@/lib/types';
+import type { Sku } from '@/types/product';
 
 export interface SwatchProps {
   sku: Sku;

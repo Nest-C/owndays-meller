@@ -32,7 +32,8 @@ Env: `.env.local` (git-ignored; template `.env.example`). `API_BASE_URL` is **re
 ```
 src/app/                 layout, (landing)/page.tsx, globals.css (tokens + @font-face + reset), favicon.ico, icon.png, apple-icon.png
 src/api/                 client.ts (apiGet), endpoints.ts, products.ts (getProducts) — server-only data fetching
-src/lib/                 types.ts (API model types shared by several files), format.ts (prices, image URLs, swatches, store URL), seo.ts
+src/lib/                 product.ts (price, image URLs, default SKU, swatches, stock, store URL), seo.ts (JSON-LD)
+src/types/product.ts     API model types shared by several files
 src/constants/site.ts    SITE_URL, OG_IMAGE, nav links, external URLs
 src/assets/icons/        icon SVGs + index.ts; SVGR (`@svgr/webpack`, turbopack rule in next.config.ts) makes every .svg import a component → `<CartIcon width height />` renders an inline, aria-hidden <svg>
 public/images/           hero-desktop.jpg, hero-mobile.jpg, filter-image.webp (hero grain), og-image.jpg
@@ -43,14 +44,11 @@ src/components/
   product/               ProductCatalog (client boundary, owns selected product), ProductGrid, ProductCard,
                          ProductModal (+ImageCarousel), HowToStyle (STYLE_ITEMS in HowToStyle.constants.ts), Swatch
 ```
-- One folder per component: `Component.tsx` + `Component.module.css` + `Component.types.ts` (its props and any type only it uses) + `Component.constants.ts` (constants only it uses). Shared constants live in `src/constants/`. A type used in more than one place lives in `src/lib/types.ts`; API-only types sit next to the API code (`src/api/products.types.ts`).
-- Dependencies flow one way: `shared/` → `layout/` / `product/` → `app/`. ESLint `no-restricted-imports` blocks `shared/` importing from the other groups.
-- Imports use the `@/` alias.
+## Code conventions
+@CONVENTIONS.md
 
-## Styling conventions
-- Design tokens are CSS variables in `globals.css` (`--color-brand: #ff6a1f`, `--color-surface: #f2f2f2`, `--font-display`, `--gutter` 16px/70px, `--header-h` 62px/102px, `--modal-w: 616px`, z-index vars).
-- Breakpoint: `@media (min-width: 1024px)` = desktop; below = mobile. Media queries can't use variables, so write the literal.
-- State styling via attributes, not conditional classes: `[aria-pressed='true']`, `[aria-checked='true']`, `[data-open='true']`, `[data-state='closing']`, `[data-solid='true']`.
+## Design tokens
+- CSS variables in `globals.css`: `--color-brand: #ff6a1f`, `--color-surface: #f2f2f2`, `--font-display`, `--gutter` 16px/70px, `--header-h` 70px/102px, `--modal-w: 616px`, z-index vars.
 - Orange `#ff6a1f` was read from screenshots (brief says `#F26A2F`) — confirm in Figma dev mode.
 
 ## Behaviour (all implemented and tested)

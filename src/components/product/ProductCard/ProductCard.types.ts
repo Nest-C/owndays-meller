@@ -1,4 +1,4 @@
-import type { ProductItem } from '@/lib/types';
+import type { ProductItem } from '@/types/product';
 
 export interface ProductCardProps {
   item: ProductItem;

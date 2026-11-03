@@ -1,13 +1,15 @@
+'use client';
+
 import { useMemo, useRef } from 'react';
 import Image from 'next/image';
-import { imageUrl, sortedImages } from '@/lib/format';
+import { imageUrl, sortedImages } from '@/lib/product';
 import { useDragScroll } from '@/hooks/useDragScroll';
 import { useInView } from '@/hooks/useInView';
-import { Highlight } from '@/components/shared/Highlight/Highlight';
 import { PlusIcon } from '@/assets/icons';
-import { STYLE_ITEMS } from './HowToStyle.constants';
+import { Highlight } from '@/components/shared/Highlight/Highlight';
 import styles from './HowToStyle.module.css';
 import type { HowToStyleProps } from './HowToStyle.types';
+import { STYLE_ITEMS } from './HowToStyle.constants';
 
 export function HowToStyle({ products, onOpen }: HowToStyleProps) {
   const trackRef = useRef<HTMLDivElement>(null);

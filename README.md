@@ -60,9 +60,9 @@ src/
 │   ├── endpoints.ts            # API paths (products: /meller/products.json)
 │   └── products.ts             # getProducts()
 ├── lib/
-│   ├── types.ts                # shared API model types (from PRODUCTS_README.md)
-│   ├── format.ts               # prices, image URLs, swatches, store URL
+│   ├── product.ts              # product helpers: price, image URLs, default SKU, swatches, stock, store URL
 │   └── seo.ts                  # JSON-LD builder
+├── types/product.ts            # shared API model types (from docs/products-api.md)
 ├── constants/site.ts           # site text, nav links, external URLs
 ├── hooks/                      # useScrolled, useScrollLock, useEscape, useDragScroll
 └── components/                 # grouped by role; one folder per component (Component.tsx + Component.module.css)
@@ -82,6 +82,8 @@ src/
 ```
 
 Folder rule: dependencies flow one way, `shared/` → `layout/` / `product/` → `app/`. `shared/` never imports from the other groups; ESLint enforces this (`no-restricted-imports` in `eslint.config.mjs`). Structure follows the Next.js "store project files outside of `app`" strategy and the shared-vs-feature split from [Bulletproof React](https://github.com/alan2207/bulletproof-react/blob/master/docs/project-structure.md), kept to three levels as the [React docs](https://legacy.reactjs.org/docs/faq-structure.html) suggest.
+
+Code conventions (imports, file layout, components, CSS, comments) are in [CONVENTIONS.md](CONVENTIONS.md); most are enforced by `npm run lint` (`npx eslint . --fix` auto-fixes formatting and import order).
 
 Styling conventions: design tokens live in `globals.css` as CSS variables; component states use `data-*` / ARIA attributes (`[aria-pressed='true']`, `[data-state='closing']`) instead of conditional class names, so no `clsx` is needed.
 

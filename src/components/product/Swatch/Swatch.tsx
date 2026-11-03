@@ -1,5 +1,7 @@
+'use client';
+
 import { memo } from 'react';
-import { skuColorLabel, skuSwatchBackground } from '@/lib/format';
+import { skuColorLabel, skuSwatchBackground } from '@/lib/product';
 import styles from './Swatch.module.css';
 import type { SwatchProps } from './Swatch.types';
 

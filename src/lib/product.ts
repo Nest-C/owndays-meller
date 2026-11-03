@@ -1,5 +1,5 @@
+import type { Color, ProductItem, Sku } from '@/types/product';
 import { IMAGE_BASE_URL, OWNDAYS_URL } from '@/constants/site';
-import type { Color, ProductItem, Sku } from './types';
 
 const FALLBACK_COLOR = '#ccc';
 const yen = new Intl.NumberFormat('ja-JP');

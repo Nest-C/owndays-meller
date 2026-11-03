@@ -1,12 +1,12 @@
 'use client';
 
-import type { ProductItem } from '@/lib/types';
 import { useProductDeepLink } from '@/hooks/useProductDeepLink';
 import { ProductGrid } from '@/components/product/ProductGrid/ProductGrid';
 import { ProductModal } from '@/components/product/ProductModal/ProductModal';
 import { HowToStyle } from '@/components/product/HowToStyle/HowToStyle';
+import type { ProductCatalogProps } from './ProductCatalog.types';
 
-export function ProductCatalog({ products }: { products: ProductItem[] }) {
+export function ProductCatalog({ products }: ProductCatalogProps) {
   // Stable callbacks: memoized cards don't re-render when the modal opens/closes
   const { selection, open, selectSku, close } = useProductDeepLink(products);
 

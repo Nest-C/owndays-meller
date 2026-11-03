@@ -9,10 +9,10 @@ import {
   productNumber,
   skuColorLabel,
   sortedImages,
-} from '@/lib/format';
+} from '@/lib/product';
+import { EXTERNAL_LINK } from '@/constants/site';
 import { useEscape } from '@/hooks/useEscape';
 import { useScrollLock } from '@/hooks/useScrollLock';
-import { EXTERNAL_LINK } from '@/constants/site';
 import { CrossIcon } from '@/assets/icons';
 import { ImageCarousel } from './ImageCarousel';
 import styles from './ProductModal.module.css';

@@ -2,7 +2,7 @@
 
 import { memo, useState } from 'react';
 import Image from 'next/image';
-import { defaultSkuIndex, formatYen, productNumber, skuThumbnail } from '@/lib/format';
+import { defaultSkuIndex, formatYen, productNumber, skuThumbnail } from '@/lib/product';
 import { Swatch } from '@/components/product/Swatch/Swatch';
 import styles from './ProductCard.module.css';
 import type { ProductCardProps } from './ProductCard.types';

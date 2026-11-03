@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { ProductItem } from '@/lib/types';
-import { defaultSkuIndex } from '@/lib/format';
+import { defaultSkuIndex } from '@/lib/product';
+import type { ProductItem } from '@/types/product';
 
 export interface PanelSelection {
   item: ProductItem;

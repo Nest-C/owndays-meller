@@ -1,6 +1,8 @@
+'use client';
+
 import { memo, useRef } from 'react';
 import Image from 'next/image';
-import { imageUrl } from '@/lib/format';
+import { imageUrl } from '@/lib/product';
 import { useDragScroll } from '@/hooks/useDragScroll';
 import styles from './ImageCarousel.module.css';
 import type { ImageCarouselProps } from './ImageCarousel.types';

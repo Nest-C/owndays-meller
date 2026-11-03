@@ -1,6 +1,6 @@
+import type { ProductItem } from '@/types/product';
 import { SITE_NAME } from '@/constants/site';
-import type { ProductItem } from './types';
-import { imageUrl, isOutOfStock, onlineStoreUrl, sortedImages } from './format';
+import { imageUrl, isOutOfStock, onlineStoreUrl, sortedImages } from './product';
 
 /** schema.org ItemList of Products (name, price, stock) for search engines */
 export function productListJsonLd(products: ProductItem[]) {
