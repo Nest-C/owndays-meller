@@ -1,4 +1,4 @@
-import { ALL_ITEMS_URL, INSTAGRAM_URL, NAV_LINKS, OWNDAYS_URL, SUB_LINKS } from '@/constants/site';
+import { ALL_ITEMS_URL, EXTERNAL_LINK, INSTAGRAM_URL, NAV_LINKS, OWNDAYS_URL, SUB_LINKS } from '@/constants/site';
 import { CartIcon, CopyIcon, InstagramIcon } from '@/assets/icons';
 import styles from './Footer.module.css';
 
@@ -14,16 +14,16 @@ export function Footer() {
               </a>
             ))}
           </nav>
-          <a href={INSTAGRAM_URL} className={styles.social} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <a href={INSTAGRAM_URL} className={styles.social} {...EXTERNAL_LINK} aria-label="Instagram">
             <InstagramIcon width={18} height={18} />
           </a>
         </div>
 
         <div className={styles.right}>
-          <a href={ALL_ITEMS_URL} className={styles.store} target="_blank" rel="noopener noreferrer">
+          <a href={ALL_ITEMS_URL} className={styles.store} {...EXTERNAL_LINK}>
             <CartIcon width={22} height={22} /> ONLINE STORE
           </a>
-          <a href={OWNDAYS_URL} className={styles.site} target="_blank" rel="noopener noreferrer">
+          <a href={OWNDAYS_URL} className={styles.site} {...EXTERNAL_LINK}>
             OWNDAYS.COM <CopyIcon width={14} height={12} />
           </a>
         </div>
@@ -32,7 +32,7 @@ export function Footer() {
       <div className={styles.bottom}>
         <nav className={styles.subNav} aria-label="規約・お問い合わせ">
           {SUB_LINKS.map((link) => (
-            <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer">
+            <a key={link.label} href={link.href} {...EXTERNAL_LINK}>
               {link.label}
             </a>
           ))}

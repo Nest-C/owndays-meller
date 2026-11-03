@@ -1,25 +1,17 @@
 .highlight {
   --wipe-ease: cubic-bezier(0.65, 0, 0.35, 1);
   position: relative;
-  isolation: isolate; /* keeps the z-index: -1 bar above whatever is behind */
+  isolation: isolate; /* keeps the z-index: -1 bar above the background */
   display: block;
   width: fit-content;
   color: var(--color-brand);
   font-family: var(--font-display);
   font-weight: 900;
   text-transform: uppercase;
-  line-height: 0.8; /* fallback: roughly the cap height, so the bar hugs the letters */
+  line-height: 0.8; /* ≈ cap height, for browsers without text-box */
 }
 
-.highlight[data-color='white'] {
-  color: var(--color-white);
-}
-
-.text {
-  display: block;
-}
-
-/* Trim the line box to exactly cap height → baseline, so there's no space above/below the letters */
+/* Line box trimmed to cap height → baseline, so the bar hugs the letters */
 @supports (text-box: trim-both cap alphabetic) {
   .highlight {
     line-height: 1;
@@ -30,16 +22,14 @@
   }
 }
 
-/* Bar and cover share the same box; 1px extra so round letters (O, C, S) don't peek out */
+/* Base styles are the end state; keyframes only describe the start */
 .bg,
 .cover {
   position: absolute;
-  top: 0px;
-  bottom: 0px;
+  inset-block: 0;
   background: var(--color-black);
 }
 
-/* Base styles are the end state, so with animation: none everything just shows */
 .bg {
   left: 0;
   width: 100%;
@@ -47,9 +37,9 @@
   animation: wipeIn 0.6s var(--wipe-ease) var(--wipe-delay) both;
 }
 
-/* Hidden until the bar is full (fill-mode none → visible afterwards) */
 .text {
-  animation: hide calc(var(--wipe-delay) + 0.6s);
+  display: block;
+  animation: hide calc(var(--wipe-delay) + 0.6s); /* hidden until the bar is full */
 }
 
 .cover {
@@ -65,22 +55,15 @@
 }
 
 @keyframes wipeIn {
-  from {
-    width: 0;
-  }
+  from { width: 0; }
 }
 
 @keyframes hide {
-  from,
-  to {
-    visibility: hidden;
-  }
+  from, to { visibility: hidden; }
 }
 
 @keyframes slideRight {
-  from {
-    width: 100%;
-  }
+  from { width: 100%; }
 }
 
 @media (prefers-reduced-motion: reduce) {

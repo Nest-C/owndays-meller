@@ -4,7 +4,7 @@
   display: grid;
   place-items: center;
   overflow: hidden;
-  background: #121212; /* shown while the images loads */
+  background: #121212; /* while the image loads */
 }
 
 .heroImage {

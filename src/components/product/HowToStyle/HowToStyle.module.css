@@ -25,7 +25,6 @@
   scroll-behavior: smooth;
   scroll-snap-type: x proximity;
   overscroll-behavior-x: contain;
-  -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   background: var(--color-black);
 }
@@ -38,8 +37,8 @@
 
 .track[data-dragging='true'] {
   cursor: grabbing;
-  scroll-behavior: auto; /* follow the mouse 1:1 */
-  scroll-snap-type: none; /* snap back in when the drag ends */
+  scroll-behavior: auto;
+  scroll-snap-type: none;
   user-select: none;
 }
 
@@ -82,12 +81,10 @@
   transition: opacity 0.2s;
 }
 
-/* The icon is black in its file, so hover fades instead of turning the button black */
 .plus:hover {
   opacity: 0.8;
 }
 
-/* Sized by the button's font-size; the file has padding, so 1.15em ≈ the old glyph size */
 .plus > svg {
   width: 1.15em;
   height: 1.15em;

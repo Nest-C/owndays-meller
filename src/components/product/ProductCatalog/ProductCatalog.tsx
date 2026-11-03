@@ -7,7 +7,7 @@ import { ProductModal } from '@/components/product/ProductModal/ProductModal';
 import { HowToStyle } from '@/components/product/HowToStyle/HowToStyle';
 
 export function ProductCatalog({ products }: { products: ProductItem[] }) {
-  // open/selectSku/close are stable, so memoized cards don't re-render when the modal opens/closes
+  // Stable callbacks: memoized cards don't re-render when the modal opens/closes
   const { selection, open, selectSku, close } = useProductDeepLink(products);
 
   return (

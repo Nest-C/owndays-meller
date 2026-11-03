@@ -10,9 +10,11 @@ import './globals.css';
 const notoSansJp = Noto_Sans_JP({
   weight: ['400', '500', '700'],
   display: 'swap',
-  preload: false, // Japanese glyphs are split by unicode-range; let the browser pick
+  preload: false, // split by unicode-range; the browser picks what it needs
   variable: '--font-noto-sans-jp',
 });
+
+const share = { title: SITE_TITLE, description: SITE_DESCRIPTION, images: [OG_IMAGE] };
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -20,31 +22,19 @@ export const metadata: Metadata = {
   description: SITE_DESCRIPTION,
   keywords: SITE_KEYWORDS,
   alternates: { canonical: '/' },
-  openGraph: {
-    type: 'website',
-    locale: 'ja_JP',
-    siteName: 'OWNDAYS',
-    url: '/',
-    title: SITE_TITLE,
-    description: SITE_DESCRIPTION,
-    images: [OG_IMAGE],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: SITE_TITLE,
-    description: SITE_DESCRIPTION,
-    images: [OG_IMAGE],
-  },
+  openGraph: { ...share, type: 'website', locale: 'ja_JP', siteName: 'OWNDAYS', url: '/' },
+  twitter: { ...share, card: 'summary_large_image' },
 };
+
+/** Brand fonts used above the fold — fetched before the CSS asks for them */
+const PRELOAD_FONTS = ['/fonts/Favorit-Bold.woff2', '/fonts/GTAmericaTrial-CmBl.woff2'];
 
 export const viewport: Viewport = {
   themeColor: BRAND_COLOR,
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
-  // Fetch the two brand fonts used above the fold before the CSS asks for them
-  preload('/fonts/Favorit-Bold.woff2', { as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' });
-  preload('/fonts/GTAmericaTrial-CmBl.woff2', { as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' });
+  for (const href of PRELOAD_FONTS) preload(href, { as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' });
 
   return (
     <html lang="ja" className={notoSansJp.variable}>

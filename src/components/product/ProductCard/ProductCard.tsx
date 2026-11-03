@@ -11,6 +11,7 @@ import { MAX_SWATCHES } from './ProductCard.constants';
 export const ProductCard = memo(function ProductCard({ item, onOpen }: ProductCardProps) {
   const [skuIndex, setSkuIndex] = useState(() => defaultSkuIndex(item));
   const sku = item.skus[skuIndex] ?? item.skus[0];
+  const name = item.product.model_name;
   const thumbnail = skuThumbnail(sku);
   const visibleSkus = item.skus.slice(0, MAX_SWATCHES);
   const hiddenCount = item.skus.length - visibleSkus.length;
@@ -21,7 +22,7 @@ export const ProductCard = memo(function ProductCard({ item, onOpen }: ProductCa
         {thumbnail && (
           <Image
             src={thumbnail}
-            alt={`${item.product.model_name} ${sku.code}`}
+            alt={`${name} ${sku.code}`}
             fill
             sizes="(min-width: 1024px) 385px, calc(100vw - 68px)"
             className={styles.image}
@@ -32,16 +33,16 @@ export const ProductCard = memo(function ProductCard({ item, onOpen }: ProductCa
       <div className={styles.info}>
         <div>
           <h2 className={styles.name}>
-            {/* Stretched button: the whole card opens the modal, swatches stay separate buttons */}
+            {/* Stretched over the whole card; the swatches sit above it */}
             <button type="button" className={styles.open} onClick={() => onOpen(item, skuIndex)}>
-              {item.product.model_name}
+              {name}
             </button>
           </h2>
           <p className={styles.code}>{productNumber(item, sku)}</p>
         </div>
 
         <div className={styles.side}>
-          <div className={styles.swatches} role="group" aria-label={`${item.product.model_name} のカラー`}>
+          <div className={styles.swatches} role="group" aria-label={`${name} のカラー`}>
             {visibleSkus.map((s, i) => (
               <Swatch key={s.id} sku={s} selected={i === skuIndex} onSelect={() => setSkuIndex(i)} />
             ))}

@@ -1,16 +1,17 @@
-import { memo } from 'react';
+import { memo, useRef } from 'react';
 import Image from 'next/image';
 import { imageUrl } from '@/lib/format';
+import { useDragScroll } from '@/hooks/useDragScroll';
 import styles from './ImageCarousel.module.css';
 import type { ImageCarouselProps } from './ImageCarousel.types';
 
-/**
- * Free horizontal scroll with snap. Slides are centered with the
- * neighbours peeking in on both sides (3 visible).
- */
+/** Snap-scrolling strip (touch, trackpad or mouse drag); the centred slide shows its neighbours */
 export const ImageCarousel = memo(function ImageCarousel({ images, alt }: ImageCarouselProps) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  useDragScroll(trackRef);
+
   return (
-    <div className={styles.track} tabIndex={0} aria-label={`${alt} の画像`}>
+    <div ref={trackRef} className={styles.track} tabIndex={0} aria-label={`${alt} の画像`}>
       {images.map((img, i) => (
         <div key={img.id} className={styles.slide}>
           <Image

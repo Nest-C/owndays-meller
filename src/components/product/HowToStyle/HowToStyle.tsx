@@ -11,11 +11,9 @@ import type { HowToStyleProps } from './HowToStyle.types';
 
 export function HowToStyle({ products, onOpen }: HowToStyleProps) {
   const trackRef = useRef<HTMLDivElement>(null);
-  
-  useDragScroll(trackRef);
-
   const headingRef = useRef<HTMLHeadingElement>(null);
   const headingInView = useInView(headingRef);
+  useDragScroll(trackRef);
 
   const slides = useMemo(() => {
     const byCode = new Map(products.map((p) => [p.product.code, p]));
@@ -23,13 +21,9 @@ export function HowToStyle({ products, onOpen }: HowToStyleProps) {
       const item = byCode.get(entry.productCode);
       if (!item) return [];
 
-      const found = item.skus.findIndex((skus) => skus.code === entry.skuCode);
-      const skuIndex = found >= 0 ? found : 0;
-      const sku = item.skus[skuIndex];
-      const images = sortedImages(sku);
-      const productPhoto = images.length ? imageUrl(images[images.length - 1].path) : null;
-
-      const src = entry.image ?? productPhoto;
+      const skuIndex = Math.max(0, item.skus.findIndex((s) => s.code === entry.skuCode));
+      const lastImage = sortedImages(item.skus[skuIndex]).at(-1);
+      const src = entry.image ?? (lastImage && imageUrl(lastImage.path));
       if (!src) return [];
 
       return [{ key: `${entry.productCode}-${i}`, item, skuIndex, src }];
@@ -39,9 +33,7 @@ export function HowToStyle({ products, onOpen }: HowToStyleProps) {
   return (
     <section className={styles.section} aria-labelledby="how-to-style-title">
       <h2 ref={headingRef} id="how-to-style-title" className={styles.heading}>
-        <Highlight play={headingInView}>
-          HOW TO
-        </Highlight>
+        <Highlight play={headingInView}>HOW TO</Highlight>
         <Highlight delay={0.3} play={headingInView}>
           STYLE THEM
         </Highlight>
@@ -61,10 +53,7 @@ export function HowToStyle({ products, onOpen }: HowToStyleProps) {
               type="button"
               className={styles.plus}
               aria-label={`${slide.item.product.model_name} の詳細を見る`}
-              onClick={() => {
-                console.log('item', slide.item, 'skuIndex', slide.skuIndex);
-                onOpen(slide.item, slide.skuIndex);
-              }}
+              onClick={() => onOpen(slide.item, slide.skuIndex)}
             >
               <PlusIcon width={47} height={47} />
             </button>

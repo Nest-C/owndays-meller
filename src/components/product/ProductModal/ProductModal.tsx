@@ -12,19 +12,21 @@ import {
 } from '@/lib/format';
 import { useEscape } from '@/hooks/useEscape';
 import { useScrollLock } from '@/hooks/useScrollLock';
+import { EXTERNAL_LINK } from '@/constants/site';
 import { CrossIcon } from '@/assets/icons';
 import { ImageCarousel } from './ImageCarousel';
 import styles from './ProductModal.module.css';
 import type { ProductModalProps } from './ProductModal.types';
 import { EXIT_MS } from './ProductModal.constants';
 
-/** Mounted only while a product is selected; plays its own exit animation. */
+/** Mounted only while a product is selected; plays its own exit animation */
 export function ProductModal({ item, skuIndex, onSelectSku, onClose }: ProductModalProps) {
   const [closing, setClosing] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
 
   const sku = item.skus[skuIndex] ?? item.skus[0];
+  const name = item.product.model_name;
   const outOfStock = isOutOfStock(item);
   const titleId = `product-modal-title-${item.product.id}`;
 
@@ -37,7 +39,7 @@ export function ProductModal({ item, skuIndex, onSelectSku, onClose }: ProductMo
   useScrollLock(true);
   useEscape(true, requestClose);
 
-  // Move focus into the dialog, give it back to the trigger on close
+  // Focus the dialog on open, restore focus to the trigger on close
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
     closeRef.current?.focus({ preventScroll: true });
@@ -69,15 +71,14 @@ export function ProductModal({ item, skuIndex, onSelectSku, onClose }: ProductMo
         <div className={styles.top}>
           <div className={styles.topBar}>
             <h2 id={titleId} className={styles.title}>
-              {item.product.model_name}
+              {name}
             </h2>
             <button ref={closeRef} type="button" className={styles.close} aria-label="閉じる" onClick={requestClose}>
               <CrossIcon width={42} height={42} />
             </button>
           </div>
 
-          {/* key: restart scroll position when the color changes */}
-          <ImageCarousel key={sku.id} images={sortedImages(sku)} alt={`${item.product.model_name} ${sku.code}`} />
+          <ImageCarousel key={sku.id /* reset scroll on color change */} images={sortedImages(sku)} alt={`${name} ${sku.code}`} />
 
           <div className={styles.chips} role="radiogroup" aria-label="カラー">
             {item.skus.map((s, i) => (
@@ -115,7 +116,7 @@ export function ProductModal({ item, skuIndex, onSelectSku, onClose }: ProductMo
               OUT OF STOCK
             </button>
           ) : (
-            <a href={onlineStoreUrl(item, sku)} className={styles.cta} target="_blank" rel="noopener noreferrer">
+            <a href={onlineStoreUrl(item, sku)} className={styles.cta} {...EXTERNAL_LINK}>
               ONLINE STORE
             </a>
           )}

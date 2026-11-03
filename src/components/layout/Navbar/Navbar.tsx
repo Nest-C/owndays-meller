@@ -1,17 +1,14 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import { NAV_LINKS } from '@/constants/site';
+import { NAV_LINKS, SITE_NAME } from '@/constants/site';
 import { useScrolled } from '@/hooks/useScrolled';
 import { HamburgerIcon } from '@/assets/icons';
 import { Logo } from './Logo';
 import { MobileMenu } from './MobileMenu';
 import styles from './Navbar.module.css';
 
-/**
- * Sticky navbar. Transparent over the hero photo (as in Figma),
- * brand orange once the page scrolls.
- */
+/** Transparent over the hero, orange once the page scrolls */
 export function Navbar() {
   const scrolled = useScrolled(40);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -21,7 +18,7 @@ export function Navbar() {
     <>
       <header className={styles.bar} data-solid={scrolled}>
         <div className={styles.inner}>
-          <a href="#top" aria-label="OWNDAYS × MELLER トップへ">
+          <a href="#top" aria-label={`${SITE_NAME} トップへ`}>
             <Logo />
           </a>
 

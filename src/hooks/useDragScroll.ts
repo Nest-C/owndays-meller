@@ -1,13 +1,8 @@
 import { useEffect, type RefObject } from 'react';
 
-/** Movement (px) before a press counts as a drag rather than a click */
-const DRAG_THRESHOLD = 5;
+const DRAG_THRESHOLD = 5; // px before a press counts as a drag, not a click
 
-/**
- * Click-and-drag horizontal scrolling for mouse users.
- * Touch screens and trackpads already scroll the track natively; a plain mouse
- * wheel can't, and the scrollbar is hidden by design.
- */
+/** Click-and-drag horizontal scrolling for mouse users (touch and trackpads scroll natively) */
 export function useDragScroll(ref: RefObject<HTMLElement | null>): void {
   useEffect(() => {
     const el = ref.current;
@@ -33,7 +28,7 @@ export function useDragScroll(ref: RefObject<HTMLElement | null>): void {
         if (Math.abs(dx) < DRAG_THRESHOLD) return;
         dragged = true;
         el.setPointerCapture(e.pointerId);
-        el.dataset.dragging = 'true'; // CSS turns off smooth scroll + snap while dragging
+        el.dataset.dragging = 'true';
       }
       el.scrollLeft = startLeft - dx;
     };
@@ -44,7 +39,7 @@ export function useDragScroll(ref: RefObject<HTMLElement | null>): void {
       delete el.dataset.dragging;
     };
 
-    // A drag that ends over a "+" button must not also open the modal
+    // A drag that ends over a button must not also click it
     const onClick = (e: MouseEvent) => {
       if (!dragged) return;
       e.preventDefault();
@@ -52,22 +47,20 @@ export function useDragScroll(ref: RefObject<HTMLElement | null>): void {
       dragged = false;
     };
 
-    // Stop the browser's native image drag (ghost image) from taking over
+    // No native image drag (ghost image)
     const onDragStart = (e: DragEvent) => e.preventDefault();
 
-    el.addEventListener('pointerdown', onPointerDown);
-    el.addEventListener('pointermove', onPointerMove);
-    el.addEventListener('pointerup', onPointerUp);
-    el.addEventListener('pointercancel', onPointerUp);
-    el.addEventListener('click', onClick, true);
-    el.addEventListener('dragstart', onDragStart);
+    const listeners = [
+      ['pointerdown', onPointerDown],
+      ['pointermove', onPointerMove],
+      ['pointerup', onPointerUp],
+      ['pointercancel', onPointerUp],
+      ['click', onClick],
+      ['dragstart', onDragStart],
+    ] as [string, EventListener][];
+    for (const [type, fn] of listeners) el.addEventListener(type, fn, true);
     return () => {
-      el.removeEventListener('pointerdown', onPointerDown);
-      el.removeEventListener('pointermove', onPointerMove);
-      el.removeEventListener('pointerup', onPointerUp);
-      el.removeEventListener('pointercancel', onPointerUp);
-      el.removeEventListener('click', onClick, true);
-      el.removeEventListener('dragstart', onDragStart);
+      for (const [type, fn] of listeners) el.removeEventListener(type, fn, true);
     };
   }, [ref]);
 }

@@ -10,7 +10,7 @@ export interface PanelSelection {
 const PRODUCT_PARAM = 'product';
 const COLOR_PARAM = 'color';
 
-/** `?product=adisa&color=C1` → selection. Invalid product → null; invalid/missing color → default SKU. */
+/** `?product=adisa&color=C1` → selection; unknown product → null, unknown color → default SKU */
 function parseSelection(search: string, products: ProductItem[]): PanelSelection | null {
   const params = new URLSearchParams(search);
   const name = params.get(PRODUCT_PARAM)?.toLowerCase();
@@ -24,7 +24,7 @@ function parseSelection(search: string, products: ProductItem[]): PanelSelection
   return { item, skuIndex: skuIndex >= 0 ? skuIndex : defaultSkuIndex(item) };
 }
 
-/** Current URL with the panel params set (selection) or removed (null); other params are kept. */
+/** Current URL with the panel params set, or removed when null */
 function buildUrl(selection: PanelSelection | null): string {
   const url = new URL(window.location.href);
   url.searchParams.delete(PRODUCT_PARAM);
@@ -38,25 +38,13 @@ function buildUrl(selection: PanelSelection | null): string {
 }
 
 /**
- * Keeps the product panel in sync with `?product=&color=` (spec §4.6).
- *
- * Uses the native History API, which Next.js App Router integrates with
- * (no navigation, no server round trip, no Suspense boundary needed for
- * useSearchParams on this static page). Next.js copies its own router state into
- * entries created with window.history.pushState/replaceState, so passing `null` is fine. The URL is read after hydration,
- * so the prerendered HTML is the same for every query string.
- *
- * - open:        pushState  → Back closes the panel
- * - change color: replaceState → Back doesn't step through every color
- * - close:       history.back() if we pushed the entry, otherwise replaceState
- *                (the page was loaded with the params, there is nothing to go back to)
- * - popstate:    re-read the URL (Back/Forward between product states)
+ * Keeps the product panel in sync with `?product=&color=` (spec §4.6) via the native History API,
+ * which the App Router supports — no navigation, and the static HTML stays the same for any query.
+ * open → push (Back closes) · color → replace · close → back() if we pushed, else replace.
  */
 export function useProductDeepLink(products: ProductItem[]) {
   const [selection, setSelection] = useState<PanelSelection | null>(null);
-  /** true when the current history entry was pushed by `open` */
-  const pushedRef = useRef(false);
-  /** Latest selection for callbacks, so they stay stable (memoized cards don't re-render) */
+  const pushedRef = useRef(false); // current history entry was pushed by open()
   const selectionRef = useRef(selection);
   useEffect(() => {
     selectionRef.current = selection;
@@ -77,12 +65,9 @@ export function useProductDeepLink(products: ProductItem[]) {
   const open = useCallback((item: ProductItem, skuIndex = defaultSkuIndex(item)) => {
     const next = { item, skuIndex };
     setSelection(next);
-    if (pushedRef.current) {
-      window.history.replaceState(null, '', buildUrl(next));
-    } else {
-      window.history.pushState(null, '', buildUrl(next));
-      pushedRef.current = true;
-    }
+    const method = pushedRef.current ? 'replaceState' : 'pushState';
+    window.history[method](null, '', buildUrl(next));
+    pushedRef.current = true;
   }, []);
 
   const selectSku = useCallback((skuIndex: number) => {

@@ -1,5 +1,4 @@
-/** Re-fetch at most once an hour (ISR) */
-const REVALIDATE_SECONDS = 3600;
+const REVALIDATE_SECONDS = 3600; // ISR: re-fetch at most once an hour
 
 function baseUrl(): string {
   const url = process.env.API_BASE_URL;

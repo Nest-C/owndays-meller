@@ -51,7 +51,7 @@
   text-align: left;
 }
 
-/* Covers the whole card so any click opens the product */
+/* Stretched over the card: any click opens the product */
 .open::after {
   content: '';
   position: absolute;
@@ -77,7 +77,7 @@
   gap: 6px;
 }
 
-/* Above the stretched button so swatch clicks don't open the modal */
+/* Above the stretched button */
 .swatches {
   position: relative;
   z-index: 1;

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { NAV_LINKS, SUB_LINKS } from '@/constants/site';
+import { EXTERNAL_LINK, NAV_LINKS, SUB_LINKS } from '@/constants/site';
 import { useEscape } from '@/hooks/useEscape';
 import { useScrollLock } from '@/hooks/useScrollLock';
 import { CrossIcon } from '@/assets/icons';
@@ -18,7 +18,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
   }, [open]);
 
   return (
-    // `inert` removes the closed menu from tab order and the accessibility tree
+    // inert: the closed menu is out of the tab order and the accessibility tree
     <div className={styles.overlay} data-open={open} inert={!open} onClick={onClose}>
       <div
         id="mobile-menu"
@@ -45,7 +45,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
         <ul className={styles.subLinks}>
           {SUB_LINKS.map((link) => (
             <li key={link.label}>
-              <a href={link.href} className={styles.subLink} target="_blank" rel="noopener noreferrer">
+              <a href={link.href} className={styles.subLink} {...EXTERNAL_LINK}>
                 {link.label}
               </a>
             </li>

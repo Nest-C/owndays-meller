@@ -1,4 +1,4 @@
-/* Brand fonts — self-hosted in /public/fonts (same origin: no extra DNS/TLS, long cache) */
+/* Brand fonts, self-hosted in /public/fonts */
 @font-face {
   font-family: 'Favorit';
   src: url('/fonts/Favorit-Regular.woff2') format('woff2');
@@ -37,7 +37,7 @@
   font-display: swap;
 }
 
-/* Design tokens — measured from the Figma file (desktop 1440px, mobile 390px) */
+/* Design tokens from Figma (desktop 1440px, mobile 390px) */
 :root {
   --color-brand: #ff6a1f;
   --color-black: #000;
@@ -53,7 +53,7 @@
 
   --max-width: 1440px;
   --gutter: 16px;
-  --header-h: 70px; /* Figma mobile header: 70px, logo + hamburger centred at 35px */
+  --header-h: 70px;
   --modal-w: 616px;
 
   --z-header: 100;
@@ -61,7 +61,7 @@
   --z-menu: 300;
 }
 
-/* Breakpoint: ≥1024px desktop, <1024px mobile (media queries can't use variables) */
+/* ≥1024px = desktop (media queries can't use variables) */
 @media (min-width: 1024px) {
   :root {
     --gutter: 70px;

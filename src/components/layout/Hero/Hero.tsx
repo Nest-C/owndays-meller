@@ -6,17 +6,22 @@ import { DESKTOP, HERO_DESKTOP, HERO_MOBILE, MOBILE } from './Hero.constants';
 
 export function Hero() {
   const common = { alt: '', sizes: '100vw', fetchPriority: 'high', loading: 'eager' } as const;
-  const { props: { srcSet: desktopSrcSet, src: desktopSrc } } = getImageProps({ ...common, ...HERO_DESKTOP });
-  const { props: { srcSet: mobileSrcSet, ...img } } = getImageProps({ ...common, ...HERO_MOBILE });
+  const desktop = getImageProps({ ...common, ...HERO_DESKTOP }).props;
+  const { srcSet: mobileSrcSet, ...img } = getImageProps({ ...common, ...HERO_MOBILE }).props;
 
-  // Preload only the crop that matches the viewport (LCP image)
-  preload(desktopSrc, { as: 'image', imageSrcSet: desktopSrcSet, imageSizes: '100vw', media: DESKTOP, fetchPriority: 'high' });
-  preload(img.src, { as: 'image', imageSrcSet: mobileSrcSet, imageSizes: '100vw', media: MOBILE, fetchPriority: 'high' });
+  // LCP image: preload only the crop that matches the viewport
+  const crops = [
+    { src: desktop.src, srcSet: desktop.srcSet, media: DESKTOP },
+    { src: img.src, srcSet: mobileSrcSet, media: MOBILE },
+  ];
+  for (const { src, srcSet, media } of crops) {
+    preload(src, { as: 'image', imageSrcSet: srcSet, imageSizes: '100vw', media, fetchPriority: 'high' });
+  }
 
   return (
     <section id="about" className={styles.hero}>
       <picture>
-        <source media={DESKTOP} srcSet={desktopSrcSet} sizes="100vw" />
+        <source media={DESKTOP} srcSet={desktop.srcSet} sizes="100vw" />
         <img {...img} alt="" srcSet={mobileSrcSet} className={styles.heroImage} />
       </picture>
       <div className={styles.grain} aria-hidden="true" />

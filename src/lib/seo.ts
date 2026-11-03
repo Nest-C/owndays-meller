@@ -1,12 +1,13 @@
+import { SITE_NAME } from '@/constants/site';
 import type { ProductItem } from './types';
 import { imageUrl, isOutOfStock, onlineStoreUrl, sortedImages } from './format';
 
-/** schema.org ItemList of Products — lets search engines read name, price and stock. */
+/** schema.org ItemList of Products (name, price, stock) for search engines */
 export function productListJsonLd(products: ProductItem[]) {
   return {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    name: 'OWNDAYS × MELLER',
+    name: SITE_NAME,
     numberOfItems: products.length,
     itemListElement: products.map((item, index) => {
       const sku = item.skus[0];
@@ -25,9 +26,7 @@ export function productListJsonLd(products: ProductItem[]) {
             '@type': 'Offer',
             priceCurrency: 'JPY',
             price: item.selling_setting.price,
-            availability: isOutOfStock(item)
-              ? 'https://schema.org/OutOfStock'
-              : 'https://schema.org/InStock',
+            availability: `https://schema.org/${isOutOfStock(item) ? 'OutOfStock' : 'InStock'}`,
             url: sku ? onlineStoreUrl(item, sku) : undefined,
           },
         },
@@ -36,6 +35,5 @@ export function productListJsonLd(products: ProductItem[]) {
   };
 }
 
-/** Safe to drop into a <script> tag: escapes "<" so no "</script>" can break out. */
-export const toJsonLdString = (data: unknown): string =>
-  JSON.stringify(data).replace(/</g, '\\u003c');
+/** Escapes "<" so the JSON can't close the <script> tag */
+export const toJsonLdString = (data: unknown): string => JSON.stringify(data).replace(/</g, '\\u003c');
