@@ -41,7 +41,7 @@ Follow these in every change. Rules marked **(lint)** are enforced by `npm run l
   - `components/product/`: the product feature.
 - A type used in more than one place goes in `src/types/` (`product.ts` for API data). A constant used in more than one place goes in `src/constants/site.ts`.
 - Hooks: `src/hooks/useThing.ts`, one hook per file. A hook's private types and constants stay inline in its file.
-- Pure helpers: `src/lib/`, one file per topic (`product.ts`, `seo.ts`). Data fetching (server-only): `src/api/`.
+- Pure helpers: `src/lib/`, one file per topic (`product.ts`, `seo.ts`). Data fetching (server-only): `src/api/` — the shared `client.ts` (`apiGet`) plus one folder per service, laid out like a component: `api/products/products.ts` (the fetch functions), `products.types.ts` (response types), `products.constants.ts` (paths). A new service = a new folder.
 - Icons: add the SVG to `src/assets/icons/` (kebab-case, no prefix: `cart.svg`), then re-export it from `index.ts`: `export { default as CartIcon } from './cart.svg';`. Use it as `<CartIcon width={22} height={22} />`.
 
 ## Components

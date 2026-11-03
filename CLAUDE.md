@@ -21,7 +21,7 @@ Env: `.env.local` (git-ignored; template `.env.example`). `API_BASE_URL` is **re
 
 ## Stack and decisions
 - Next.js 16 App Router, React 19, TypeScript, **CSS Modules only** (no Tailwind, no styled-components, no clsx).
-- `cacheComponents` is deliberately **off**; data uses `fetch(..., { next: { revalidate: 3600 } })` in `src/api/client.ts` (`apiGet`, ISR, page is static); paths in `src/api/endpoints.ts`, `getProducts()` in `src/api/products.ts`. `getProducts()` throws on failure on purpose so a failed revalidation keeps the last good page.
+- `cacheComponents` is deliberately **off**; data uses `fetch(..., { next: { revalidate: 3600 } })` in `src/api/client.ts` (`apiGet`, ISR, page is static); one folder per service: `getProducts()` in `src/api/products/products.ts` (path in `products.constants.ts`, response type in `products.types.ts`). `getProducts()` throws on failure on purpose so a failed revalidation keeps the last good page.
 - Products are fetched in the Server Component `src/app/(landing)/page.tsx` (route group — URL is still `/`; don't also add `src/app/page.tsx`, both would resolve to `/`) so all cards are in the initial HTML (SEO). JSON-LD `ItemList`/`Product` from `src/lib/seo.ts`.
 - `src/app/layout.tsx` renders Navbar, `<main id="top">{children}</main>`, Footer — pages render only their own sections. Metadata (title, description, canonical, OG, Twitter) is there too; OGP is `public/images/og-image.jpg` (compressed Figma export), wired via `OG_IMAGE` in `src/constants/site.ts`.
 - `next/image` with `remotePatterns` for storage.owndays.com. Next 16: use `preload`, not the deprecated `priority`. Hero uses art direction (`getImageProps` + `<picture>`, two crops `public/images/hero-desktop.jpg` 2560×1125 / `hero-mobile.jpg` 1170×2031 — width/height are hard-coded in `Hero.tsx`, update them if the files change; matching crop preloaded per media query; grain overlay = `public/images/filter-image.webp` tiled in `Hero.module.css`).
@@ -31,7 +31,7 @@ Env: `.env.local` (git-ignored; template `.env.example`). `API_BASE_URL` is **re
 ## Structure
 ```
 src/app/                 layout, (landing)/page.tsx, globals.css (tokens + @font-face + reset), favicon.ico, icon.png, apple-icon.png
-src/api/                 client.ts (apiGet), endpoints.ts, products.ts (getProducts) — server-only data fetching
+src/api/                 client.ts (apiGet, shared) + one folder per service: products/ (products.ts = getProducts, .types, .constants) — server-only
 src/lib/                 product.ts (price, image URLs, default SKU, swatches, stock, store URL), seo.ts (JSON-LD)
 src/types/product.ts     API model types shared by several files
 src/constants/site.ts    SITE_URL, OG_IMAGE, nav links, external URLs

@@ -57,8 +57,10 @@ src/
 │   └── globals.css             # @font-face, design tokens (CSS variables), reset
 ├── api/                        # server-side data fetching
 │   ├── client.ts               # apiGet(): API_BASE_URL + path, hourly revalidation, throws on failure
-│   ├── endpoints.ts            # API paths (products: /meller/products.json)
-│   └── products.ts             # getProducts()
+│   └── products/               # one folder per service
+│       ├── products.ts         # getProducts()
+│       ├── products.types.ts   # ProductsResponse
+│       └── products.constants.ts # PRODUCTS_PATH (/meller/products.json)
 ├── lib/
 │   ├── product.ts              # product helpers: price, image URLs, default SKU, swatches, stock, store URL
 │   └── seo.ts                  # JSON-LD builder
