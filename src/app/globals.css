@@ -40,7 +40,6 @@
 /* Design tokens from Figma (desktop 1440px, mobile 390px) */
 :root {
   --color-brand: #f26a2f;
-  --color-nav: #f26a2f;
   --color-black: #000;
   --color-white: #fff;
   --color-surface: #f2f2f2;
@@ -141,13 +140,11 @@ ul {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
   *,
   *::before,
   *::after {
     animation-duration: 1ms !important;
     transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
   }
 }

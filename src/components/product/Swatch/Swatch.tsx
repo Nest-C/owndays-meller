@@ -1,11 +1,10 @@
 'use client';
 
-import { memo } from 'react';
 import { skuColorLabel, skuSwatchBackground } from '@/lib/product';
 import styles from './Swatch.module.css';
 import type { SwatchProps } from './Swatch.types';
 
-export const Swatch = memo(function Swatch({ sku, selected, onSelect }: SwatchProps) {
+export function Swatch({ sku, selected, onSelect }: SwatchProps) {
   return (
     <button
       type="button"
@@ -17,4 +16,4 @@ export const Swatch = memo(function Swatch({ sku, selected, onSelect }: SwatchPr
       <span className={styles.dot} style={{ background: skuSwatchBackground(sku) }} />
     </button>
   );
-});
+}

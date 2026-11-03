@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { defaultSkuIndex } from '@/lib/product';
 import type { ProductItem } from '@/types/product';
 
-export interface PanelSelection {
+interface PanelSelection {
   item: ProductItem;
   skuIndex: number;
 }

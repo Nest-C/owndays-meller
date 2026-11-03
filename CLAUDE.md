@@ -31,24 +31,24 @@ Env: `.env.local` (git-ignored; template `.env.example`). `API_BASE_URL` is **re
 ## Structure
 ```
 src/app/                 layout, (landing)/page.tsx, globals.css (tokens + @font-face + reset), favicon.ico, icon.png, apple-icon.png
-src/api/                 client.ts (apiGet, shared) + one folder per service: products/ (products.ts = getProducts, .types, .constants) — server-only
+src/api/                 client.ts (apiGet, shared) + one folder per service: products/ (products.ts = getProducts, .types, .constants) — server-only (`import 'server-only'` in client.ts)
 src/lib/                 product.ts (price, image URLs, default SKU, swatches, stock, store URL), seo.ts (JSON-LD)
 src/types/product.ts     API model types shared by several files
 src/constants/site.ts    SITE_URL, OG_IMAGE, nav links, external URLs
 src/assets/icons/        icon SVGs + index.ts + svg.d.ts (types `*.svg` imports, so `tsc` works before next-env.d.ts exists); SVGR (`@svgr/webpack`, turbopack rule in next.config.ts) makes every .svg import a component → `<CartIcon width height />` renders an inline, aria-hidden <svg>
 public/images/           hero-desktop.jpg, hero-mobile.jpg, filter-image.webp (hero grain), og-image.jpg
-src/hooks/               useScrolled, useScrollLock, useEscape, useDragScroll (mouse drag for the HowToStyle strip), useInView (starts the HowToStyle title wipe)
+src/hooks/               useProductDeepLink (selected product + SKU ↔ `?product=&color=`), useFocusTrap (menu + modal), useScrolled, useScrollLock, useEscape, useDragScroll (mouse drag for the HowToStyle strip), useInView (starts the HowToStyle title wipe)
 src/components/
   shared/                product-agnostic: Highlight, InputModality (sets <html data-input="mouse|keyboard"> → focus rings only for keyboard users)
   layout/                Navbar (+MobileMenu, Logo), Hero, Footer
-  product/               ProductCatalog (client boundary, owns selected product), ProductGrid, ProductCard,
+  product/               ProductCatalog (client boundary, owns the selection via useProductDeepLink), ProductGrid, ProductCard,
                          ProductModal (+ImageCarousel), HowToStyle (STYLE_ITEMS in HowToStyle.constants.ts), Swatch
 ```
 ## Code conventions
 @CONVENTIONS.md
 
 ## Design tokens
-- CSS variables in `globals.css`: `--color-brand: #f26a2f`, `--color-nav: #f26a2f` (solid navbar), `--color-surface: #f2f2f2`, `--font-display`, `--gutter` 16px/70px, `--header-h` 70px/102px, `--modal-w: 616px`, z-index vars.
+- CSS variables in `globals.css`: `--color-brand: #f26a2f` (also the solid navbar; `BRAND_COLOR` in `site.ts` mirrors it for theme-color), `--color-surface: #f2f2f2`, `--font-display`, `--gutter` 16px/70px, `--header-h` 70px/102px, `--modal-w: 616px`, z-index vars.
 - Orange is `#F26A2F` per the brief (screenshots read `#ff6a1f`) — confirm in Figma dev mode.
 
 ## Behaviour (all implemented and tested)
@@ -56,6 +56,7 @@ src/components/
 - Grid: 3 cols ≥1024px, 1 col below. Card: stretched button opens modal; swatches (max 4 + "+n") switch image and P/No. Price `¥7,800+tax`.
 - Swatch: hex fill; pattern image when `hex_code` null (Brown Demi); two-color SKUs split diagonally; inset border keeps near-white colors visible.
 - Modal: right panel 616px desktop / full screen mobile; slide/fade animation; carousel with snap; color chips (English names) switch carousel + P/No.; TYPE from `frame_types[0].code` uppercased; price `¥7,800 税込`; ESC/×/backdrop close; focus trap + restore; body scroll lock.
+- Deep link: the open modal is mirrored in the URL (`?product=adisa&color=C2`) via the native History API — open pushes (browser Back closes), color change replaces; loading such a URL opens the modal. Static HTML is unchanged.
 - CTA: `https://www.owndays.com/jp/ja/products/{code}?sku={sku.id}`; hover inverts; `in_stock === 0` → disabled "OUT OF STOCK" (CHAUEN).
 - HowToStyle: horizontal scroll strip, "+" (70px desktop / 56px mobile) opens the modal for the product in `HowToStyle.constants.ts`.
 

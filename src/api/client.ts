@@ -1,3 +1,5 @@
+import 'server-only'; // build error if a Client Component imports the API layer
+
 const REVALIDATE_SECONDS = 3600; // ISR: re-fetch at most once an hour
 
 function baseUrl(): string {

@@ -4,6 +4,6 @@ import styles from './Logo.module.css';
 
 export function Logo() {
   return (
-    <Image src="/logo.svg" alt={SITE_NAME} width={351} height={52} preload className={styles.logo} />
+    <Image src="/logo.svg" alt={SITE_NAME} width={351} height={52} className={styles.logo} />
   );
 }

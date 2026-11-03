@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useRef } from 'react';
+import { useRef } from 'react';
 import Image from 'next/image';
 import { imageUrl } from '@/lib/product';
 import { useDragScroll } from '@/hooks/useDragScroll';
@@ -8,12 +8,12 @@ import styles from './ImageCarousel.module.css';
 import type { ImageCarouselProps } from './ImageCarousel.types';
 
 /** Snap-scrolling strip (touch, trackpad or mouse drag); the centred slide shows its neighbours */
-export const ImageCarousel = memo(function ImageCarousel({ images, alt }: ImageCarouselProps) {
+export function ImageCarousel({ images, alt }: ImageCarouselProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   useDragScroll(trackRef);
 
   return (
-    <div ref={trackRef} className={styles.track} tabIndex={0} aria-label={`${alt} の画像`}>
+    <div ref={trackRef} className={styles.track} tabIndex={0} role="region" aria-label={`${alt} の画像`}>
       {images.map((img, i) => (
         <div key={img.id} className={styles.slide}>
           <Image
@@ -29,4 +29,4 @@ export const ImageCarousel = memo(function ImageCarousel({ images, alt }: ImageC
       ))}
     </div>
   );
-});
+}

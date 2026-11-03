@@ -25,9 +25,9 @@
 | State | Kind | Owner today | Who reads it |
 |---|---|---|---|
 | Product list | Server data, read-only | `app/(landing)/page.tsx` (Server Component) → props | Grid, cards, HowToStyle, modal, JSON-LD |
-| Selected product (modal open) | UI, shared by 2 siblings | `ProductCatalog` `useState` | Grid + HowToStyle (write), Modal (read) |
+| Selected product + modal SKU index | UI, shared by 2 siblings, mirrored in the URL | `useProductDeepLink` (`useState` + History API) in `ProductCatalog` | Grid + HowToStyle (open), Modal (read, change SKU) |
 | Card SKU index | UI, local | each `ProductCard` | that card only |
-| Modal SKU index, closing flag | UI, local | `ProductModal` | modal only |
+| Modal closing flag | UI, local | `ProductModal` | modal only |
 | Menu open | UI, local | `Navbar` | Navbar + MobileMenu (child) |
 | Scrolled past hero | UI, derived from window | `useScrolled` hook | Navbar |
 
@@ -37,14 +37,15 @@
  │ page.tsx  getProducts()   │──── products (props) ─────────────┐
  └───────────────────────────┘                                   │
  Client                                                          ▼
- ┌ Navbar ─────────────┐      ┌ ProductCatalog  [selected] ─────────────────┐
- │ [menuOpen]          │      │  ├ ProductGrid ─ ProductCard [skuIndex] ×8  │
- │  └ MobileMenu       │      │  ├ HowToStyle  (onOpen)                     │
- │ useScrolled()       │      │  └ ProductModal [skuIndex, closing]         │
- └─────────────────────┘      └─────────────────────────────────────────────┘
+ ┌ Navbar ─────────────┐      ┌ ProductCatalog  useProductDeepLink() ───────┐
+ │ [menuOpen]          │      │   [selected + skuIndex] ⇄ ?product=&color=  │
+ │  └ MobileMenu       │      │  ├ ProductGrid ─ ProductCard [skuIndex] ×8  │
+ │ useScrolled()       │      │  ├ HowToStyle  (onOpen)                     │
+ └─────────────────────┘      │  └ ProductModal [closing]                   │
+                              └─────────────────────────────────────────────┘
 ```
 
-There is exactly **one piece of shared client state** (the selected product), shared by siblings one level apart. Everything else is local to a single component.
+There is exactly **one piece of shared client state** (the selected product and its SKU), shared by siblings one level apart and mirrored in the URL. Everything else is local to a single component.
 
 ## 3. Options compared
 
@@ -54,7 +55,7 @@ Sizes are the minified + gzip size of a minimal usage, bundled with esbuild, Rea
 
 | Option | Version | +JS gzip | Model | Fits this page? |
 |---|---|---|---|---|
-| **`useState` + lift up** (current) | React 19 | 0 | Local state, props down, callbacks up | ✅ One shared value, one level of lifting. Nothing to learn, nothing to configure. |
+| **`useState` + lift up** (current, wrapped in `useProductDeepLink`) | React 19 | 0 | Local state, props down, callbacks up | ✅ One shared value, one level of lifting. Nothing to learn, nothing to configure. |
 | `useReducer` / Context | React 19 | 0 | Reducer, or a provider for deep trees | ⚪ Context only pays off when props pass through many layers; here it's one. A reducer suits many related transitions, but there are 2–3 per component. |
 | Zustand | 5.0.16 | ~0.4 kB | Small external store with hooks and selectors | ⚪ The cheapest library option, and the one I'd pick if global state ever appeared. Today it would replace one `useState` with a store file. |
 | Jotai | 3.0.1 | ~3.2 kB | Atoms, composed bottom‑up | ⚪ Good for many small interdependent values. We have one. |
@@ -71,11 +72,11 @@ Sizes are the minified + gzip size of a minimal usage, bundled with esbuild, Rea
 | TanStack Query | 5.105.0 | ~9.9 kB | ❌ Built for client caching, refetching, mutations and pagination. We have one read-only list that never changes during a visit. Client fetching would also take products out of the initial HTML unless you add hydration. |
 | SWR | 2.5.1 | ~6.4 kB | ❌ Same reasoning as TanStack Query, lighter. |
 
-### URL state (optional improvement — see §5)
+### URL state
 
 | Option | Version | +JS gzip | Notes |
 |---|---|---|---|
-| Native `useSearchParams` + `window.history.pushState` | Next 16 | 0 | Supported by Next.js; syncs with `useSearchParams`. `useSearchParams` on a static page needs a `<Suspense>` boundary. |
+| **Native History API** (current) | Next 16 | 0 | `window.history.pushState`/`replaceState` + a `popstate` listener, reading `window.location.search` in an effect. Supported by the App Router; no `useSearchParams`, so no `<Suspense>` boundary and the static HTML is the same for every query. |
 | nuqs | 2.10.2 | ~6.2 kB | Type-safe query-string state with a nicer API. Worth it with many URL params; not for one or two. |
 
 ## 4. Decision
@@ -83,14 +84,15 @@ Sizes are the minified + gzip size of a minimal usage, bundled with esbuild, Rea
 Keep **built-in React state**, with no state or data-fetching library.
 
 - **Why:** one shared value, a static read-only dataset, and a reviewer who rewards simple, readable data flow. Any library adds files, concepts and bytes without solving a problem the page has.
-- **Re-renders are already controlled:** `ProductCard` and `Swatch` are `memo`'d, and `ProductCatalog` passes stable `useCallback` handlers. Opening the modal re-renders `ProductCatalog`, but the 8 cards skip rendering.
+- **Re-renders are already controlled:** `ProductCard` is `memo`'d, and `useProductDeepLink` returns stable `useCallback` handlers. Opening the modal re-renders `ProductCatalog`, but the 8 cards skip rendering. Smaller leaves (`Swatch`, `ImageCarousel`) are deliberately not memoized: their props change on every render they get, so `memo` would only add cost.
+- **Selection lives in the URL too:** `?product=adisa&color=C2` makes a product shareable and lets mobile "Back" close the modal, at 0 kB.
 - **Trade-off accepted:** if the app grew to several pages sharing client state (a cart, favourites, filters), we'd move that state to a small store. We'd make that change then, not now.
 
 ## 5. What to revisit as the system grows
 
 | Trigger | Change |
 |---|---|
-| Shareable product links, or mobile "back" closing the modal | Put the selection in the URL (`?product=ML2001D-6S&sku=C2`) using native `pushState` + `useSearchParams`. This is the one change I'd consider even for the assignment; it improves UX, costs 0 kB, and could also feed `generateMetadata` per product later. |
+| Per-product SEO for shared links | The selection is already in the URL (done, see §4). Next step would be real routes or `generateMetadata` per product. |
 | Filters or sorting (frame type, colour) | URL state first (shareable, works with back/forward); consider nuqs once there are more than a couple of params. |
 | Client state shared across pages (cart, favourites, recently viewed) | Zustand (~0.4 kB), with a store per concern. Persist favourites with its `persist` middleware. |
 | Client-side fetching (stock polling, pagination, search) | TanStack Query, seeded from server data so the initial HTML stays complete. |

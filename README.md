@@ -13,6 +13,7 @@ npm run dev      # http://localhost:3000
 npm run build    # production build (fetches the products API)
 npm run start    # serve the production build
 npm run lint
+npx tsc --noEmit # type check (works on a fresh clone; *.svg imports are typed in src/assets/icons/svg.d.ts)
 ```
 
 Requires Node 20+. `API_BASE_URL` (the products API, server-only) is required — the build stops with a clear error if it is missing. Canonical and Open Graph URLs must be absolute: on Vercel they use the production domain automatically (`VERCEL_PROJECT_PRODUCTION_URL`). Set `NEXT_PUBLIC_SITE_URL` (see `.env.example`) only to override it, e.g. for a custom domain.
@@ -34,7 +35,9 @@ The page is mostly static content with a few interactive parts, which is what Ne
 | Performance | Static page regenerated hourly (ISR), `next/image` (resized WebP/AVIF, lazy loading; hero uses art-directed desktop/mobile crops via `getImageProps`), self-hosted Noto Sans JP via `next/font`, preloaded brand fonts |
 | Fresh data | `fetch(..., { next: { revalidate: 3600 } })` — if the API fails during revalidation, the last good page keeps being served |
 
-Only components that need state or events are Client Components (`'use client'`): `Navbar`, `MobileMenu`, `ProductCatalog` and what it renders. Hero, Footer and the page itself stay on the server.
+Only components that need state, events or browser APIs are Client Components (`'use client'`): `Navbar`, `MobileMenu`, `InputModality`, `ProductCatalog` and what it renders. Hero, Footer and the page itself stay on the server. `src/api/client.ts` imports `server-only`, so the build fails if client code ever imports the API layer.
+
+State is plain React (`useState`, lifted one level), with no state or data-fetching library. The reasoning and the alternatives considered are in [docs/state-management.md](docs/state-management.md).
 
 ## Project structure
 
@@ -56,7 +59,7 @@ src/
 │   ├── favicon.ico, icon.png, apple-icon.png  # from Figma frame `favion` (16/32/48, 512, 180) — Next adds the <link> tags
 │   └── globals.css             # @font-face, design tokens (CSS variables), reset
 ├── api/                        # server-side data fetching
-│   ├── client.ts               # apiGet(): API_BASE_URL + path, hourly revalidation, throws on failure
+│   ├── client.ts               # apiGet(): API_BASE_URL + path, hourly revalidation, throws on failure; server-only
 │   └── products/               # one folder per service
 │       ├── products.ts         # getProducts()
 │       ├── products.types.ts   # ProductsResponse
@@ -66,16 +69,24 @@ src/
 │   └── seo.ts                  # JSON-LD builder
 ├── types/product.ts            # shared API model types (from docs/products-api.md)
 ├── constants/site.ts           # site text, nav links, external URLs
-├── hooks/                      # useScrolled, useScrollLock, useEscape, useDragScroll
+├── assets/icons/               # icon SVGs → React components via SVGR (index.ts re-exports, svg.d.ts types them)
+├── hooks/
+│   ├── useProductDeepLink.ts   # selected product + SKU, synced with ?product=&color= (History API)
+│   ├── useFocusTrap.ts         # focus on open, Tab stays inside, focus returns on close (menu + modal)
+│   ├── useScrollLock.ts, useEscape.ts
+│   ├── useScrolled.ts          # navbar colour change
+│   ├── useDragScroll.ts        # mouse drag for horizontal strips
+│   └── useInView.ts            # starts the "HOW TO STYLE THEM" title animation
 └── components/                 # grouped by role; one folder per component (Component.tsx + Component.module.css)
     ├── shared/                 # product-agnostic
-    │   └── Highlight/          # black-block display heading ("PRODUCTS", "HOW TO STYLE THEM")
+    │   ├── Highlight/          # black-block display heading ("PRODUCTS", "HOW TO STYLE THEM")
+    │   └── InputModality/      # <html data-input="mouse|keyboard"> → focus rings only for keyboard users
     ├── layout/                 # page frame
     │   ├── Navbar/             # sticky navbar (transparent → orange) + MobileMenu, Logo
     │   ├── Hero/
     │   └── Footer/
     └── product/                # the product feature
-        ├── ProductCatalog/     # client boundary: holds the selected product
+        ├── ProductCatalog/     # client boundary: holds the selected product (useProductDeepLink)
         ├── ProductGrid/        # 3 columns ≥1024px, 1 column below
         ├── ProductCard/        # swatches switch image + P/No.; max 4 swatches + "+n"
         ├── ProductModal/       # right panel 616px / full screen; carousel, color chips, CTA
@@ -92,8 +103,11 @@ Styling conventions: design tokens live in `globals.css` as CSS variables; compo
 ## Behaviour
 
 - **Breakpoint:** `≥1024px` desktop, `<1024px` mobile.
+- **Navbar:** transparent over the hero, orange after 40px of scroll. Mobile: hamburger → overlay menu that closes on a link, ×, the backdrop or ESC, with focus trapped inside and returned to the hamburger.
 - **Card:** the whole card opens the modal (stretched button); swatches are separate buttons. Two-color SKUs show a split swatch; Brown Demi uses its pattern image.
-- **Modal:** opens with the first SKU; chips switch the carousel and P/No.; closes with ×, the backdrop or ESC; focus is trapped and returned; slide/fade animation, reduced-motion aware.
+- **Modal:** opens with the SKU selected on the card (or the "+" item's SKU); chips switch the carousel and P/No.; closes with ×, the backdrop or ESC; focus is trapped and returned; slide/fade animation, reduced-motion aware.
+- **Shareable links:** the open product is mirrored in the URL (`/?product=adisa&color=C2`). Opening such a link opens the modal; the browser's Back button closes it.
+- **Keyboard:** focus rings show for keyboard users only (`InputModality`).
 - **ONLINE STORE:** `https://www.owndays.com/jp/ja/products/{code}?sku={id}`; inverted on hover; disabled **OUT OF STOCK** when `in_stock === 0` (CHAUEN).
 - **Prices:** `¥7,800+tax` on cards, `¥7,800 税込` in the modal.
 

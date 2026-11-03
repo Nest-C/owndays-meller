@@ -7,7 +7,7 @@
 }
 
 .bar[data-solid='true'] {
-  background: var(--color-nav);
+  background: var(--color-brand);
 }
 
 .inner {
