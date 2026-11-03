@@ -1,4 +1,5 @@
 /* Brand fonts — the brief's @font-face declarations, copied as-is (docs/assignment.md 7.2: served from OWNDAYS storage, not re-hosted) */
+/* Favorit-Bold.woff2 and GTAmericaTrial-CmBl.woff2 are also preloaded by URL in layout.tsx (PRELOAD_FONTS) — keep both in sync */
 /* Favorit fonts */
 @font-face {
     font-family: 'Favorit';

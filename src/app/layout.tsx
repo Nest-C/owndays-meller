@@ -16,7 +16,7 @@ const notoSansJp = Noto_Sans_JP({
   variable: '--font-noto-sans-jp',
 });
 
-/** Brand fonts used above the fold (navbar, hero title) — fetched before the CSS asks for them */
+/** Above-the-fold brand fonts (navbar, hero title), fetched before the CSS asks for them — must match fonts.css */
 const PRELOAD_FONTS = [
   'https://storage.owndays.com/meller/fonts/Favorit/Favorit-Bold.woff2',
   'https://storage.owndays.com/meller/fonts/GTAmericaTrial/GTAmericaTrial-CmBl.woff2',
