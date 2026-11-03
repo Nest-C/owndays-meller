@@ -1,4 +1,4 @@
-import { ALL_ITEMS_URL, EXTERNAL_LINK, INSTAGRAM_URL, NAV_LINKS, OWNDAYS_URL, SUB_LINKS } from '@/constants/site';
+import { COLLECTION_URL, EXTERNAL_LINK, INSTAGRAM_URL, NAV_LINKS, OWNDAYS_URL, SUB_LINKS } from '@/constants/site';
 import { CartIcon, CopyIcon, InstagramIcon } from '@/assets/icons';
 import { SectionLink } from '@/components/shared/SectionLink/SectionLink';
 import styles from './Footer.module.css';
@@ -21,7 +21,7 @@ export function Footer() {
         </div>
 
         <div className={styles.right}>
-          <a href={ALL_ITEMS_URL} className={styles.store} {...EXTERNAL_LINK}>
+          <a href={COLLECTION_URL} className={styles.store} {...EXTERNAL_LINK}>
             <CartIcon width={22} height={22} /> ONLINE STORE
           </a>
           <a href={OWNDAYS_URL} className={styles.site} {...EXTERNAL_LINK}>

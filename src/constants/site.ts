@@ -25,7 +25,8 @@ export const SITE_KEYWORDS = [
 
 export const IMAGE_BASE_URL = 'https://storage.owndays.com/storage/';
 export const OWNDAYS_URL = 'https://www.owndays.com/jp/ja';
-export const ALL_ITEMS_URL = `${OWNDAYS_URL}/products?productLines[]=88`;
+/** All OWNDAYS × MELLER products on the online store (product line 88) — the footer's ONLINE STORE link */
+export const COLLECTION_URL = `${OWNDAYS_URL}/products?productLines[]=88`;
 export const INSTAGRAM_URL = 'https://www.instagram.com/owndays_jp/';
 
 /** Spread onto <a> for links that open a new tab */
