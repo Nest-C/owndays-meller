@@ -27,7 +27,7 @@
   user-select: none;
 }
 
-.track:focus-visible {
+:root:not([data-input='mouse']) .track:focus-visible {
   outline-offset: -2px;
 }
 

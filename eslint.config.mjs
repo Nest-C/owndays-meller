@@ -59,9 +59,9 @@ const eslintConfig = defineConfig([
     },
   },
 
-  // Next.js requires default exports for routes and config files
+  // Next.js requires default exports for routes and config files; .d.ts files mirror modules that export default (SVGR)
   {
-    files: ['src/app/**/{page,layout,not-found,error,loading}.tsx', '*.config.{ts,mjs}'],
+    files: ['src/app/**/{page,layout,not-found,error,loading}.tsx', '*.config.{ts,mjs}', 'src/**/*.d.ts'],
     rules: { 'import/no-default-export': 'off' },
   },
 

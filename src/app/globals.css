@@ -39,13 +39,17 @@
 
 /* Design tokens from Figma (desktop 1440px, mobile 390px) */
 :root {
-  --color-brand: #ff6a1f;
+  --color-brand: #f26a2f;
+  --color-nav: #f26a2f;
   --color-black: #000;
   --color-white: #fff;
   --color-surface: #f2f2f2;
   --color-swatch-border: #e2e2e2;
   --color-disabled: #5c5c5c;
+  --color-disabled-text: rgba(255, 255, 255, 0.6);
   --color-backdrop: rgba(0, 0, 0, 0.55);
+  --color-menu-backdrop: rgba(0, 0, 0, 0.35);
+  --color-hero-bg: #121212;
 
   --font-jp: var(--font-noto-sans-jp), 'Hiragino Kaku Gothic ProN', sans-serif;
   --font-favorit: 'Favorit', var(--font-jp);

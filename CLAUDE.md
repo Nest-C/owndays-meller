@@ -35,7 +35,7 @@ src/api/                 client.ts (apiGet, shared) + one folder per service: pr
 src/lib/                 product.ts (price, image URLs, default SKU, swatches, stock, store URL), seo.ts (JSON-LD)
 src/types/product.ts     API model types shared by several files
 src/constants/site.ts    SITE_URL, OG_IMAGE, nav links, external URLs
-src/assets/icons/        icon SVGs + index.ts; SVGR (`@svgr/webpack`, turbopack rule in next.config.ts) makes every .svg import a component → `<CartIcon width height />` renders an inline, aria-hidden <svg>
+src/assets/icons/        icon SVGs + index.ts + svg.d.ts (types `*.svg` imports, so `tsc` works before next-env.d.ts exists); SVGR (`@svgr/webpack`, turbopack rule in next.config.ts) makes every .svg import a component → `<CartIcon width height />` renders an inline, aria-hidden <svg>
 public/images/           hero-desktop.jpg, hero-mobile.jpg, filter-image.webp (hero grain), og-image.jpg
 src/hooks/               useScrolled, useScrollLock, useEscape, useDragScroll (mouse drag for the HowToStyle strip), useInView (starts the HowToStyle title wipe)
 src/components/
@@ -48,8 +48,8 @@ src/components/
 @CONVENTIONS.md
 
 ## Design tokens
-- CSS variables in `globals.css`: `--color-brand: #ff6a1f`, `--color-surface: #f2f2f2`, `--font-display`, `--gutter` 16px/70px, `--header-h` 70px/102px, `--modal-w: 616px`, z-index vars.
-- Orange `#ff6a1f` was read from screenshots (brief says `#F26A2F`) — confirm in Figma dev mode.
+- CSS variables in `globals.css`: `--color-brand: #f26a2f`, `--color-nav: #f26a2f` (solid navbar), `--color-surface: #f2f2f2`, `--font-display`, `--gutter` 16px/70px, `--header-h` 70px/102px, `--modal-w: 616px`, z-index vars.
+- Orange is `#F26A2F` per the brief (screenshots read `#ff6a1f`) — confirm in Figma dev mode.
 
 ## Behaviour (all implemented and tested)
 - Navbar: transparent over hero, orange after 40px scroll. Desktop text nav; mobile hamburger → black overlay menu (closes on link, ×, backdrop, ESC).

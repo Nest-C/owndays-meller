@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { EXTERNAL_LINK, NAV_LINKS, SUB_LINKS } from '@/constants/site';
 import { useEscape } from '@/hooks/useEscape';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
 import { useScrollLock } from '@/hooks/useScrollLock';
 import { CrossIcon } from '@/assets/icons';
 import styles from './MobileMenu.module.css';
@@ -12,10 +13,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   useScrollLock(open);
   useEscape(open, onClose);
-
-  useEffect(() => {
-    if (open) panelRef.current?.focus();
-  }, [open]);
+  const trapFocus = useFocusTrap(panelRef, open);
 
   return (
     // inert: the closed menu is out of the tab order and the accessibility tree
@@ -29,6 +27,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
         aria-modal="true"
         aria-label="メニュー"
         onClick={(e) => e.stopPropagation()}
+        onKeyDown={trapFocus}
       >
         <button type="button" className={styles.close} aria-label="メニューを閉じる" onClick={onClose}>
           <CrossIcon width={30} height={30} />

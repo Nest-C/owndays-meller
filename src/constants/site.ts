@@ -8,7 +8,7 @@ export const SITE_NAME = 'OWNDAYS × MELLER';
 export const OG_IMAGE = { url: '/images/og-image.jpg', width: 1200, height: 630, alt: SITE_NAME };
 
 /** Same as --color-brand in globals.css, for theme-color */
-export const BRAND_COLOR = '#ff6a1f';
+export const BRAND_COLOR = '#f26a2f';
 
 // Copied verbatim from the Figma "Meta data" frame (assignment §5)
 export const SITE_TITLE = '商品一覧 | OWNDAYS × MELLER（メラー） 公式オンラインストア｜サングラス';

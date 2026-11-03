@@ -58,6 +58,7 @@
   inset: 0;
 }
 
+/* The ring goes on the whole card instead (.card:has(.open:focus-visible) above) */
 .open:focus-visible {
   outline: none;
 }

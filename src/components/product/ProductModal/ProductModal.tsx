@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   formatYen,
   frameTypeLabel,
@@ -12,6 +12,7 @@ import {
 } from '@/lib/product';
 import { EXTERNAL_LINK } from '@/constants/site';
 import { useEscape } from '@/hooks/useEscape';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
 import { useScrollLock } from '@/hooks/useScrollLock';
 import { CrossIcon } from '@/assets/icons';
 import { ImageCarousel } from './ImageCarousel';
@@ -23,6 +24,7 @@ import { EXIT_MS } from './ProductModal.constants';
 export function ProductModal({ item, skuIndex, onSelectSku, onClose }: ProductModalProps) {
   const [closing, setClosing] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
+  const exitTimer = useRef<number>(undefined);
 
   const sku = item.skus[skuIndex] ?? item.skus[0];
   const name = item.product.model_name;
@@ -32,36 +34,15 @@ export function ProductModal({ item, skuIndex, onSelectSku, onClose }: ProductMo
   const requestClose = useCallback(() => {
     if (closing) return;
     setClosing(true);
-    window.setTimeout(onClose, EXIT_MS);
+    exitTimer.current = window.setTimeout(onClose, EXIT_MS);
   }, [closing, onClose]);
+
+  // Unmounted mid-exit (e.g. browser Back): don't call onClose afterwards
+  useEffect(() => () => window.clearTimeout(exitTimer.current), []);
 
   useScrollLock(true);
   useEscape(true, requestClose);
-
-  // Focus the dialog on open, return focus to the trigger on close
-  useEffect(() => {
-    const previous = document.activeElement as HTMLElement | null;
-    panelRef.current?.focus({ preventScroll: true });
-    return () => previous?.focus({ preventScroll: true });
-  }, []);
-
-  // Keep Tab inside the dialog
-  const trapFocus = (e: KeyboardEvent) => {
-    if (e.key !== 'Tab' || !panelRef.current) return;
-    const focusable = panelRef.current.querySelectorAll<HTMLElement>(
-      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
-    );
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-    const active = document.activeElement;
-    if (e.shiftKey && (active === first || active === panelRef.current)) {
-      e.preventDefault();
-      last?.focus();
-    } else if (!e.shiftKey && active === last) {
-      e.preventDefault();
-      first?.focus();
-    }
-  };
+  const trapFocus = useFocusTrap(panelRef, true);
 
   return (
     <div className={styles.root} data-state={closing ? 'closing' : 'open'} onKeyDown={trapFocus}>
@@ -80,13 +61,12 @@ export function ProductModal({ item, skuIndex, onSelectSku, onClose }: ProductMo
 
           <ImageCarousel key={sku.id /* reset scroll on color change */} images={sortedImages(sku)} alt={`${name} ${sku.code}`} />
 
-          <div className={styles.chips} role="radiogroup" aria-label="カラー">
+          <div className={styles.chips} role="group" aria-label="カラー">
             {item.skus.map((s, i) => (
               <button
                 key={s.id}
                 type="button"
-                role="radio"
-                aria-checked={i === skuIndex}
+                aria-pressed={i === skuIndex}
                 className={styles.chip}
                 onClick={() => onSelectSku(i)}
               >

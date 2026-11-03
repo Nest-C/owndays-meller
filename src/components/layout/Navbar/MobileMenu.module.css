@@ -2,7 +2,7 @@
   position: fixed;
   inset: 0;
   z-index: var(--z-menu);
-  background: rgba(0, 0, 0, 0.35);
+  background: var(--color-menu-backdrop);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   opacity: 0;
@@ -26,6 +26,7 @@
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* Focused only by script on open, to start the Tab order inside the menu */
 .panel:focus {
   outline: none;
 }

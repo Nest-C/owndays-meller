@@ -7,7 +7,6 @@ import { HowToStyle } from '@/components/product/HowToStyle/HowToStyle';
 import type { ProductCatalogProps } from './ProductCatalog.types';
 
 export function ProductCatalog({ products }: ProductCatalogProps) {
-  // Stable callbacks: memoized cards don't re-render when the modal opens/closes
   const { selection, open, selectSku, close } = useProductDeepLink(products);
 
   return (

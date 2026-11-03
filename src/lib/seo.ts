@@ -1,6 +1,6 @@
 import type { ProductItem } from '@/types/product';
 import { SITE_NAME } from '@/constants/site';
-import { imageUrl, isOutOfStock, onlineStoreUrl, sortedImages } from './product';
+import { defaultSkuIndex, imageUrl, isOutOfStock, onlineStoreUrl, sortedImages } from './product';
 
 /** schema.org ItemList of Products (name, price, stock) for search engines */
 export function productListJsonLd(products: ProductItem[]) {
@@ -10,7 +10,7 @@ export function productListJsonLd(products: ProductItem[]) {
     name: SITE_NAME,
     numberOfItems: products.length,
     itemListElement: products.map((item, index) => {
-      const sku = item.skus[0];
+      const sku = item.skus[defaultSkuIndex(item)];
       return {
         '@type': 'ListItem',
         position: index + 1,
