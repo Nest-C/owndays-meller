@@ -1,7 +1,5 @@
 import { useEffect, useState, type RefObject } from 'react';
-
-/** true once the element has scrolled into view (stays true) */
-export function useInView(ref: RefObject<Element | null>, threshold = 0.3): boolean {
+export function useInView(ref: RefObject<Element | null>, threshold = 1, rootMargin = '0px 0px -20% 0px'): boolean {
   const [inView, setInView] = useState(false);
 
   useEffect(() => {
@@ -14,11 +12,11 @@ export function useInView(ref: RefObject<Element | null>, threshold = 0.3): bool
           observer.disconnect();
         }
       },
-      { threshold },
+      { threshold, rootMargin },
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [ref, threshold]);
+  }, [ref, threshold, rootMargin]);
 
   return inView;
 }
