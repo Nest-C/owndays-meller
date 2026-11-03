@@ -1,14 +1,15 @@
 import { getImageProps } from 'next/image';
 import { preload } from 'react-dom';
 import { MEDIA_DESKTOP, MEDIA_MOBILE } from '@/constants/site';
+import heroDesktop from '@/assets/images/hero-desktop.jpg';
+import heroMobile from '@/assets/images/hero-mobile.jpg';
 import { Highlight } from '@/components/shared/Highlight/Highlight';
 import styles from './Hero.module.css';
-import { HERO_DESKTOP, HERO_MOBILE } from './Hero.constants';
 
 export function Hero() {
   const common = { alt: '', sizes: '100vw', fetchPriority: 'high', loading: 'eager' } as const;
-  const desktop = getImageProps({ ...common, ...HERO_DESKTOP }).props;
-  const { srcSet: mobileSrcSet, ...img } = getImageProps({ ...common, ...HERO_MOBILE }).props;
+  const desktop = getImageProps({ ...common, src: heroDesktop }).props;
+  const { srcSet: mobileSrcSet, ...img } = getImageProps({ ...common, src: heroMobile }).props;
 
   // LCP image: preload only the crop that matches the viewport
   const crops = [
