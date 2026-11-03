@@ -10,6 +10,29 @@ const nextConfig: NextConfig = {
     // instead of the 4-hour default so they aren't re-encoded (counts against Vercel's image quota).
     minimumCacheTTL: 2678400,
   },
+  // `import Icon from './x.svg'` gives a React component (inline <svg>) instead of an image URL
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: [
+          {
+            loader: '@svgr/webpack',
+            options: {
+              svgProps: { 'aria-hidden': 'true' }, // all icons are decorative
+              svgoConfig: {
+                plugins: [
+                  // keep viewBox so width/height props scale the icon; prefix ids so clipPaths can't clash
+                  { name: 'preset-default', params: { overrides: { removeViewBox: false } } },
+                  'prefixIds',
+                ],
+              },
+            },
+          },
+        ],
+        as: '*.js',
+      },
+    },
+  },
   // /public files are served with max-age=0 by default; font files never change, so cache them for a year
   async headers() {
     return [

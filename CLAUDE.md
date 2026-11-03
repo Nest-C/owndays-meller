@@ -32,17 +32,18 @@ Env: `.env.local` (git-ignored; template `.env.example`). `API_BASE_URL` is **re
 ```
 src/app/                 layout, (landing)/page.tsx, globals.css (tokens + @font-face + reset), favicon.ico, icon.png, apple-icon.png
 src/api/                 client.ts (apiGet), endpoints.ts, products.ts (getProducts) — server-only data fetching
-src/lib/                 types.ts, format.ts (prices, image URLs, swatches, store URL), seo.ts
+src/lib/                 types.ts (API model types shared by several files), format.ts (prices, image URLs, swatches, store URL), seo.ts
 src/constants/site.ts    SITE_URL, OG_IMAGE, nav links, external URLs
+src/assets/icons/        icon SVGs + index.ts; SVGR (`@svgr/webpack`, turbopack rule in next.config.ts) makes every .svg import a component → `<CartIcon width height />` renders an inline, aria-hidden <svg>
 public/images/           hero-desktop.jpg, hero-mobile.jpg, filter-image.webp (hero grain), og-image.jpg
 src/hooks/               useScrolled, useScrollLock, useEscape, useDragScroll (mouse drag for the HowToStyle strip), useInView (starts the HowToStyle title wipe)
 src/components/
-  shared/                product-agnostic: Logo, Highlight, icons.tsx
-  layout/                Navbar (+MobileMenu), Hero, Footer
+  shared/                product-agnostic: Highlight
+  layout/                Navbar (+MobileMenu, Logo), Hero, Footer
   product/               ProductCatalog (client boundary, owns selected product), ProductGrid, ProductCard,
-                         ProductModal (+ImageCarousel), HowToStyle (+styleItems.ts), Swatch
+                         ProductModal (+ImageCarousel), HowToStyle (STYLE_ITEMS in HowToStyle.constants.ts), Swatch
 ```
-- One folder per component: `Component.tsx` + `Component.module.css`.
+- One folder per component: `Component.tsx` + `Component.module.css` + `Component.types.ts` (its props and any type only it uses) + `Component.constants.ts` (constants only it uses). Shared constants live in `src/constants/`. A type used in more than one place lives in `src/lib/types.ts`; API-only types sit next to the API code (`src/api/products.types.ts`).
 - Dependencies flow one way: `shared/` → `layout/` / `product/` → `app/`. ESLint `no-restricted-imports` blocks `shared/` importing from the other groups.
 - Imports use the `@/` alias.
 
@@ -58,7 +59,7 @@ src/components/
 - Swatch: hex fill; pattern image when `hex_code` null (Brown Demi); two-color SKUs split diagonally; inset border keeps near-white colors visible.
 - Modal: right panel 616px desktop / full screen mobile; slide/fade animation; carousel with snap; color chips (English names) switch carousel + P/No.; TYPE from `frame_types[0].code` uppercased; price `¥7,800 税込`; ESC/×/backdrop close; focus trap + restore; body scroll lock.
 - CTA: `https://www.owndays.com/jp/ja/products/{code}?sku={sku.id}`; hover inverts; `in_stock === 0` → disabled "OUT OF STOCK" (CHAUEN).
-- HowToStyle: horizontal scroll strip, "+" (70px desktop / 56px mobile) opens the modal for the product in `styleItems.ts`.
+- HowToStyle: horizontal scroll strip, "+" (70px desktop / 56px mobile) opens the modal for the product in `HowToStyle.constants.ts`.
 
 ## Data quirks
 - CHAUEN (ML2002D-6S) has `in_stock: 0`.
@@ -67,7 +68,7 @@ src/components/
 
 ## Still to do
 - [ ] Run against the real API and compare desktop + mobile with Figma (spacing and sizes were measured from screenshots, not dev-mode values).
-- [ ] Export from Figma: lifestyle photos → `public/images/style/` + `image:` in `styleItems.ts`. Hero, OGP and favicon are done (favicon: `src/app/favicon.ico` 16/32/48 + `icon.png` 512 + `apple-icon.png` 180, from frame `favion` 627:4906). Logo is done (`public/logo.svg`, white, 351×52). Height 16px mobile / 52px desktop matches the brief's padding math (23+16+23 = 62, 25+52+25 = 102); the brief's "240×16" mobile size can't keep the SVG's ratio (16px tall = ~108px wide) — check in Figma.
+- [ ] Export from Figma: lifestyle photos → `public/images/style/` + `image:` in `HowToStyle.constants.ts`. Hero, OGP and favicon are done (favicon: `src/app/favicon.ico` 16/32/48 + `icon.png` 512 + `apple-icon.png` 180, from frame `favion` 627:4906). Logo is done (`public/logo.svg`, white, 351×52). Height 16px mobile / 52px desktop matches the brief's padding math (23+16+23 = 62, 25+52+25 = 102); the brief's "240×16" mobile size can't keep the SVG's ratio (16px tall = ~108px wide) — check in Figma.
 - [ ] Deploy to Vercel (bonus) — set `API_BASE_URL` in Vercel env; `NEXT_PUBLIC_SITE_URL` only for a custom domain.
 
 ## Related

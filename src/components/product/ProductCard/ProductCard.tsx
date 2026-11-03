@@ -2,17 +2,11 @@
 
 import { memo, useState } from 'react';
 import Image from 'next/image';
-import type { ProductItem } from '@/lib/types';
 import { defaultSkuIndex, formatYen, productNumber, skuThumbnail } from '@/lib/format';
 import { Swatch } from '@/components/product/Swatch/Swatch';
 import styles from './ProductCard.module.css';
-
-const MAX_SWATCHES = 4;
-
-interface ProductCardProps {
-  item: ProductItem;
-  onOpen: (item: ProductItem, skuIndex: number) => void;
-}
+import type { ProductCardProps } from './ProductCard.types';
+import { MAX_SWATCHES } from './ProductCard.constants';
 
 export const ProductCard = memo(function ProductCard({ item, onOpen }: ProductCardProps) {
   const [skuIndex, setSkuIndex] = useState(() => defaultSkuIndex(item));

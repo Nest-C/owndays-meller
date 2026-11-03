@@ -1,13 +1,7 @@
 import { memo } from 'react';
-import type { Sku } from '@/lib/types';
 import { skuColorLabel, skuSwatchBackground } from '@/lib/format';
 import styles from './Swatch.module.css';
-
-interface SwatchProps {
-  sku: Sku;
-  selected: boolean;
-  onSelect: () => void;
-}
+import type { SwatchProps } from './Swatch.types';
 
 export const Swatch = memo(function Swatch({ sku, selected, onSelect }: SwatchProps) {
   return (

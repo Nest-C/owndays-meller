@@ -79,13 +79,18 @@
   place-items: center;
   font-size: 26px;
   background: var(--color-brand);
-  color: var(--color-black);
-  transition: background-color 0.2s, color 0.2s;
+  transition: opacity 0.2s;
 }
 
+/* The icon is black in its file, so hover fades instead of turning the button black */
 .plus:hover {
-  background: var(--color-black);
-  color: var(--color-brand);
+  opacity: 0.8;
+}
+
+/* Sized by the button's font-size; the file has padding, so 1.15em ≈ the old glyph size */
+.plus > svg {
+  width: 1.15em;
+  height: 1.15em;
 }
 
 @media (min-width: 1024px) {

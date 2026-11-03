@@ -1,18 +1,13 @@
 import { useMemo, useRef } from 'react';
 import Image from 'next/image';
-import type { ProductItem } from '@/lib/types';
 import { imageUrl, sortedImages } from '@/lib/format';
 import { useDragScroll } from '@/hooks/useDragScroll';
 import { useInView } from '@/hooks/useInView';
 import { Highlight } from '@/components/shared/Highlight/Highlight';
-import { PlusIcon } from '@/components/shared/icons';
-import { STYLE_ITEMS } from './styleItems';
+import { PlusIcon } from '@/assets/icons';
+import { STYLE_ITEMS } from './HowToStyle.constants';
 import styles from './HowToStyle.module.css';
-
-interface HowToStyleProps {
-  products: ProductItem[];
-  onOpen: (item: ProductItem, skuIndex?: number) => void;
-}
+import type { HowToStyleProps } from './HowToStyle.types';
 
 export function HowToStyle({ products, onOpen }: HowToStyleProps) {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -71,7 +66,7 @@ export function HowToStyle({ products, onOpen }: HowToStyleProps) {
                 onOpen(slide.item, slide.skuIndex);
               }}
             >
-              <PlusIcon />
+              <PlusIcon width={47} height={47} />
             </button>
           </div>
         ))}

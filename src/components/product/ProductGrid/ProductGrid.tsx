@@ -1,12 +1,6 @@
-import type { ProductItem } from '@/lib/types';
-import { ALL_ITEMS_URL } from '@/constants/site';
 import { ProductCard } from '@/components/product/ProductCard/ProductCard';
 import styles from './ProductGrid.module.css';
-
-interface ProductGridProps {
-  products: ProductItem[];
-  onOpen: (item: ProductItem, skuIndex: number) => void;
-}
+import type { ProductGridProps } from './ProductGrid.types';
 
 export function ProductGrid({ products, onOpen }: ProductGridProps) {
   return (

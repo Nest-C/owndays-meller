@@ -2,13 +2,7 @@ import { getImageProps } from 'next/image';
 import { preload } from 'react-dom';
 import { Highlight } from '@/components/shared/Highlight/Highlight';
 import styles from './Hero.module.css';
-
-const DESKTOP = '(min-width: 1024px)';
-const MOBILE = '(max-width: 1023.98px)';
-
-/** Files in /public/images — width/height are the files' pixel sizes */
-const HERO_DESKTOP = { src: '/images/hero-desktop.jpg', width: 2560, height: 1125 };
-const HERO_MOBILE = { src: '/images/hero-mobile.jpg', width: 1170, height: 2031 };
+import { DESKTOP, HERO_DESKTOP, HERO_MOBILE, MOBILE } from './Hero.constants';
 
 export function Hero() {
   const common = { alt: '', sizes: '100vw', fetchPriority: 'high', loading: 'eager' } as const;

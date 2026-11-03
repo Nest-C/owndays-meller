@@ -1,4 +1,5 @@
-import type { ProductItem, ProductsResponse } from '@/lib/types';
+import type { ProductItem } from '@/lib/types';
+import type { ProductsResponse } from './products.types';
 import { apiGet } from './client';
 import { ENDPOINTS } from './endpoints';
 

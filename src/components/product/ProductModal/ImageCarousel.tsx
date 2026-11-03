@@ -1,13 +1,8 @@
 import { memo } from 'react';
 import Image from 'next/image';
-import type { ProductImage } from '@/lib/types';
 import { imageUrl } from '@/lib/format';
 import styles from './ImageCarousel.module.css';
-
-interface ImageCarouselProps {
-  images: ProductImage[];
-  alt: string;
-}
+import type { ImageCarouselProps } from './ImageCarousel.types';
 
 /**
  * Free horizontal scroll with snap. Slides are centered with the

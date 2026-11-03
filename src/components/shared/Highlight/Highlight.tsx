@@ -1,14 +1,6 @@
-import type { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties } from 'react';
 import styles from './Highlight.module.css';
-
-interface HighlightProps {
-  children: ReactNode;
-  color?: 'brand' | 'white';
-  /** Seconds before the wipe starts */
-  delay?: number;
-  /** false = hold the hidden start state (e.g. until scrolled into view) */
-  play?: boolean;
-}
+import type { HighlightProps } from './Highlight.types';
 
 /**
  * Display text on a black bar — the "PRODUCTS" / "HOW TO STYLE THEM" treatment in the design.

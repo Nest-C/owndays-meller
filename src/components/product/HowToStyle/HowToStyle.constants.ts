@@ -1,8 +1,4 @@
-export interface StyleItem {
-  productCode: string;
-  skuCode: string;
-  image?: string;
-}
+import type { StyleItem } from './HowToStyle.types';
 
 export const STYLE_ITEMS: StyleItem[] = [
   { productCode: 'ML2006D-6S', skuCode: 'C1' },

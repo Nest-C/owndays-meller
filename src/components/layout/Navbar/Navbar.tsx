@@ -3,8 +3,8 @@
 import { useCallback, useState } from 'react';
 import { NAV_LINKS } from '@/constants/site';
 import { useScrolled } from '@/hooks/useScrolled';
-import { HamburgerIcon } from '@/components/shared/icons';
-import { Logo } from '@/components/shared/Logo/Logo';
+import { HamburgerIcon } from '@/assets/icons';
+import { Logo } from './Logo';
 import { MobileMenu } from './MobileMenu';
 import styles from './Navbar.module.css';
 
@@ -41,7 +41,7 @@ export function Navbar() {
             aria-controls="mobile-menu"
             onClick={() => setMenuOpen(true)}
           >
-            <HamburgerIcon />
+            <HamburgerIcon width={20} height={24} />
           </button>
         </div>
       </header>

@@ -41,8 +41,6 @@
   height: 42px;
   display: grid;
   place-items: center;
-  font-size: 30px;
-  color: var(--color-brand);
 }
 
 .mainLinks {

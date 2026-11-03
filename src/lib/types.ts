@@ -1,6 +1,3 @@
-// Types derived from GET /meller/products.json
-// Schema: https://github.com/frontend-otm/api/blob/main/meller/PRODUCTS_README.md
-
 export interface ColorLocalization {
   language_code: string;
   name: string;
@@ -83,12 +80,4 @@ export interface ProductItem {
   tags: unknown[];
   selling_setting: SellingSetting;
   skus: Sku[];
-}
-
-export interface ProductsResponse {
-  success: boolean;
-  message: string;
-  total: number;
-  not_found: string[];
-  data: ProductItem[];
 }

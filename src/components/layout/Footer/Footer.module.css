@@ -35,7 +35,6 @@
 
 .social {
   width: fit-content;
-  font-size: 18px;
 }
 
 .right {
@@ -54,10 +53,6 @@
   gap: 10px;
   font-weight: 700;
   font-size: 18px;
-}
-
-.store svg {
-  font-size: 22px;
 }
 
 .site {

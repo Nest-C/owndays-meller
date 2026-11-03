@@ -60,23 +60,21 @@ src/
 │   ├── endpoints.ts            # API paths (products: /meller/products.json)
 │   └── products.ts             # getProducts()
 ├── lib/
-│   ├── types.ts                # API types (from PRODUCTS_README.md)
+│   ├── types.ts                # shared API model types (from PRODUCTS_README.md)
 │   ├── format.ts               # prices, image URLs, swatches, store URL
 │   └── seo.ts                  # JSON-LD builder
 ├── constants/site.ts           # site text, nav links, external URLs
 ├── hooks/                      # useScrolled, useScrollLock, useEscape, useDragScroll
 └── components/                 # grouped by role; one folder per component (Component.tsx + Component.module.css)
     ├── shared/                 # product-agnostic
-    │   ├── Logo/
-    │   ├── Highlight/          # black-block display heading ("PRODUCTS", "HOW TO STYLE THEM")
-    │   └── icons.tsx
+    │   └── Highlight/          # black-block display heading ("PRODUCTS", "HOW TO STYLE THEM")
     ├── layout/                 # page frame
-    │   ├── Navbar/             # sticky navbar (transparent → orange) + MobileMenu
+    │   ├── Navbar/             # sticky navbar (transparent → orange) + MobileMenu, Logo
     │   ├── Hero/
     │   └── Footer/
     └── product/                # the product feature
         ├── ProductCatalog/     # client boundary: holds the selected product
-        ├── ProductGrid/        # 3 columns ≥1024px, 1 column below; ALL ITEMS button
+        ├── ProductGrid/        # 3 columns ≥1024px, 1 column below
         ├── ProductCard/        # swatches switch image + P/No.; max 4 swatches + "+n"
         ├── ProductModal/       # right panel 616px / full screen; carousel, color chips, CTA
         ├── HowToStyle/         # "HOW TO STYLE THEM": horizontal photo strip (mouse drag on desktop), "+" opens the product
@@ -101,4 +99,4 @@ Hero, OGP, logo and favicon are done. Still missing (the page falls back to prod
 
 | Asset | Where it goes |
 |---|---|
-| "How to style them" photos | `public/images/style/…`, then add `image:` to each entry in `src/components/product/HowToStyle/styleItems.ts` (each entry also says which product its "+" opens) |
+| "How to style them" photos | `public/images/style/…`, then add `image:` to each entry in `src/components/product/HowToStyle/HowToStyle.constants.ts` (each entry also says which product its "+" opens) |

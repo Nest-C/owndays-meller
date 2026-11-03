@@ -4,13 +4,9 @@ import { useEffect, useRef } from 'react';
 import { NAV_LINKS, SUB_LINKS } from '@/constants/site';
 import { useEscape } from '@/hooks/useEscape';
 import { useScrollLock } from '@/hooks/useScrollLock';
-import { CrossIcon } from '@/components/shared/icons';
+import { CrossIcon } from '@/assets/icons';
 import styles from './MobileMenu.module.css';
-
-interface MobileMenuProps {
-  open: boolean;
-  onClose: () => void;
-}
+import type { MobileMenuProps } from './MobileMenu.types';
 
 export function MobileMenu({ open, onClose }: MobileMenuProps) {
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -33,7 +29,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
         onClick={(e) => e.stopPropagation()}
       >
         <button ref={closeRef} type="button" className={styles.close} aria-label="メニューを閉じる" onClick={onClose}>
-          <CrossIcon />
+          <CrossIcon width={30} height={30} />
         </button>
 
         <ul className={styles.mainLinks}>

@@ -1,7 +1,6 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from 'react';
-import type { ProductItem } from '@/lib/types';
 import {
   formatYen,
   frameTypeLabel,
@@ -13,19 +12,11 @@ import {
 } from '@/lib/format';
 import { useEscape } from '@/hooks/useEscape';
 import { useScrollLock } from '@/hooks/useScrollLock';
-import { CrossIcon } from '@/components/shared/icons';
+import { CrossIcon } from '@/assets/icons';
 import { ImageCarousel } from './ImageCarousel';
 import styles from './ProductModal.module.css';
-
-/** Must match the animation duration in ProductModal.module.css */
-const EXIT_MS = 300;
-
-interface ProductModalProps {
-  item: ProductItem;
-  skuIndex: number;
-  onSelectSku: (index: number) => void;
-  onClose: () => void;
-}
+import type { ProductModalProps } from './ProductModal.types';
+import { EXIT_MS } from './ProductModal.constants';
 
 /** Mounted only while a product is selected; plays its own exit animation. */
 export function ProductModal({ item, skuIndex, onSelectSku, onClose }: ProductModalProps) {
@@ -81,7 +72,7 @@ export function ProductModal({ item, skuIndex, onSelectSku, onClose }: ProductMo
               {item.product.model_name}
             </h2>
             <button ref={closeRef} type="button" className={styles.close} aria-label="閉じる" onClick={requestClose}>
-              <CrossIcon />
+              <CrossIcon width={42} height={42} />
             </button>
           </div>
 

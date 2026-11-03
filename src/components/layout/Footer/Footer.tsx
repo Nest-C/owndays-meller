@@ -1,5 +1,5 @@
 import { ALL_ITEMS_URL, INSTAGRAM_URL, NAV_LINKS, OWNDAYS_URL, SUB_LINKS } from '@/constants/site';
-import { CartIcon, ExternalIcon, InstagramIcon } from '@/components/shared/icons';
+import { CartIcon, CopyIcon, InstagramIcon } from '@/assets/icons';
 import styles from './Footer.module.css';
 
 export function Footer() {
@@ -15,16 +15,16 @@ export function Footer() {
             ))}
           </nav>
           <a href={INSTAGRAM_URL} className={styles.social} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-            <InstagramIcon />
+            <InstagramIcon width={18} height={18} />
           </a>
         </div>
 
         <div className={styles.right}>
           <a href={ALL_ITEMS_URL} className={styles.store} target="_blank" rel="noopener noreferrer">
-            <CartIcon /> ONLINE STORE
+            <CartIcon width={22} height={22} /> ONLINE STORE
           </a>
           <a href={OWNDAYS_URL} className={styles.site} target="_blank" rel="noopener noreferrer">
-            OWNDAYS.COM <ExternalIcon />
+            OWNDAYS.COM <CopyIcon width={14} height={12} />
           </a>
         </div>
       </div>
