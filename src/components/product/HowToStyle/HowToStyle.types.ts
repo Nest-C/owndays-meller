@@ -1,3 +1,4 @@
+import type { StaticImageData } from 'next/image';
 import type { ProductItem } from '@/types/product';
 
 export interface HowToStyleProps {
@@ -8,5 +9,5 @@ export interface HowToStyleProps {
 export interface StyleItem {
   productCode: string;
   skuCode: string;
-  image?: string;
+  image?: StaticImageData; // static import from src/assets/images/style/
 }

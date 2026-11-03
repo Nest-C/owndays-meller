@@ -6,6 +6,8 @@ import stylistic from '@stylistic/eslint-plugin';
 // Import order, top to bottom (no blank lines between groups)
 const ALIAS_ORDER = ['@/api', '@/lib', '@/types', '@/constants', '@/hooks', '@/assets', '@/components'];
 
+const NO_PARENT_IMPORTS = { group: ['../*'], message: 'Use the @/ alias instead of ../' };
+
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
@@ -46,7 +48,7 @@ const eslintConfig = defineConfig([
           'newlines-between': 'never',
         },
       ],
-      'no-restricted-imports': ['error', { patterns: [{ group: ['../*'], message: 'Use the @/ alias instead of ../' }] }],
+      'no-restricted-imports': ['error', { patterns: [NO_PARENT_IMPORTS] }],
       'import/no-default-export': 'error',
 
       // Code
@@ -73,7 +75,7 @@ const eslintConfig = defineConfig([
         'error',
         {
           patterns: [
-            { group: ['../*'], message: 'Use the @/ alias instead of ../' },
+            NO_PARENT_IMPORTS,
             {
               group: ['@/components/layout/*', '@/components/product/*'],
               message: 'shared/ must not import from layout/ or product/.',

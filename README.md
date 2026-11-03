@@ -13,7 +13,7 @@ npm run dev      # http://localhost:3000
 npm run build    # production build (fetches the products API)
 npm run start    # serve the production build
 npm run lint
-npx tsc --noEmit # type check (works on a fresh clone; *.svg imports are typed in src/assets/icons/svg.d.ts)
+npx tsc --noEmit # type check (works on a fresh clone; *.svg / *.jpg imports are typed in src/assets/icons/svg.d.ts and src/assets/images/image.d.ts)
 ```
 
 Requires Node 20+. `API_BASE_URL` (the products API, server-only) is required — the build stops with a clear error if it is missing. Canonical and Open Graph URLs must be absolute: on Vercel they use the production domain automatically (`VERCEL_PROJECT_PRODUCTION_URL`). Set `NEXT_PUBLIC_SITE_URL` (see `.env.example`) only to override it, e.g. for a custom domain.
@@ -32,7 +32,7 @@ The page is mostly static content with a few interactive parts, which is what Ne
 | OGP image 1200×630 | `public/images/og-image.jpg` (Figma frame `ogp_1200x630`, compressed to ~170 KB), set as `openGraph.images` / `twitter.images` via `OG_IMAGE` in `constants/site.ts` |
 | Products visible to crawlers | `app/(landing)/page.tsx` fetches on the server, so all 8 products are in the initial HTML |
 | Rich results | `schema.org` `ItemList` / `Product` JSON-LD with price and stock |
-| Performance | Static page regenerated hourly (ISR), `next/image` (resized WebP/AVIF, lazy loading; hero uses art-directed desktop/mobile crops via `getImageProps`), self-hosted Noto Sans JP via `next/font`, preloaded brand fonts |
+| Performance | Static page regenerated hourly (ISR), `next/image` (resized WebP/AVIF, lazy loading; hero uses art-directed desktop/mobile crops via `getImageProps`), Noto Sans JP via `next/font`; brand fonts from OWNDAYS storage with the brief's `@font-face` as-is (not re-hosted), above-the-fold ones preloaded |
 | Fresh data | `fetch(..., { next: { revalidate: 3600 } })` — if the API fails during revalidation, the last good page keeps being served |
 
 Only components that need state, events or browser APIs are Client Components (`'use client'`): `Navbar`, `MobileMenu`, `InputModality`, `ProductCatalog` and what it renders. Hero, Footer and the page itself stay on the server. `src/api/client.ts` imports `server-only`, so the build fails if client code ever imports the API layer.
@@ -42,12 +42,9 @@ State is plain React (`useState`, lifted one level), with no state or data-fetch
 ## Project structure
 
 ```
-public/
-├── fonts/                      # brand fonts (Favorit, GT America Trial), self-hosted
+public/                         # only files that need a fixed URL
 ├── images/
-│   ├── hero-desktop.jpg        # hero crops (art direction: desktop strip / mobile portrait)
-│   ├── hero-mobile.jpg
-│   ├── filter-image.webp       # grain texture tiled over the hero
+│   ├── filter-image.webp       # grain texture tiled over the hero (CSS url())
 │   └── og-image.jpg            # Open Graph / Twitter share image
 └── logo.svg                    # navbar logo
 
@@ -57,7 +54,7 @@ src/
 │   ├── (landing)/              # route group: the parentheses keep it out of the URL, so this is still "/"
 │   │   └── page.tsx            # the landing page — server: fetch products, render page, JSON-LD
 │   ├── favicon.ico, icon.png, apple-icon.png  # from Figma frame `favion` (16/32/48, 512, 180) — Next adds the <link> tags
-│   └── globals.css             # @font-face, design tokens (CSS variables), reset
+│   └── globals.css             # brief's @font-face (OWNDAYS storage), design tokens (CSS variables), reset
 ├── api/                        # server-side data fetching
 │   ├── client.ts               # apiGet(): API_BASE_URL + path, hourly revalidation, throws on failure; server-only
 │   └── products/               # one folder per service
@@ -69,7 +66,9 @@ src/
 │   └── seo.ts                  # JSON-LD builder
 ├── types/product.ts            # shared API model types (from docs/products-api.md)
 ├── constants/site.ts           # site text, nav links, external URLs
-├── assets/icons/               # icon SVGs → React components via SVGR (index.ts re-exports, svg.d.ts types them)
+├── assets/                     # imported files: hashed names, build fails if one is missing
+│   ├── images/                 # hero crops (art direction: desktop strip / mobile portrait), statically imported
+│   └── icons/                  # icon SVGs → React components via SVGR (index.ts re-exports, svg.d.ts types them)
 ├── hooks/
 │   ├── useProductDeepLink.ts   # selected product + SKU, synced with ?product=&color= (History API)
 │   ├── useFocusTrap.ts         # focus on open, Tab stays inside, focus returns on close (menu + modal)
@@ -117,4 +116,4 @@ Hero, OGP, logo and favicon are done. Still missing (the page falls back to prod
 
 | Asset | Where it goes |
 |---|---|
-| "How to style them" photos | `public/images/style/…`, then add `image:` to each entry in `src/components/product/HowToStyle/HowToStyle.constants.ts` (each entry also says which product its "+" opens) |
+| "How to style them" photos | `src/assets/images/style/…`, then import each one as `image:` in its entry in `src/components/product/HowToStyle/HowToStyle.constants.ts` (each entry also says which product its "+" opens) |

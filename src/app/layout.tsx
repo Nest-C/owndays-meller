@@ -15,6 +15,12 @@ const notoSansJp = Noto_Sans_JP({
   variable: '--font-noto-sans-jp',
 });
 
+/** Brand fonts used above the fold (navbar, hero title) — fetched before the CSS asks for them */
+const PRELOAD_FONTS = [
+  'https://storage.owndays.com/meller/fonts/Favorit/Favorit-Bold.woff2',
+  'https://storage.owndays.com/meller/fonts/GTAmericaTrial/GTAmericaTrial-CmBl.woff2',
+];
+
 const share = { title: SITE_TITLE, description: SITE_DESCRIPTION, images: [OG_IMAGE] };
 
 export const metadata: Metadata = {
@@ -26,9 +32,6 @@ export const metadata: Metadata = {
   openGraph: { ...share, type: 'website', locale: 'ja_JP', siteName: 'OWNDAYS', url: '/' },
   twitter: { ...share, card: 'summary_large_image' },
 };
-
-/** Brand fonts used above the fold — fetched before the CSS asks for them */
-const PRELOAD_FONTS = ['/fonts/Favorit-Bold.woff2', '/fonts/GTAmericaTrial-CmBl.woff2'];
 
 export const viewport: Viewport = {
   themeColor: BRAND_COLOR,

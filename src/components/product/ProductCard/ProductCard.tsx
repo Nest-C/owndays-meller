@@ -10,7 +10,7 @@ import { MAX_SWATCHES } from './ProductCard.constants';
 
 export const ProductCard = memo(function ProductCard({ item, onOpen }: ProductCardProps) {
   const [skuIndex, setSkuIndex] = useState(() => defaultSkuIndex(item));
-  
+
   const sku = item.skus[skuIndex] ?? item.skus[0];
   const name = item.product.model_name;
   const thumbnail = skuThumbnail(sku);

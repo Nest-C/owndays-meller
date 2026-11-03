@@ -8,7 +8,7 @@ Frontend interview assignment: one responsive product listing page for the OWNDA
 - Figma (dev mode copy): https://www.figma.com/design/Gjoc232seWWtLnzRPW9eDQ/1---OWNDAYS-x-MELLER?node-id=212-332&m=dev — frames: TOP MENU (mobile menu), PRODUCTS (desktop 1440×3541 and mobile 390), MODAl_Follow-up support (product modal, desktop + mobile), parts, favion, ogp_1200x630
 - Products API: `GET https://api-one-alpha-60.vercel.app/meller/products.json` (schema: https://github.com/frontend-otm/api/blob/main/meller/PRODUCTS_README.md)
 - Images: prefix `path` with `https://storage.owndays.com/storage/`
-- Brand fonts (self-hosted in `public/fonts/`, @font-face in `globals.css`, 1-year immutable cache via `headers()` in `next.config.ts`; originals on `storage.owndays.com/meller/fonts/`): Favorit 400/500/700, GT America Trial Cm (CmBd = 700, CmBl = 900 — the brief maps these the other way round; "Bl" = Black is the heavier one)
+- Brand fonts are loaded from OWNDAYS storage, **not re-hosted**: the brief (docs/assignment.md 7.2) says to use its `@font-face` declarations as-is, so they are pasted verbatim at the top of `globals.css` (Favorit 400/500/700, GT America Trial Cm 500/700/900, GT America Trial 500, Founders Grotesk 400/500). Don't edit them or move the files into the repo. Storage sends `access-control-allow-origin: *` but `Cache-Control: no-store`, which we can't change.
 
 ## Commands
 ```bash
@@ -24,19 +24,21 @@ Env: `.env.local` (git-ignored; template `.env.example`). `API_BASE_URL` is **re
 - `cacheComponents` is deliberately **off**; data uses `fetch(..., { next: { revalidate: 3600 } })` in `src/api/client.ts` (`apiGet`, ISR, page is static); one folder per service: `getProducts()` in `src/api/products/products.ts` (path in `products.constants.ts`, response type in `products.types.ts`). `getProducts()` throws on failure on purpose so a failed revalidation keeps the last good page.
 - Products are fetched in the Server Component `src/app/(landing)/page.tsx` (route group — URL is still `/`; don't also add `src/app/page.tsx`, both would resolve to `/`) so all cards are in the initial HTML (SEO). JSON-LD `ItemList`/`Product` from `src/lib/seo.ts`.
 - `src/app/layout.tsx` renders Navbar, `<main id="top">{children}</main>`, Footer — pages render only their own sections. Metadata (title, description, canonical, OG, Twitter) is there too; OGP is `public/images/og-image.jpg` (compressed Figma export), wired via `OG_IMAGE` in `src/constants/site.ts`.
-- `next/image` with `remotePatterns` for storage.owndays.com. Next 16: use `preload`, not the deprecated `priority`. Hero uses art direction (`getImageProps` + `<picture>`, two crops `public/images/hero-desktop.jpg` 2560×1125 / `hero-mobile.jpg` 1170×2031 — width/height are hard-coded in `Hero.tsx`, update them if the files change; matching crop preloaded per media query; grain overlay = `public/images/filter-image.webp` tiled in `Hero.module.css`).
-- Noto Sans JP via `next/font/google` (`preload: false`). Brand fonts preloaded with `react-dom` `preload()`.
+- `next/image` with `remotePatterns` for storage.owndays.com. Next 16: use `preload`, not the deprecated `priority`. Hero uses art direction (`getImageProps` + `<picture>`, two crops `src/assets/images/hero-desktop.jpg` 2560×1125 / `hero-mobile.jpg` 1170×2031, statically imported in `Hero.constants.ts` so width/height come from the files; matching crop preloaded per media query; grain overlay = `public/images/filter-image.webp` tiled in `Hero.module.css`).
+- Noto Sans JP via `next/font/google` (`preload: false`), the brief says "load from Google Fonts". The above-the-fold brand fonts (Favorit Bold, GT America CmBl) are preloaded from storage with `react-dom` `preload()` in `layout.tsx`.
+- `public/` vs `src/assets/`: `public/` only for files that need a fixed URL (`og-image.jpg` is cached by social platforms; `logo.svg`; `filter-image.webp`, referenced from CSS `url()`). Everything else is imported from `src/assets/` (hashed name, build fails if missing).
 - Only interactive components are Client Components: Navbar, MobileMenu, ProductCatalog and its children.
 
 ## Structure
 ```
-src/app/                 layout, (landing)/page.tsx, globals.css (tokens + @font-face + reset), favicon.ico, icon.png, apple-icon.png
+src/app/                 layout, (landing)/page.tsx, globals.css (brief's @font-face + tokens + reset), favicon.ico, icon.png, apple-icon.png
 src/api/                 client.ts (apiGet, shared) + one folder per service: products/ (products.ts = getProducts, .types, .constants) — server-only (`import 'server-only'` in client.ts)
 src/lib/                 product.ts (price, image URLs, default SKU, swatches, stock, store URL), seo.ts (JSON-LD)
 src/types/product.ts     API model types shared by several files
 src/constants/site.ts    SITE_URL, OG_IMAGE, nav links, external URLs
 src/assets/icons/        icon SVGs + index.ts + svg.d.ts (types `*.svg` imports, so `tsc` works before next-env.d.ts exists); SVGR (`@svgr/webpack`, turbopack rule in next.config.ts) makes every .svg import a component → `<CartIcon width height />` renders an inline, aria-hidden <svg>
-public/images/           hero-desktop.jpg, hero-mobile.jpg, filter-image.webp (hero grain), og-image.jpg
+src/assets/images/       hero-desktop.jpg, hero-mobile.jpg + image.d.ts (types `*.jpg` imports as StaticImageData)
+public/images/           filter-image.webp (hero grain, CSS url()), og-image.jpg
 src/hooks/               useProductDeepLink (selected product + SKU ↔ `?product=&color=`), useFocusTrap (menu + modal), useScrolled, useScrollLock, useEscape, useDragScroll (mouse drag for the HowToStyle strip), useInView (starts the HowToStyle title wipe)
 src/components/
   shared/                product-agnostic: Highlight, InputModality (sets <html data-input="mouse|keyboard"> → focus rings only for keyboard users)
@@ -67,7 +69,7 @@ src/components/
 
 ## Still to do
 - [ ] Run against the real API and compare desktop + mobile with Figma (spacing and sizes were measured from screenshots, not dev-mode values).
-- [ ] Export from Figma: lifestyle photos → `public/images/style/` + `image:` in `HowToStyle.constants.ts`. Hero, OGP and favicon are done (favicon: `src/app/favicon.ico` 16/32/48 + `icon.png` 512 + `apple-icon.png` 180, from frame `favion` 627:4906). Logo is done (`public/logo.svg`, white, 351×52). Height 16px mobile / 52px desktop matches the brief's padding math (23+16+23 = 62, 25+52+25 = 102); the brief's "240×16" mobile size can't keep the SVG's ratio (16px tall = ~108px wide) — check in Figma.
+- [ ] Export from Figma: lifestyle photos → `src/assets/images/style/`, statically imported as `image:` in `HowToStyle.constants.ts`. Hero, OGP and favicon are done (favicon: `src/app/favicon.ico` 16/32/48 + `icon.png` 512 + `apple-icon.png` 180, from frame `favion` 627:4906). Logo is done (`public/logo.svg`, white, 351×52). Height 16px mobile / 52px desktop matches the brief's padding math (23+16+23 = 62, 25+52+25 = 102); the brief's "240×16" mobile size can't keep the SVG's ratio (16px tall = ~108px wide) — check in Figma.
 - [ ] Deploy to Vercel (bonus) — set `API_BASE_URL` in Vercel env; `NEXT_PUBLIC_SITE_URL` only for a custom domain.
 
 ## Related
