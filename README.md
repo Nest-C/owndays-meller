@@ -59,7 +59,7 @@ src/
 ├── api/                        # server-side data fetching
 │   ├── client.ts               # apiGet(): API_BASE_URL + path, hourly revalidation, throws on failure; server-only
 │   └── products/               # one folder per service
-│       ├── products.ts         # getProducts()
+│       ├── products.ts         # getProducts(): checks `success`, drops products with no SKU
 │       ├── products.types.ts   # ProductsResponse
 │       └── products.constants.ts # PRODUCTS_PATH (/meller/products.json)
 ├── lib/
