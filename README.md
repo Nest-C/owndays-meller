@@ -55,7 +55,8 @@ src/
 │   ├── (landing)/              # route group: the parentheses keep it out of the URL, so this is still "/"
 │   │   └── page.tsx            # the landing page — server: fetch products, render page, JSON-LD
 │   ├── favicon.ico, icon.png, apple-icon.png  # from Figma frame `favion` (16/32/48, 512, 180) — Next adds the <link> tags
-│   └── globals.css             # brief's @font-face (OWNDAYS storage), design tokens (CSS variables), reset
+│   ├── fonts.css               # brief's @font-face, copied as-is (OWNDAYS storage) — do not edit
+│   └── globals.css             # design tokens (CSS variables), reset
 ├── api/                        # server-side data fetching
 │   ├── client.ts               # apiGet(): API_BASE_URL + path, hourly revalidation, throws on failure; server-only
 │   └── products/               # one folder per service

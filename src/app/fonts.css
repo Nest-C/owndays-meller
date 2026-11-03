@@ -1,0 +1,84 @@
+/* Brand fonts — the brief's @font-face declarations, copied as-is (docs/assignment.md 7.2: served from OWNDAYS storage, not re-hosted) */
+/* Favorit fonts */
+@font-face {
+    font-family: 'Favorit';
+    src: url('https://storage.owndays.com/meller/fonts/Favorit/Favorit-Bold.woff2') format('woff2'),
+        url('https://storage.owndays.com/meller/fonts/Favorit/Favorit-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Favorit';
+    src: url('https://storage.owndays.com/meller/fonts/Favorit/Favorit-Medium.woff2') format('woff2'),
+        url('https://storage.owndays.com/meller/fonts/Favorit/Favorit-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Favorit';
+    src: url('https://storage.owndays.com/meller/fonts/Favorit/Favorit-Regular.woff2') format('woff2'),
+        url('https://storage.owndays.com/meller/fonts/Favorit/Favorit-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* GT America Trial fonts */
+@font-face {
+    font-family: 'GT America Trial Cm';
+    src: url('https://storage.owndays.com/meller/fonts/GTAmericaTrial/GTAmericaTrial-CmBd.woff2') format('woff2'),
+        url('https://storage.owndays.com/meller/fonts/GTAmericaTrial/GTAmericaTrial-CmBd.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT America Trial Cm';
+    src: url('https://storage.owndays.com/meller/fonts/GTAmericaTrial/GTAmericaTrial-CmBl.woff2') format('woff2'),
+        url('https://storage.owndays.com/meller/fonts/GTAmericaTrial/GTAmericaTrial-CmBl.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT America Trial Cm';
+    src: url('https://storage.owndays.com/meller/fonts/GTAmericaTrial/GTAmericaTrial-CmMd.woff2') format('woff2'),
+        url('https://storage.owndays.com/meller/fonts/GTAmericaTrial/GTAmericaTrial-CmMd.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT America Trial';
+    src: url('https://storage.owndays.com/meller/fonts/GTAmericaTrial/GTAmericaTrial-Md.woff2') format('woff2'),
+        url('https://storage.owndays.com/meller/fonts/GTAmericaTrial/GTAmericaTrial-Md.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Founders Grotesk fonts */
+@font-face {
+    font-family: 'Founders Grotesk';
+    src: url('https://storage.owndays.com/meller/fonts/FoundersGrotesk/FoundersGrotesk-Regular.woff2') format('woff2'),
+        url('https://storage.owndays.com/meller/fonts/FoundersGrotesk/FoundersGrotesk-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Founders Grotesk';
+    src: url('https://storage.owndays.com/meller/fonts/FoundersGrotesk/FoundersGrotesk-Medium.woff2') format('woff2'),
+        url('https://storage.owndays.com/meller/fonts/FoundersGrotesk/FoundersGrotesk-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}

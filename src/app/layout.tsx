@@ -6,6 +6,7 @@ import { BRAND_COLOR, OG_IMAGE, SITE_DESCRIPTION, SITE_KEYWORDS, SITE_TITLE, SIT
 import { Footer } from '@/components/layout/Footer/Footer';
 import { Navbar } from '@/components/layout/Navbar/Navbar';
 import { InputModality } from '@/components/shared/InputModality/InputModality';
+import './fonts.css';
 import './globals.css';
 
 const notoSansJp = Noto_Sans_JP({

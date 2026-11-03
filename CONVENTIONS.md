@@ -45,7 +45,7 @@ Follow these in every change. Rules marked **(lint)** are enforced by `npm run l
 - Icons: add the SVG to `src/assets/icons/` (kebab-case, no prefix: `cart.svg`), then re-export it from `index.ts`: `export { default as CartIcon } from './cart.svg';`. Use it as `<CartIcon width={22} height={22} />`.
 - Images and fonts are imported from `src/assets/`, so the build gives them hashed names (cached for a year) and fails on a missing file. Put a file in `public/` only when it needs a fixed URL: something outside our HTML keeps or guesses the address (`og-image.jpg`, which social platforms cache), or CSS `url()` refers to it.
   - Images: `src/assets/images/`, then `import hero from '@/assets/images/hero.jpg'` and pass it as `src` (`next/image` reads width/height from the file).
-  - Fonts are the exception: the brand fonts stay on OWNDAYS storage, loaded by the brief's `@font-face` in `globals.css` (copied as-is, never re-hosted). Use them through the `--font-*` tokens.
+  - Fonts are the exception: the brand fonts stay on OWNDAYS storage, loaded by the brief's `@font-face` in `src/app/fonts.css` (copied as-is, never re-hosted). Use them through the `--font-*` tokens.
 
 ## Components
 - **(lint)** Named exports only: `export function Navbar()`. Default exports are allowed only where Next.js requires them (`page`, `layout` and other route files, `*.config.*`).

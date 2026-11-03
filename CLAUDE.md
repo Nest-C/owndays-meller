@@ -8,7 +8,7 @@ Frontend interview assignment: one responsive product listing page for the OWNDA
 - Figma (dev mode copy): https://www.figma.com/design/Gjoc232seWWtLnzRPW9eDQ/1---OWNDAYS-x-MELLER?node-id=212-332&m=dev — frames: TOP MENU (mobile menu), PRODUCTS (desktop 1440×3541 and mobile 390), MODAl_Follow-up support (product modal, desktop + mobile), parts, favion, ogp_1200x630
 - Products API: `GET https://api-one-alpha-60.vercel.app/meller/products.json` (schema: https://github.com/frontend-otm/api/blob/main/meller/PRODUCTS_README.md)
 - Images: prefix `path` with `https://storage.owndays.com/storage/`
-- Brand fonts are loaded from OWNDAYS storage, **not re-hosted**: the brief (docs/assignment.md 7.2) says to use its `@font-face` declarations as-is, so they are pasted verbatim at the top of `globals.css` (Favorit 400/500/700, GT America Trial Cm 500/700/900, GT America Trial 500, Founders Grotesk 400/500). Don't edit them or move the files into the repo. Storage sends `access-control-allow-origin: *` but `Cache-Control: no-store`, which we can't change.
+- Brand fonts are loaded from OWNDAYS storage, **not re-hosted**: the brief (docs/assignment.md 7.2) says to use its `@font-face` declarations as-is, so they are pasted verbatim into `src/app/fonts.css` (its own file, imported before `globals.css` in `layout.tsx`) (Favorit 400/500/700, GT America Trial Cm 500/700/900, GT America Trial 500, Founders Grotesk 400/500). Don't edit them or move the files into the repo. Storage sends `access-control-allow-origin: *` but `Cache-Control: no-store`, which we can't change.
 
 ## Commands
 ```bash
@@ -31,7 +31,7 @@ Env: `.env.local` (git-ignored; template `.env.example`). `API_BASE_URL` is **re
 
 ## Structure
 ```
-src/app/                 layout, (landing)/page.tsx, globals.css (brief's @font-face + tokens + reset), favicon.ico, icon.png, apple-icon.png
+src/app/                 layout, (landing)/page.tsx, fonts.css (brief's @font-face, verbatim), globals.css (tokens + reset), favicon.ico, icon.png, apple-icon.png
 src/api/                 client.ts (apiGet, shared) + one folder per service: products/ (products.ts = getProducts, .types, .constants) — server-only (`import 'server-only'` in client.ts)
 src/lib/                 product.ts (price, image URLs, default SKU, swatches, stock, store URL), seo.ts (JSON-LD)
 src/types/product.ts     API model types shared by several files
