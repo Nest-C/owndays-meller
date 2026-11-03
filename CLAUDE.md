@@ -1,6 +1,6 @@
 # OWNDAYS × MELLER — Product Listing Page
 
-Frontend interview assignment: one responsive product listing page for the OWNDAYS × MELLER sunglasses collection. Keep it simple — no over-engineering. Full brief: `docs/requirements.md`.
+Frontend interview assignment: one responsive product listing page for the OWNDAYS × MELLER sunglasses collection. Keep it simple — no over-engineering. Full brief: `docs/requirements.md`. When it disagrees with `docs/assignment.md` (or Figma), **requirements.md wins**.
 
 @AGENTS.md
 
@@ -26,7 +26,7 @@ Env: `.env.local` (git-ignored; template `.env.example`). `API_BASE_URL` is **re
 - `src/app/layout.tsx` renders Navbar, `<main id="top">{children}</main>`, Footer — pages render only their own sections. Metadata (title, description, canonical, OG, Twitter) is there too; OGP is `public/images/og-image.jpg` (compressed Figma export), wired via `OG_IMAGE` in `src/constants/site.ts`.
 - `next/image` with `remotePatterns` for storage.owndays.com. Next 16: use `preload`, not the deprecated `priority`. Hero uses art direction (`getImageProps` + `<picture>`, two crops `src/assets/images/hero-desktop.jpg` 2560×1125 / `hero-mobile.jpg` 1170×2031, statically imported in `Hero.constants.ts` so width/height come from the files; matching crop preloaded per media query; grain overlay = `public/images/filter-image.webp` tiled in `Hero.module.css`).
 - Noto Sans JP via `next/font/google` (`preload: false`), the brief says "load from Google Fonts". The above-the-fold brand fonts (Favorit Bold, GT America CmBl) are preloaded from storage with `react-dom` `preload()` in `layout.tsx`.
-- `public/` vs `src/assets/`: `public/` only for files that need a fixed URL (`og-image.jpg` is cached by social platforms; `logo.svg`; `filter-image.webp`, referenced from CSS `url()`). Everything else is imported from `src/assets/` (hashed name, build fails if missing).
+- `public/` vs `src/assets/`: `public/` only for files that need a fixed URL (`og-image.jpg` is cached by social platforms; `logo-desktop.svg` / `logo-mobile.svg`, kept out of `src/assets` because SVGR would turn them into components; `filter-image.webp`, referenced from CSS `url()`). Everything else is imported from `src/assets/` (hashed name, build fails if missing).
 - Only interactive components are Client Components: Navbar, MobileMenu, ProductCatalog and its children.
 
 ## Structure
@@ -69,7 +69,7 @@ src/components/
 
 ## Still to do
 - [ ] Run against the real API and compare desktop + mobile with Figma (spacing and sizes were measured from screenshots, not dev-mode values).
-- [ ] Export from Figma: lifestyle photos → `src/assets/images/style/`, statically imported as `image:` in `HowToStyle.constants.ts`. Hero, OGP and favicon are done (favicon: `src/app/favicon.ico` 16/32/48 + `icon.png` 512 + `apple-icon.png` 180, from frame `favion` 627:4906). Logo is done (`public/logo.svg`, white, 351×52). Height 16px mobile / 52px desktop matches the brief's padding math (23+16+23 = 62, 25+52+25 = 102); the brief's "240×16" mobile size can't keep the SVG's ratio (16px tall = ~108px wide) — check in Figma.
+- [ ] Export from Figma: lifestyle photos → `src/assets/images/style/`, statically imported as `image:` in `HowToStyle.constants.ts`. Hero, OGP and favicon are done (favicon: `src/app/favicon.ico` 16/32/48 + `icon.png` 512 + `apple-icon.png` 180, from frame `favion` 627:4906). Logo is done: two separate files, `public/logo-desktop.svg` 351×52 and `public/logo-mobile.svg` 240×16 (its own wider layout, per the brief), switched by `<picture>` in `Logo.tsx` (`MEDIA_DESKTOP` from `site.ts`).
 - [ ] Deploy to Vercel (bonus) — set `API_BASE_URL` in Vercel env; `NEXT_PUBLIC_SITE_URL` only for a custom domain.
 
 ## Related

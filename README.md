@@ -46,7 +46,8 @@ public/                         # only files that need a fixed URL
 ├── images/
 │   ├── filter-image.webp       # grain texture tiled over the hero (CSS url())
 │   └── og-image.jpg            # Open Graph / Twitter share image
-└── logo.svg                    # navbar logo
+├── logo-desktop.svg            # navbar logo 351×52
+└── logo-mobile.svg             # navbar logo 240×16 (separate layout; <picture> picks one)
 
 src/
 ├── app/

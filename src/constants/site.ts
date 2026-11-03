@@ -7,6 +7,10 @@ export const SITE_NAME = 'OWNDAYS × MELLER';
 
 export const OG_IMAGE = { url: '/images/og-image.jpg', width: 1200, height: 630, alt: SITE_NAME };
 
+/** Art-direction breakpoints for <picture> sources (CSS uses the same 1024px literal) */
+export const MEDIA_DESKTOP = '(min-width: 1024px)';
+export const MEDIA_MOBILE = '(max-width: 1023.98px)';
+
 /** Same as --color-brand in globals.css, for theme-color */
 export const BRAND_COLOR = '#f26a2f';
 

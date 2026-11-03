@@ -1,11 +1,12 @@
 .logo {
   display: block;
   width: 240px;
-  height: auto;
+  height: 16px;
 }
 
 @media (min-width: 1024px) {
   .logo {
     width: 351px;
+    height: 52px;
   }
 }
