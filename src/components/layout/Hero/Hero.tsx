@@ -20,7 +20,7 @@ export function Hero() {
   }
 
   return (
-    <section id="about" className={styles.hero}>
+    <section className={styles.hero}>
       <picture>
         <source media={MEDIA_DESKTOP} srcSet={desktop.srcSet} sizes="100vw" />
         <img {...img} alt="" srcSet={mobileSrcSet} className={styles.heroImage} />

@@ -31,10 +31,11 @@ export const INSTAGRAM_URL = 'https://www.instagram.com/owndays_jp/';
 /** Spread onto <a> for links that open a new tab */
 export const EXTERNAL_LINK = { target: '_blank', rel: 'noopener noreferrer' } as const;
 
+/** In-page nav: `section` matches a `data-section` attribute (ProductGrid); null = label only, no action */
 export const NAV_LINKS = [
-  { label: 'ABOUT', href: '#about' },
-  { label: 'PRODUCTS', href: '#products' },
-  { label: 'STORES', href: '#stores' },
+  { label: 'ABOUT', section: null },
+  { label: 'PRODUCTS', section: 'products' },
+  { label: 'STORES', section: null },
 ] as const;
 
 export const SUB_LINKS = [

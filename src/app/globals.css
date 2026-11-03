@@ -182,7 +182,8 @@ ul {
   outline: none;
 }
 
-[id] {
+/* SectionLink targets: land below the fixed navbar */
+[data-section] {
   scroll-margin-top: var(--header-h);
 }
 

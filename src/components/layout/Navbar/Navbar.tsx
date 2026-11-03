@@ -1,9 +1,10 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { NAV_LINKS, SITE_NAME } from '@/constants/site';
 import { useScrolled } from '@/hooks/useScrolled';
 import { HamburgerIcon } from '@/assets/icons';
+import { SectionLink } from '@/components/shared/SectionLink/SectionLink';
 import { Logo } from './Logo';
 import { MobileMenu } from './MobileMenu';
 import styles from './Navbar.module.css';
@@ -14,19 +15,25 @@ export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const closeMenu = useCallback(() => setMenuOpen(false), []);
 
+  // Every visit and refresh starts at the top: the browser must not restore the last scroll position
+  useEffect(() => {
+    history.scrollRestoration = 'manual';
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, []);
+
   return (
     <>
       <header className={styles.bar} data-solid={scrolled}>
         <div className={styles.inner}>
-          <a href="#top" aria-label={`${SITE_NAME} トップへ`}>
+          <button type="button" aria-label={`${SITE_NAME} トップへ`} onClick={() => window.scrollTo({ top: 0 })}>
             <Logo />
-          </a>
+          </button>
 
           <nav className={styles.nav} aria-label="メイン">
             {NAV_LINKS.map((link) => (
-              <a key={link.href} href={link.href} className={styles.link}>
+              <SectionLink key={link.label} section={link.section} className={styles.link}>
                 {link.label}
-              </a>
+              </SectionLink>
             ))}
           </nav>
 

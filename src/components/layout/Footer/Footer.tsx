@@ -1,17 +1,18 @@
 import { ALL_ITEMS_URL, EXTERNAL_LINK, INSTAGRAM_URL, NAV_LINKS, OWNDAYS_URL, SUB_LINKS } from '@/constants/site';
 import { CartIcon, CopyIcon, InstagramIcon } from '@/assets/icons';
+import { SectionLink } from '@/components/shared/SectionLink/SectionLink';
 import styles from './Footer.module.css';
 
 export function Footer() {
   return (
-    <footer id="stores" className={styles.footer}>
+    <footer className={styles.footer}>
       <div className={styles.main}>
         <div className={styles.left}>
           <nav className={styles.nav} aria-label="フッター">
             {NAV_LINKS.map((link) => (
-              <a key={link.href} href={link.href}>
+              <SectionLink key={link.label} section={link.section} className={styles.navLink}>
                 {link.label}
-              </a>
+              </SectionLink>
             ))}
           </nav>
           <a href={INSTAGRAM_URL} className={styles.social} {...EXTERNAL_LINK} aria-label="Instagram">

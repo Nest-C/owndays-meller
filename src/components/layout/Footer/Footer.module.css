@@ -11,11 +11,13 @@
   letter-spacing: 0.06em;
 }
 
-.footer a {
+.footer a,
+.navLink {
   transition: opacity 0.2s;
 }
 
-.footer a:hover {
+.footer a:hover,
+button.navLink:hover {
   opacity: 0.7;
 }
 
@@ -32,16 +34,19 @@
   font-size: 13px;
 }
 
-.nav a {
+.navLink {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 18px var(--pad);
   border-bottom: 1px solid var(--color-brand);
+  letter-spacing: inherit;
+  text-align: left;
 }
 
 /* Chevron */
-.nav a::after {
+.navLink::after {
   content: '';
   width: 8px;
   height: 8px;
@@ -122,13 +127,14 @@
     font-size: 15px;
   }
 
-  .nav a {
+  .navLink {
+    width: auto;
     display: block;
     padding: 0;
     border: 0;
   }
 
-  .nav a::after {
+  .navLink::after {
     content: none;
   }
 

@@ -6,6 +6,7 @@ import { useEscape } from '@/hooks/useEscape';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
 import { useScrollLock } from '@/hooks/useScrollLock';
 import { CrossIcon } from '@/assets/icons';
+import { SectionLink } from '@/components/shared/SectionLink/SectionLink';
 import styles from './MobileMenu.module.css';
 import type { MobileMenuProps } from './MobileMenu.types';
 
@@ -35,10 +36,10 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
 
         <ul className={styles.mainLinks}>
           {NAV_LINKS.map((link) => (
-            <li key={link.href}>
-              <a href={link.href} className={styles.mainLink} onClick={onClose}>
+            <li key={link.label}>
+              <SectionLink section={link.section} className={styles.mainLink} onClick={onClose}>
                 {link.label}
-              </a>
+              </SectionLink>
             </li>
           ))}
         </ul>

@@ -44,7 +44,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
     <html lang="ja" className={notoSansJp.variable}>
       <body>
         <Navbar />
-        <main id="top">{children}</main>
+        <main>{children}</main>
         <Footer />
         <InputModality />
       </body>
