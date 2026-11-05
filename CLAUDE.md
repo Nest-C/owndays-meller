@@ -43,7 +43,7 @@ src/hooks/               useProductDeepLink (selected product + SKU ↔ `?produc
 src/components/
   shared/                product-agnostic: Highlight, InputModality (sets <html data-input="mouse|keyboard"> → focus rings only for keyboard users)
   layout/                Navbar (+MobileMenu, Logo), Hero, Footer
-  product/               ProductCatalog (client boundary, owns the selection via useProductDeepLink), ProductGrid, ProductCard,
+  product/               ProductCatalog (client boundary, owns the selection via useProductDeepLink and the color shown on each card), ProductGrid, ProductCard,
                          ProductModal (+ImageCarousel), HowToStyle (STYLE_ITEMS in HowToStyle.constants.ts), Swatch
 ```
 ## Code conventions
@@ -56,7 +56,7 @@ src/components/
 ## Behaviour (all implemented and tested)
 - Navbar: transparent over hero, orange after 40px scroll. Desktop text nav; mobile hamburger → black overlay menu (closes on link, ×, backdrop, ESC).
 - In-page nav has **no #hash anchors**: PRODUCTS is a `SectionLink` button (`components/shared/`) that scrolls to `[data-section='products']` (ProductGrid; `section` key in `NAV_LINKS`); the logo scrolls to the top. ABOUT and STORES are shown as plain text with no action (`section: null` → `SectionLink` renders a `<span>`). The URL never changes, and `Navbar` sets `history.scrollRestoration = 'manual'` so every visit and refresh starts at the top.
-- Grid: 3 cols ≥1024px, 1 col below. Card: stretched button opens modal; swatches (max 4 + "+n") switch image and P/No. Price `¥7,800+tax`.
+- Grid: 3 cols ≥1024px, 1 col below. Card: stretched button opens modal; swatches (max 4 + "+n") switch image and P/No.; the modal's color carries over to the card (any source: chip, "+", deep link, Back). Price `¥7,800+tax`.
 - Swatch: hex fill; pattern image when `hex_code` null (Brown Demi); two-color SKUs split diagonally; inset border keeps near-white colors visible.
 - Modal: right panel 616px desktop / full screen mobile; slide/fade animation; carousel with snap; color chips (English names) switch carousel + P/No.; TYPE from `frame_types[0].code` uppercased; price `¥7,800 税込`; ESC/×/backdrop close; focus trap + restore; body scroll lock.
 - Deep link: the open modal is mirrored in the URL (`?product=adisa&color=C2`) via the native History API — open pushes (browser Back closes), color change replaces; loading such a URL opens the modal. Static HTML is unchanged.

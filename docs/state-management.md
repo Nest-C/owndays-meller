@@ -26,7 +26,7 @@
 |---|---|---|---|
 | Product list | Server data, read-only | `app/(landing)/page.tsx` (Server Component) → props | Grid, cards, HowToStyle, modal, JSON-LD |
 | Selected product + modal SKU index | UI, shared by 2 siblings, mirrored in the URL | `useProductDeepLink` (`useState` + History API) in `ProductCatalog` | Grid + HowToStyle (open), Modal (read, change SKU) |
-| Card SKU index | UI, local | each `ProductCard` | that card only |
+| Card SKU index (per product) | UI, shared with the modal | `cardSkus` in `ProductCatalog` → `ProductGrid` → `ProductCard` (controlled) | that card; follows the modal's SKU |
 | Modal closing flag | UI, local | `ProductModal` | modal only |
 | Menu open | UI, local | `Navbar` | Navbar + MobileMenu (child) |
 | Scrolled past hero | UI, derived from window | `useScrolled` hook | Navbar |
@@ -39,13 +39,14 @@
  Client                                                          ▼
  ┌ Navbar ─────────────┐      ┌ ProductCatalog  useProductDeepLink() ───────┐
  │ [menuOpen]          │      │   [selected + skuIndex] ⇄ ?product=&color=  │
- │  └ MobileMenu       │      │  ├ ProductGrid ─ ProductCard [skuIndex] ×8  │
+ │  └ MobileMenu       │      │   [cardSkus] ← follows selected skuIndex    │
+ │                     │      │  ├ ProductGrid ─ ProductCard ×8 (controlled)│
  │ useScrolled()       │      │  ├ HowToStyle  (onOpen)                     │
  └─────────────────────┘      │  └ ProductModal [closing]                   │
                               └─────────────────────────────────────────────┘
 ```
 
-There is exactly **one piece of shared client state** (the selected product and its SKU), shared by siblings one level apart and mirrored in the URL. Everything else is local to a single component.
+There are **two pieces of shared client state**, both in `ProductCatalog`: the selected product and its SKU (shared by siblings one level apart and mirrored in the URL), and the color each card shows. The card colors started out local to each `ProductCard`, but a color picked in the modal has to stay on the card after closing, so they moved up next to the selection. Whenever the selection changes, `ProductCatalog` copies its SKU into `cardSkus` during render (not in an effect, so the card never shows the old color for a frame). Everything else is local to a single component.
 
 ## 3. Options compared
 
@@ -55,7 +56,7 @@ Sizes are the minified + gzip size of a minimal usage, bundled with esbuild, Rea
 
 | Option | Version | +JS gzip | Model | Fits this page? |
 |---|---|---|---|---|
-| **`useState` + lift up** (current, wrapped in `useProductDeepLink`) | React 19 | 0 | Local state, props down, callbacks up | ✅ One shared value, one level of lifting. Nothing to learn, nothing to configure. |
+| **`useState` + lift up** (current, wrapped in `useProductDeepLink`) | React 19 | 0 | Local state, props down, callbacks up | ✅ Two shared values in one component, one level of lifting. Nothing to learn, nothing to configure. |
 | `useReducer` / Context | React 19 | 0 | Reducer, or a provider for deep trees | ⚪ Context only pays off when props pass through many layers; here it's one. A reducer suits many related transitions, but there are 2–3 per component. |
 | Zustand | 5.0.16 | ~0.4 kB | Small external store with hooks and selectors | ⚪ The cheapest library option, and the one I'd pick if global state ever appeared. Today it would replace one `useState` with a store file. |
 | Jotai | 3.0.1 | ~3.2 kB | Atoms, composed bottom‑up | ⚪ Good for many small interdependent values. We have one. |
@@ -83,8 +84,8 @@ Sizes are the minified + gzip size of a minimal usage, bundled with esbuild, Rea
 
 Keep **built-in React state**, with no state or data-fetching library.
 
-- **Why:** one shared value, a static read-only dataset, and a reviewer who rewards simple, readable data flow. Any library adds files, concepts and bytes without solving a problem the page has.
-- **Re-renders are already controlled:** `ProductCard` is `memo`'d, and `useProductDeepLink` returns stable `useCallback` handlers. Opening the modal re-renders `ProductCatalog`, but the 8 cards skip rendering. Smaller leaves (`Swatch`, `ImageCarousel`) are deliberately not memoized: their props change on every render they get, so `memo` would only add cost.
+- **Why:** two shared values owned by one component, a static read-only dataset, and a reviewer who rewards simple, readable data flow. Any library adds files, concepts and bytes without solving a problem the page has.
+- **Re-renders are already controlled:** `ProductCard` is `memo`'d, gets its SKU index as a plain number, and every handler it receives is a stable `useCallback`. Opening the modal or changing one card's color re-renders `ProductCatalog` and `ProductGrid`, but only the card whose number changed renders again. Smaller leaves (`Swatch`, `ImageCarousel`) are deliberately not memoized: their props change on every render they get, so `memo` would only add cost.
 - **Selection lives in the URL too:** `?product=adisa&color=C2` makes a product shareable and lets mobile "Back" close the modal, at 0 kB.
 - **Trade-off accepted:** if the app grew to several pages sharing client state (a cart, favourites, filters), we'd move that state to a small store. We'd make that change then, not now.
 

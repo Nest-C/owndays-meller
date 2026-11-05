@@ -28,6 +28,7 @@
   position: absolute;
   inset-block: 0;
   background: var(--color-black);
+  top: 1px;
 }
 
 .bg {

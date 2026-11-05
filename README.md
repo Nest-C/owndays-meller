@@ -87,7 +87,7 @@ src/
     │   ├── Hero/
     │   └── Footer/
     └── product/                # the product feature
-        ├── ProductCatalog/     # client boundary: holds the selected product (useProductDeepLink)
+        ├── ProductCatalog/     # client boundary: holds the selected product (useProductDeepLink) and each card's color
         ├── ProductGrid/        # 3 columns ≥1024px, 1 column below
         ├── ProductCard/        # swatches switch image + P/No.; max 4 swatches + "+n"
         ├── ProductModal/       # right panel 616px / full screen; carousel, color chips, CTA
@@ -105,7 +105,7 @@ Styling conventions: design tokens live in `globals.css` as CSS variables; compo
 
 - **Breakpoint:** `≥1024px` desktop, `<1024px` mobile.
 - **Navbar:** transparent over the hero, orange after 40px of scroll. Mobile: hamburger → overlay menu that closes on a link, ×, the backdrop or ESC, with focus trapped inside and returned to the hamburger.
-- **Card:** the whole card opens the modal (stretched button); swatches are separate buttons. Two-color SKUs show a split swatch; Brown Demi uses its pattern image.
+- **Card:** the whole card opens the modal (stretched button); swatches are separate buttons. Two-color SKUs show a split swatch; Brown Demi uses its pattern image. A color picked in the modal stays on the card after closing.
 - **Modal:** opens with the SKU selected on the card (or the "+" item's SKU); chips switch the carousel and P/No.; closes with ×, the backdrop or ESC; focus is trapped and returned; slide/fade animation, reduced-motion aware.
 - **Shareable links:** the open product is mirrored in the URL (`/?product=adisa&color=C2`). Opening such a link opens the modal; the browser's Back button closes it.
 - **Keyboard:** focus rings show for keyboard users only (`InputModality`).

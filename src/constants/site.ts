@@ -12,7 +12,7 @@ export const MEDIA_DESKTOP = '(min-width: 1024px)';
 export const MEDIA_MOBILE = '(max-width: 1023.98px)';
 
 /** Same as --color-brand in globals.css, for theme-color */
-export const BRAND_COLOR = '#f26a2f';
+export const BRAND_COLOR = '#2ff269';
 
 // Copied verbatim from the Figma "Meta data" frame (assignment §5)
 export const SITE_TITLE = '商品一覧 | OWNDAYS × MELLER（メラー） 公式オンラインストア｜サングラス';

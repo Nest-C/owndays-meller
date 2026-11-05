@@ -1,16 +1,14 @@
 'use client';
 
-import { memo, useState } from 'react';
+import { memo } from 'react';
 import Image from 'next/image';
-import { defaultSkuIndex, formatYen, productNumber, skuThumbnail } from '@/lib/product';
+import { formatYen, productNumber, skuThumbnail } from '@/lib/product';
 import { Swatch } from '@/components/product/Swatch/Swatch';
 import styles from './ProductCard.module.css';
 import type { ProductCardProps } from './ProductCard.types';
 import { MAX_SWATCHES } from './ProductCard.constants';
 
-export const ProductCard = memo(function ProductCard({ item, onOpen }: ProductCardProps) {
-  const [skuIndex, setSkuIndex] = useState(() => defaultSkuIndex(item));
-
+export const ProductCard = memo(function ProductCard({ item, skuIndex, onSelectSku, onOpen }: ProductCardProps) {
   const sku = item.skus[skuIndex] ?? item.skus[0];
   const name = item.product.model_name;
   const thumbnail = skuThumbnail(sku);
@@ -45,7 +43,7 @@ export const ProductCard = memo(function ProductCard({ item, onOpen }: ProductCa
         <div className={styles.side}>
           <div className={styles.swatches} role="group" aria-label={`${name} のカラー`}>
             {visibleSkus.map((s, i) => (
-              <Swatch key={s.id} sku={s} selected={i === skuIndex} onSelect={() => setSkuIndex(i)} />
+              <Swatch key={s.id} sku={s} selected={i === skuIndex} onSelect={() => onSelectSku(item.product.id, i)} />
             ))}
             {hiddenCount > 0 && <span className={styles.more}>+{hiddenCount}</span>}
           </div>
